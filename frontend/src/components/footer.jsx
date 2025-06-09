@@ -14,7 +14,7 @@ const Footer = () => {
 
           {/* Logo and Support */}
           <div className="flex flex-col gap-4">
-            <h1 className="text-4xl text-amber-800 font-bold tracking-wide">Wardaan</h1>
+            <h1 className="text-4xl text-amber-600 font-bold tracking-wide">Wardaan</h1>
 
             <div>
               <h2 className="font-semibold">Customer Support</h2>

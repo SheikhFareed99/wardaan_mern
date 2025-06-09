@@ -2,5 +2,16 @@
 
 body {
     background-color: white;
+  
+
+  
+    
+  }
+  @keyframes blink {
+    0%, 100% { color: white; }
+    50% { color: rgb(243, 62, 62); }
   }
   
+  .animate-blink {
+    animation: blink 0.4s infinite;
+  }

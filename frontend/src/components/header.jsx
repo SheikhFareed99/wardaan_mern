@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { FaBars, FaShoppingCart, FaUserCircle, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // ✅ Add this
 
 export default function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate(); // ✅ Initialize navigate
+
+  // ✅ Reusable navigation handler
+  const goToCategory = (category) => {
+    setSidebarOpen(false);
+    navigate(`/products/${encodeURIComponent(category)}`);
+  };
 
   return (
     <>
@@ -21,7 +29,7 @@ export default function Header() {
           w-[60%] md:w-64`}
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
-          <h2 className="text-xl text-amber-800 font-bold">Menu</h2>
+          <h2 className="text-xl text-amber-600 font-bold">Menu</h2>
           <button
             onClick={() => setSidebarOpen(false)}
             aria-label="Close sidebar"
@@ -31,21 +39,45 @@ export default function Header() {
           </button>
         </div>
 
-        <nav className="flex flex-col px-6 py-6 space-y-6">
-          <a
-            href="#salwar-kameez"
-            onClick={() => setSidebarOpen(false)}
-            className="text-gray-100 hover:text-indigo-600 font-medium"
+        <nav className="flex flex-col px-6 py-6 space-y-4">
+          <button
+            onClick={() => goToCategory("Salwar Kameez")}
+            className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Salwar Kameez
-          </a>
-          <a
-            href="#shoes"
-            onClick={() => setSidebarOpen(false)}
-            className="text-gray-100 hover:text-indigo-600 font-medium"
+          </button>
+          <hr className="border-gray-600" />
+          <button
+            onClick={() => goToCategory("Shoes")}
+            className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Shoes
-          </a>
+          </button>
+
+          <hr className="border-gray-600" />
+
+          <button
+            onClick={() => goToCategory("Wardaan Special")}
+            className="text-left text-gray-100 hover:text-indigo-600 font-medium"
+          >
+            Wardaan Special
+          </button>
+          <hr className="border-gray-600" />
+          <button
+            onClick={() => goToCategory("Wardaan Unstitched")}
+            className="text-left text-gray-100 hover:text-indigo-600 font-medium"
+          >
+            Wardaan Unstitched
+          </button>
+
+          <hr className="border-gray-600" />
+
+          <button
+  onClick={() => goToCategory("Discount")}
+  className="text-left font-medium animate-blink"
+>
+  Discount
+</button>
         </nav>
       </aside>
 
@@ -60,8 +92,14 @@ export default function Header() {
             <FaBars className="text-2xl text-white" />
           </button>
 
+
           <div className="flex-grow flex justify-center">
-            <h1 className="text-3xl text-amber-800 font-bold select-none">Wardaan</h1>
+            <button
+              onClick={() => navigate("/")}
+              className="text-3xl text-amber-600 font-bold select-none hover:text-amber-800 transition duration-200"
+            >
+              Wardaan
+            </button>
           </div>
 
           <div className="flex items-center space-x-6">
