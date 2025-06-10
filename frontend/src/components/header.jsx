@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"; // ✅ Add this
 
 export default function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate(); // ✅ Initialize navigate
+  const navigate = useNavigate(); 
 
   // ✅ Reusable navigation handler
   const goToCategory = (category) => {
@@ -104,7 +104,7 @@ export default function Header() {
 
           <div className="flex items-center space-x-6">
             <button aria-label="Cart" className="p-2 rounded-md hover:bg-gray-800">
-              <FaShoppingCart className="text-2xl text-white" />
+              <FaShoppingCart className="text-2xl text-white" onClick={()=>navigate("/CheckOut")}/>
             </button>
             <button aria-label="Profile" className="p-2 rounded-md hover:bg-gray-800">
               <FaUserCircle className="text-2xl text-white" />

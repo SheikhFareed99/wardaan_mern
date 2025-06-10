@@ -4,6 +4,7 @@ import Header from "./header";
 import { useParams, useNavigate } from "react-router-dom";
 function ProductDescription() {
     const {productId  } = useParams();
+    const navigate = useNavigate(); 
   const product = {
     name: "Ivory Kurta Trouser/Shalwar - Men",
     brand: "Wardaan",
@@ -151,7 +152,8 @@ function ProductDescription() {
               <button className="flex-1 py-3 border border-black bg-white text-black font-medium rounded-md hover:bg-gray-100">
                 ADD TO CART
               </button>
-              <button className="flex-1 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800">
+              <button className="flex-1 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800"
+              onClick={()=> navigate("/CheckOut")}>
                 BUY IT NOW
               </button>
             </div>
