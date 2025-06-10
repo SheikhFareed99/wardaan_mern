@@ -1,35 +1,13 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { bagActions } from '../store/bagslice'; // Adjust path as needed
 import Header from './header.jsx';
 import Footer from './footer.jsx';
 
 function CheckOut() {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Novy Kurta Trouser/Shalwar - Men",
-      style: "Ban / Shalwar / S",
-      price: 5690.00,
-      delivery: "Arrives by: Fri, 13 Jun - Mon, 16 Jun",
-      image: "/pictures/il_fullxfull.6326430442_6znz.avif"
-    },
-    {
-      id: 2,
-      name: "Novy Kurta Trouser/Shalwar - Men",
-      style: "Ban / Shalwar / S",
-      price: 5690.00,
-      delivery: "Arrives by: Fri, 13 Jun - Mon, 16 Jun",
-      image: "/pictures/il_fullxfull.6326430442_6znz.avif"
-    },
-    {
-      id: 3,
-      name: "Novy Kurta Trouser/Shalwar - Men",
-      style: "Ban / Shalwar / S",
-      price: 5690.00,
-      delivery: "Arrives by: Fri, 13 Jun - Mon, 16 Jun",
-      image: "/pictures/il_fullxfull.6326430442_6znz.avif"
-    }
-  ]);
-
+  const bagArr = useSelector((state) => state.bag.items);
+  const dispatch = useDispatch();
+ console.log("bag",bagArr);
   const [formData, setFormData] = useState({
     email: '',
     subscribe: true,
@@ -42,39 +20,45 @@ function CheckOut() {
     postalCode: '',
     phone: '',
     discountCode: '',
-    shipping: 195.00
+    shipping: 195.0,
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
-  const removeProduct = (id) => {
-    setProducts(products.filter(product => product.id !== id));
-  };
-
-  const subtotal = products.reduce((sum, product) => sum + product.price, 0);
+  const subtotal = bagArr.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal + formData.shipping;
 
-  // Check if required fields (except email) are filled
   const isFormValid = () => {
     const { firstName, lastName, address, city, postalCode, phone } = formData;
     return firstName && lastName && address && city && postalCode && phone;
+  };
+
+  const getDeliveryDate = () => {
+    const delivery = new Date();
+    delivery.setDate(delivery.getDate() + 3);
+    return delivery.toLocaleDateString('en-GB', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
   };
 
   return (
     <>
       <Header />
       <main className="flex flex-col lg:flex-row max-w-7xl mx-auto min-h-screen">
-        {/* Left side - slightly dull */}
+        {/* Left Side */}
         <div className="w-full lg:w-1/2 bg-gray-100 px-4 py-10">
           <div className="space-y-8 max-w-xl mx-auto">
             <h1 className="text-3xl font-bold mb-6 text-center">Checkout</h1>
 
+            {/* Contact Info */}
             <section className="bg-white p-6 rounded-xl shadow">
               <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
               <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full p-3 border rounded-lg mb-4" />
@@ -84,6 +68,7 @@ function CheckOut() {
               </label>
             </section>
 
+            {/* Address */}
             <section className="bg-white p-6 rounded-xl shadow">
               <h2 className="text-xl font-semibold mb-4">Delivery Address</h2>
               <select name="country" value={formData.country} onChange={handleChange} className="w-full p-3 border rounded-lg mb-4">
@@ -104,19 +89,25 @@ function CheckOut() {
           </div>
         </div>
 
-        {/* Right side - pure white */}
+        {/* Right Side */}
         <div className="w-full lg:w-1/2 bg-white py-10 px-4">
           <div className="bg-white p-6 rounded-xl shadow space-y-6 max-w-xl mx-auto">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-            {products.map(product => (
-              <div key={product.id} className="flex items-start gap-4 border-b pb-4">
-                <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded" />
+            {bagArr.map((item) => (
+              <div key={item.id} className="flex items-start gap-4 border-b pb-4">
+                <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
                 <div className="flex-1">
-                  <h3 className="font-medium text-base">{product.name}</h3>
-                  <p className="text-sm text-gray-500">{product.style}</p>
-                  <p className="text-xs text-gray-400">{product.delivery}</p>
+                  <h3 className="font-medium text-base">{item.name}</h3>
+                  <p className="text-sm text-gray-500">{item.style} / Size: {item.selectedSize}</p>
+                  <p className="text-xs text-gray-400">Arrives by: {getDeliveryDate()}</p>
+                  <p className="text-sm font-medium mt-1">Qty: {item.quantity}</p>
                 </div>
-                <button onClick={() => removeProduct(product.id)} className="text-red-500 text-lg font-bold">×</button>
+                <button
+                  onClick={() => dispatch(bagActions.removeEntireItemFromBag({ bagid: item.bagid }))}
+                  className="text-red-500 text-lg font-bold"
+                >
+                  ×
+                </button>
               </div>
             ))}
 
@@ -150,20 +141,16 @@ function CheckOut() {
 
             <button
               className={`w-full py-3 rounded-lg text-sm font-semibold transition ${
-                isFormValid()
-                  ? "bg-red-500 text-white hover:bg-red-800"
-                  : "bg-black text-white hover:bg-gray-800 cursor-not-allowed"
+                isFormValid() ? 'bg-red-500 text-white hover:bg-red-800' : 'bg-black text-white hover:bg-gray-800 cursor-not-allowed'
               }`}
               disabled={!isFormValid()}
             >
               Complete Order
             </button>
 
-            {!isFormValid()  && (
-  <p className="font-semibold text-red-500 mt-2">
-    *Please fill all fields
-  </p>
-)}
+            {!isFormValid() && (
+              <p className="font-semibold text-red-500 mt-2">*Please fill all fields</p>
+            )}
           </div>
         </div>
       </main>

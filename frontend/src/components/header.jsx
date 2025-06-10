@@ -41,14 +41,14 @@ export default function Header() {
 
         <nav className="flex flex-col px-6 py-6 space-y-4">
           <button
-            onClick={() => goToCategory("Salwar Kameez")}
+            onClick={() => goToCategory("kameez shalwar")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Salwar Kameez
           </button>
           <hr className="border-gray-600" />
           <button
-            onClick={() => goToCategory("Shoes")}
+            onClick={() => goToCategory("chappal")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Shoes

@@ -41,8 +41,8 @@ function Home() {
     
     {/* Reusable Card Component */}
     {[ 
-  { src: "/pictures/men-shalwar-kameez-dark-brown-stylish-garments-pk-1.jpg", title: "Kameez Salwar" },
-  { src: "/pictures/OIP.jpg", title: "Chappal" },
+  { src: "/pictures/men-shalwar-kameez-dark-brown-stylish-garments-pk-1.jpg", title: "Kameez Shalwar" },
+  { src: "/pictures/OIP.jpg", title: "chappal" },
   { src: "/pictures/il_fullxfull.6326430442_6znz (1).avif", title: "Wardaan Special" },
   { src: "/pictures/OIP (1).jpg", title: "Wardaan Unstitched" }
 ].map(({ src, title, contain }, idx) => (

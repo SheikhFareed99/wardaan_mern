@@ -9,24 +9,18 @@ const bagSlice = createSlice({
   initialState,
   reducers: {
     addItemToBag: (state, action) => {
-      const existingItem = state.items.find(item => item.id === action.payload.id);
-      if (existingItem) {
-        existingItem.quantity++;
-      } else {
+    
         state.items.push({ ...action.payload, quantity: 1 });
-      }
+      
     },
     removeItemFromBag: (state, action) => {
-      const existingItem = state.items.find(item => item.id === action.payload.id);
-      if (existingItem && existingItem.quantity > 1) {
-        existingItem.quantity--;
-      } else {
-        state.items = state.items.filter(item => item.id !== action.payload.id);
-      }
+   
+        state.items = state.items.filter(item => item.bagid !== action.payload.bagid);
+      
     },
     removeEntireItemFromBag: (state, action) => {
       
-        state.items = state.items.filter(item => item.id !== action.payload.id);
+        state.items = state.items.filter(item => item.bagid !== action.payload.bagid);
       
     },
   },

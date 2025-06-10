@@ -1,62 +1,28 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "./header.jsx";
 import Footer from "./footer.jsx";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Products() {
   const { category } = useParams();
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
 
-  // Mock product data
-  const products = [
-    {
-      id: 1,
-      name: "BENDED KAMEEZ SHAIWAR",
-      category: "kameez",
-      price: 9990,
-      discountedPrice: 9000,
-      imageUrl: "/pictures/il_fullxfull.6326430442_6znz.avif",
-      inStock: true
-    },
-    {
-      id: 2,
-      name: "OFF WHITE BLENDED KAMEEZ SHAIWAR",
-      category: "kameez",
-      price: 9990,
-      imageUrl: "/pictures/il_fullxfull.6326430442_6znz (1).avif",
-      inStock: true
-    },
-    {
-      id: 3,
-      name: "GREY BLENDED KAMEEZ SHAIWAR",
-      category: "kameez",
-      price: 9990,
-      imageUrl: "/pictures/men-shalwar-kameez-dark-brown-stylish-garments-pk-1.jpg",
-      inStock: true
-    },
-    {
-      id: 4,
-      name: "GREY BLENDED KAMEEZ SHAIWAR",
-      category: "kameez",
-      price: 9990,
-      imageUrl: "/pictures/OIP (1).jpg",
-      inStock: true
-    },
-    {
-      id: 5,
-      name: "GREY BLENDED KAMEEZ SHAIWAR",
-      category: "kameez",
-      price: 9990,
-      imageUrl: "/pictures/pexels-shvets-production-9775883 (1).jpg",
-      inStock: true
-    },
-  ];
-    
-  const filteredProducts = category 
-    ? products.filter(product => product.category === "kameez")
+  useEffect(() => {
+    axios.get('http://localhost:5000/products')
+      .then(res => setProducts(res.data))
+      .catch(err => console.error(err));
+  }, []);
+
+  const filteredProducts = category
+    ? products.filter(product => product.category === category)
     : products;
 
-  const handleProductClick = (productId) => {
-    navigate(`/ProductDescrition/${productId}`);
+  const handleProductClick = (product) => {
+    console.log("product.ksx",product);
+    navigate(`/ProductDescrition/${product.id}`, { state: { product } });
+
   };
 
   return (
@@ -84,17 +50,17 @@ function Products() {
                 onMouseEnter={(e) => e.currentTarget.style.borderColor = '#e5e7eb'}
                 onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
               >
-                {/* Image container - now clickable */}
+                {/* Image container */}
                 <div 
                   className="relative pb-[140%] bg-gray-100 overflow-hidden cursor-pointer"
                   onClick={() => handleProductClick(product.id)}
                 >
                   <img 
-                    src={product.imageUrl} 
+                    src={product.imageUrl[0]} 
                     alt={product.name}
                     className="absolute top-0 left-0 w-full h-full object-cover"
                   />
-                  {!product.inStock && (
+                  {product.stock <= 0 && (
                     <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
                       Out of Stock
                     </div>
@@ -121,14 +87,14 @@ function Products() {
                   
                   <button 
                     className={`w-full sm:w-3/4 mx-auto py-2 rounded-none text-xs sm:text-sm border border-black font-medium ${
-                      product.inStock 
+                      product.stock > 0
                         ? 'bg-white text-black hover:bg-black hover:text-white' 
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
-                    disabled={!product.inStock}
-                    onClick={() => handleProductClick(product.id)}
+                    disabled={product.stock <= 0}
+                    onClick={() => handleProductClick(product)}
                   >
-                    {product.inStock ? 'ADD TO BAG' : 'Out of Stock'}
+                    {product.stock > 0 ? 'ADD TO BAG' : 'Out of Stock'}
                   </button>
                 </div>
               </div>
