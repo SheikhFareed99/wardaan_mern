@@ -6,15 +6,61 @@ import { bagActions } from '../store/bagslice';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-function ProductDescription() {
+import { useEffect } from "react";
+
+
+function ProductDescription()
+ {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const bagItems = useSelector((state) => state.bag.items);
   console.log("Bag size:", bagItems.length);
   const dispatch = useDispatch();
   const location = useLocation();
   const product = location.state?.product;
-  console.log(bagItems);
     const navigate = useNavigate(); 
 
+    const getSelectedProduct = () => {
+      const baseProduct = {
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        price: product.price,
+        discount: product.discountPercentage,
+        image: product.imageUrl[0],
+        selectedSize: product.sizes[selectedSize],
+        bagid: bagItems.length,
+      };
+    
+      if (product.category === "kameez shalwar") {
+        return {
+          ...baseProduct,
+          style: product.styleOptions[selectedStyle],
+        };
+      }
+    
+      return baseProduct;
+    };
+
+    const [addedToCart, setAddedToCart] = useState(false);
+  const handleAddToCart = () => {
+    const selectedProduct = getSelectedProduct();
+    dispatch(bagActions.addItemToBag(selectedProduct));
+    setAddedToCart(true);
+
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 1000);
+  };
+
+  const handleBuyNow = () => {
+    const selectedProduct = getSelectedProduct();
+    dispatch(bagActions.addItemToBag(selectedProduct));
+    navigate("/CheckOut");
+  };
+    
 
 
   const [selectedImage, setSelectedImage] = useState(0);
@@ -79,10 +125,11 @@ function ProductDescription() {
             
             <div className="mb-6">
             <span className="text-2xl font-bold">
-  Rs.{product.price.toLocaleString()}
+            Rs.{(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
+
 </span>
 <span className="text-lg text-gray-500 line-through ml-2">
-  Rs.{(product.price / (1 - product.discountPercentage / 100)).toLocaleString()}
+Rs.{product.price.toLocaleString()}
 </span>
 <span className="ml-2 text-green-600 font-medium">
   {product.discountPercentage}% OFF
@@ -121,12 +168,14 @@ function ProductDescription() {
             <div className="mb-6">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-medium">SIZE:</h3>
-                <button 
+               {
+               product.category==="kameez shalwar"&& <button 
                   onClick={() => setShowSizeChart(true)}
                   className="text-sm text-blue-600 hover:underline"
                 >
                   Size Chart
                 </button>
+                }
               </div>
               <div className="flex gap-2 flex-wrap">
                 {product.sizes.map((size, index) => (
@@ -143,33 +192,24 @@ function ProductDescription() {
             
             {/* Action Buttons */}
             <div className="flex gap-4 mb-4">
-            <button 
-  className="flex-1 py-3 border border-black bg-white text-black font-medium rounded-md hover:bg-gray-100"
-  onClick={() => {
-    const selectedProduct = {
-      id: product.id,
-      name: product.name,
-      brand: product.brand,
-      price: product.price,
-      discount:product.discountPercentage,
-      image: product.imageUrl[0],
-      style:product.styleOptions[selectedStyle],
-      selectedSize: product.sizes[selectedSize],
-      bagid:bagItems.length
-    };
+      <button 
+        className={`flex-1 py-3 border font-medium rounded-md transition-colors duration-300 ${
+          addedToCart
+            ? "bg-green-500 text-white border-green-500"
+            : "bg-white text-black border-black hover:bg-gray-100"
+        }`}
+        onClick={handleAddToCart}
+      >
+        {addedToCart ? "✔ ADDED" : "ADD TO CART"}
+      </button>
 
-    dispatch(bagActions.addItemToBag(selectedProduct));
-  }}
->
-  ADD TO CART
-</button>
-
-
-              <button className="flex-1 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800"
-              onClick={()=> navigate("/CheckOut")}>
-                BUY IT NOW
-              </button>
-            </div>
+      <button 
+        className="flex-1 py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800"
+        onClick={handleBuyNow}
+      >
+        BUY IT NOW
+      </button>
+    </div>
 
             {/* Toggle Product Description */}
             <div className="mb-6">
@@ -181,7 +221,7 @@ function ProductDescription() {
               </button>
               {showDescription && (
                 <p className="mt-2 text-sm text-gray-700 leading-relaxed">
-                  Elevate your wardrobe with this elegant ivory kurta trouser/shalwar set by Muraqsh. Designed for comfort and style, it blends traditional wear with a modern aesthetic. Made from premium fabric and stitched to perfection for any festive or formal occasion.
+               {product.description}
                 </p>
               )}
             </div>

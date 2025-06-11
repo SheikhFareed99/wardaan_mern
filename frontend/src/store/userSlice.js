@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  customerId: localStorage.getItem("customerId") || null,
+  customerId: Number(localStorage.getItem("customerId")) || 0,
 };
 
 const userSlice = createSlice({

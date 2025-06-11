@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FaBars, FaShoppingCart, FaUserCircle, FaTimes } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // ✅ Add this
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+  const bagItems = useSelector((state) => state.bag.items);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  // ✅ Reusable navigation handler
   const goToCategory = (category) => {
     setSidebarOpen(false);
     navigate(`/products/${encodeURIComponent(category)}`);
@@ -14,7 +15,7 @@ export default function Header() {
 
   return (
     <>
-      {/* Overlay */}
+      {/* Sidebar Overlay */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
@@ -25,8 +26,8 @@ export default function Header() {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full bg-black shadow-lg z-50 transform transition-transform duration-300 
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          w-[60%] md:w-64`}
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        w-[60%] md:w-64`}
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
           <h2 className="text-xl text-amber-600 font-bold">Menu</h2>
@@ -53,9 +54,7 @@ export default function Header() {
           >
             Shoes
           </button>
-
           <hr className="border-gray-600" />
-
           <button
             onClick={() => goToCategory("Wardaan Special")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
@@ -69,17 +68,37 @@ export default function Header() {
           >
             Wardaan Unstitched
           </button>
-
           <hr className="border-gray-600" />
-
           <button
-  onClick={() => goToCategory("Discount")}
-  className="text-left font-medium animate-blink"
->
-  Discount
-</button>
+            onClick={() => goToCategory("Discount")}
+            className="text-left font-medium animate-blink"
+          >
+            Discount
+          </button>
         </nav>
       </aside>
+
+      {/* Announcement Bar */}
+      <div className="w-full bg-gradient-to-r from-purple-800 to-indigo-800 text-white py-2 overflow-hidden whitespace-nowrap z-50">
+        <div className="animate-marquee inline-block px-10 text-sm font-medium tracking-wide">
+          🎉 10% OFF on Eid Collection! &nbsp; • &nbsp; Free Shipping on Orders Over PKR 5000 &nbsp; • &nbsp; New in: Wardaan Special Collection!
+        </div>
+      </div>
+
+      <style>
+        {`
+          .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 10s linear infinite;
+          }
+
+          @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+          }
+        `}
+      </style>
 
       {/* Header */}
       <header className="bg-black shadow-md sticky top-0 z-40">
@@ -92,7 +111,6 @@ export default function Header() {
             <FaBars className="text-2xl text-white" />
           </button>
 
-
           <div className="flex-grow flex justify-center">
             <button
               onClick={() => navigate("/")}
@@ -103,8 +121,17 @@ export default function Header() {
           </div>
 
           <div className="flex items-center space-x-6">
-            <button aria-label="Cart" className="p-2 rounded-md hover:bg-gray-800">
-              <FaShoppingCart className="text-2xl text-white" onClick={()=>navigate("/CheckOut")}/>
+            <button
+              aria-label="Cart"
+              className="relative p-2 rounded-md hover:bg-gray-800"
+              onClick={() => navigate("/CheckOut")}
+            >
+              <FaShoppingCart className="text-2xl text-white" />
+              {bagItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                  {bagItems.length}
+                </span>
+              )}
             </button>
             <button aria-label="Profile" className="p-2 rounded-md hover:bg-gray-800">
               <FaUserCircle className="text-2xl text-white" />

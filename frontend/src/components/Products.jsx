@@ -4,13 +4,18 @@ import Footer from "./footer.jsx";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Products() {
+function Products() 
+{
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { category } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/products')
+    axios.get('http://localhost:5000/api/products')
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -53,7 +58,7 @@ function Products() {
                 {/* Image container */}
                 <div 
                   className="relative pb-[140%] bg-gray-100 overflow-hidden cursor-pointer"
-                  onClick={() => handleProductClick(product.id)}
+                  onClick={() => handleProductClick(product)}
                 >
                   <img 
                     src={product.imageUrl[0]} 
@@ -72,12 +77,12 @@ function Products() {
                   <h3 className="text-sm sm:text-base font-semibold mb-2 line-clamp-2">{product.name}</h3>
                   
                   <div className="flex flex-wrap items-center gap-2 mb-3">
-                    {product.discountedPrice ? (
+                    {product.discountPercentage ? (
                       <>
                         <span className="text-xs sm:text-sm text-gray-500 line-through">PKR {product.price.toLocaleString()}</span>
-                        <span className="text-xs sm:text-sm text-red-600 font-bold">PKR {product.discountedPrice.toLocaleString()}</span>
+                        <span className="text-xs sm:text-sm text-red-600 font-bold"> Rs.{(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}</span>
                         <span className="bg-red-100 text-red-800 text-xs px-1 py-0.5 rounded">
-                          {Math.round((1 - product.discountedPrice / product.price) * 100)}% OFF
+                        {product.discountPercentage}% OFF
                         </span>
                       </>
                     ) : (

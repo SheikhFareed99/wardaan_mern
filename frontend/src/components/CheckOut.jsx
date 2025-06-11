@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { bagActions } from '../store/bagslice'; // Adjust path as needed
 import Header from './header.jsx';
 import Footer from './footer.jsx';
 
 function CheckOut() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const bagArr = useSelector((state) => state.bag.items);
+  const id=useSelector((state)=>state.user.customerId);
+  console.log("cus id",id)
   const dispatch = useDispatch();
  console.log("bag",bagArr);
   const [formData, setFormData] = useState({
@@ -31,7 +36,7 @@ function CheckOut() {
     }));
   };
 
-  const subtotal = bagArr.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = bagArr.reduce((sum, item) => sum +item.price * (1 - item.discount / 100) * item.quantity, 0);
   const total = subtotal + formData.shipping;
 
   const isFormValid = () => {
@@ -95,13 +100,37 @@ function CheckOut() {
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
             {bagArr.map((item) => (
               <div key={item.id} className="flex items-start gap-4 border-b pb-4">
-                <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
+                <img src={item.image} alt={item.name} className="w-18 h-27 object-cover rounded" />
                 <div className="flex-1">
-                  <h3 className="font-medium text-base">{item.name}</h3>
-                  <p className="text-sm text-gray-500">{item.style} / Size: {item.selectedSize}</p>
-                  <p className="text-xs text-gray-400">Arrives by: {getDeliveryDate()}</p>
-                  <p className="text-sm font-medium mt-1">Qty: {item.quantity}</p>
-                </div>
+  <h3 className="font-medium text-base">{item.name}</h3>
+  <p className="text-sm text-gray-500">{item.style} / Size: {item.selectedSize}</p>
+  <p className="text-xs text-gray-400">Arrives by: {getDeliveryDate()}</p>
+  <p className="text-sm font-medium mt-1">Qty: {item.quantity}</p>
+
+  <div className="mt-2 space-y-1 text-sm">
+    {item.discount > 0 ? (
+      <>
+        <p>
+          <span className="line-through text-gray-500">Rs {item.price.toLocaleString()}</span>{" "}
+          <span className="text-red-600 font-semibold">
+            Rs {(item.price * (1 - item.discount / 100)).toLocaleString()}
+          </span>
+        </p>
+        <span className="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded">
+          {item.discount}% OFF
+        </span>
+        <p className="text-xs text-gray-700 font-medium">
+          Total: Rs {(item.price * (1 - item.discount / 100) * item.quantity).toLocaleString()}
+        </p>
+      </>
+    ) : (
+      <p className="font-medium text-black">
+        Rs {(item.price * item.quantity).toLocaleString()}
+      </p>
+    )}
+  </div>
+</div>
+
                 <button
                   onClick={() => dispatch(bagActions.removeEntireItemFromBag({ bagid: item.bagid }))}
                   className="text-red-500 text-lg font-bold"
@@ -140,10 +169,14 @@ function CheckOut() {
             </div>
 
             <button
-              className={`w-full py-3 rounded-lg text-sm font-semibold transition ${
-                isFormValid() ? 'bg-red-500 text-white hover:bg-red-800' : 'bg-black text-white hover:bg-gray-800 cursor-not-allowed'
-              }`}
-              disabled={!isFormValid()}
+className={`w-full py-3 rounded-lg text-sm font-semibold transition ${
+  isFormValid() && bagArr.length > 0
+    ? 'bg-red-500 text-white hover:bg-red-800'
+    : 'bg-black text-white hover:bg-gray-800 cursor-not-allowed'
+}`}
+
+              disabled={!isFormValid() || bagArr.length === 0}
+
             >
               Complete Order
             </button>

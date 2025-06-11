@@ -2,11 +2,17 @@ import Header from './header.jsx';
 import Footer from './footer.jsx';
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const categoryRef = useRef(null);
   const navigate = useNavigate();
   return (
     <>
+      {/* Announcement Bar */}
+   
       <Header />
 
       {/* Hero Section */}
@@ -41,7 +47,7 @@ function Home() {
     
     {/* Reusable Card Component */}
     {[ 
-  { src: "/pictures/men-shalwar-kameez-dark-brown-stylish-garments-pk-1.jpg", title: "Kameez Shalwar" },
+  { src: "/pictures/men-shalwar-kameez-dark-brown-stylish-garments-pk-1.jpg", title: "kameez shalwar" },
   { src: "/pictures/OIP.jpg", title: "chappal" },
   { src: "/pictures/il_fullxfull.6326430442_6znz (1).avif", title: "Wardaan Special" },
   { src: "/pictures/OIP (1).jpg", title: "Wardaan Unstitched" }
