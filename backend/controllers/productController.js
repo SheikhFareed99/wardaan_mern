@@ -1,7 +1,10 @@
 const Product = require("../models/product");
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find();
+  const products = await Product.find(req.params.category ? { category: req.params.category } : {});
+  if (!products.length) {
+    return res.status(404).json({ message: "No products found" });
+  }
   res.json(products);
 };
 

@@ -24,7 +24,8 @@ function ProductDescription()
 
     const getSelectedProduct = () => {
       const baseProduct = {
-        id: product.id,
+        id: product._id,
+        category: product.category,
         name: product.name,
         brand: product.brand,
         price: product.price,

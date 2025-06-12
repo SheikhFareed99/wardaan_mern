@@ -1,6 +1,6 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { bagActions } from '../store/bagslice'; // Adjust path as needed
+import { bagActions } from '../store/bagslice'; // Adjust path
 import Header from './header.jsx';
 import Footer from './footer.jsx';
 
@@ -8,11 +8,11 @@ function CheckOut() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const bagArr = useSelector((state) => state.bag.items);
-  const id=useSelector((state)=>state.user.customerId);
-  console.log("cus id",id)
+  const id = useSelector((state) => state.user.customerId);
   const dispatch = useDispatch();
- console.log("bag",bagArr);
+
   const [formData, setFormData] = useState({
     email: '',
     subscribe: true,
@@ -28,6 +28,9 @@ function CheckOut() {
     shipping: 195.0,
   });
 
+  const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -36,7 +39,11 @@ function CheckOut() {
     }));
   };
 
-  const subtotal = bagArr.reduce((sum, item) => sum +item.price * (1 - item.discount / 100) * item.quantity, 0);
+  const subtotal = bagArr.reduce(
+    (sum, item) =>
+      sum + item.price * (1 - item.discount / 100) * item.quantity,
+    0
+  );
   const total = subtotal + formData.shipping;
 
   const isFormValid = () => {
@@ -53,10 +60,61 @@ function CheckOut() {
       month: 'short',
     });
   };
+  
+const handleSubmit = async () => {
+  if (!isFormValid() || bagArr.length === 0) return;
+
+  setLoading(true);
+  try {
+    const response = await fetch('http://localhost:5000/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customerId: id && id !== '0' ? id : null, // ✅ fallback to null if not logged in
+        products: bagArr.map((item) => ({
+          id: item.id,
+          name: item.name,
+          image: item.image,
+          quantity: item.quantity,
+          selectedSize: item.selectedSize,
+          category: item.category,
+          style: item.category !== 'chappal' ? item.style : undefined,
+        })),
+        shipping: formData.shipping,
+        address: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          apartment: formData.apartment,
+          city: formData.city,
+          country: formData.country,
+          postalCode: formData.postalCode,
+        },
+        totalAmount: total,
+      }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setSuccessMsg('Order placed successfully!');
+      dispatch(bagActions.clearBag());
+    } else {
+      alert(data.message || 'Order failed!');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('Something went wrong!');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>
       <Header />
+
       <main className="flex flex-col lg:flex-row max-w-7xl mx-auto min-h-screen">
         {/* Left Side */}
         <div className="w-full lg:w-1/2 bg-gray-100 px-4 py-10">
@@ -93,46 +151,53 @@ function CheckOut() {
             </section>
           </div>
         </div>
-
         {/* Right Side */}
         <div className="w-full lg:w-1/2 bg-white py-10 px-4">
           <div className="bg-white p-6 rounded-xl shadow space-y-6 max-w-xl mx-auto">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+
             {bagArr.map((item) => (
               <div key={item.id} className="flex items-start gap-4 border-b pb-4">
                 <img src={item.image} alt={item.name} className="w-18 h-27 object-cover rounded" />
                 <div className="flex-1">
-  <h3 className="font-medium text-base">{item.name}</h3>
-  <p className="text-sm text-gray-500">{item.style} / Size: {item.selectedSize}</p>
-  <p className="text-xs text-gray-400">Arrives by: {getDeliveryDate()}</p>
-  <p className="text-sm font-medium mt-1">Qty: {item.quantity}</p>
+                  <h3 className="font-medium text-base">{item.name}</h3>
+                  <p className="text-sm text-gray-500">
+                    {item.category !== 'chappal' ? item.style + ' / ' : ''}
+                    Size: {item.selectedSize}
+                  </p>
+                  <p className="text-xs text-gray-400">Arrives by: {getDeliveryDate()}</p>
+                  <p className="text-sm font-medium mt-1">Qty: {item.quantity}</p>
 
-  <div className="mt-2 space-y-1 text-sm">
-    {item.discount > 0 ? (
-      <>
-        <p>
-          <span className="line-through text-gray-500">Rs {item.price.toLocaleString()}</span>{" "}
-          <span className="text-red-600 font-semibold">
-            Rs {(item.price * (1 - item.discount / 100)).toLocaleString()}
-          </span>
-        </p>
-        <span className="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded">
-          {item.discount}% OFF
-        </span>
-        <p className="text-xs text-gray-700 font-medium">
-          Total: Rs {(item.price * (1 - item.discount / 100) * item.quantity).toLocaleString()}
-        </p>
-      </>
-    ) : (
-      <p className="font-medium text-black">
-        Rs {(item.price * item.quantity).toLocaleString()}
-      </p>
-    )}
-  </div>
-</div>
+                  <div className="mt-2 space-y-1 text-sm">
+                    {item.discount > 0 ? (
+                      <>
+                        <p>
+                          <span className="line-through text-gray-500">
+                            Rs {item.price.toLocaleString()}
+                          </span>{" "}
+                          <span className="text-red-600 font-semibold">
+                            Rs {(item.price * (1 - item.discount / 100)).toLocaleString()}
+                          </span>
+                        </p>
+                        <span className="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded">
+                          {item.discount}% OFF
+                        </span>
+                        <p className="text-xs text-gray-700 font-medium">
+                          Total: Rs {(item.price * (1 - item.discount / 100) * item.quantity).toLocaleString()}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="font-medium text-black">
+                        Rs {(item.price * item.quantity).toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                </div>
 
                 <button
-                  onClick={() => dispatch(bagActions.removeEntireItemFromBag({ bagid: item.bagid }))}
+                  onClick={() =>
+                    dispatch(bagActions.removeEntireItemFromBag({ bagid: item.bagid }))
+                  }
                   className="text-red-500 text-lg font-bold"
                 >
                   ×
@@ -140,11 +205,7 @@ function CheckOut() {
               </div>
             ))}
 
-            <div>
-              <input name="discountCode" value={formData.discountCode} onChange={handleChange} placeholder="Discount code" className="w-full p-3 border rounded-lg mb-3" />
-              <button className="w-full bg-green-300 hover:bg-green-100 text-sm font-medium py-2 rounded-lg">Apply</button>
-            </div>
-
+            {/* Totals and Payment */}
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
                 <span>Subtotal</span>
@@ -169,17 +230,20 @@ function CheckOut() {
             </div>
 
             <button
-className={`w-full py-3 rounded-lg text-sm font-semibold transition ${
-  isFormValid() && bagArr.length > 0
-    ? 'bg-red-500 text-white hover:bg-red-800'
-    : 'bg-black text-white hover:bg-gray-800 cursor-not-allowed'
-}`}
-
-              disabled={!isFormValid() || bagArr.length === 0}
-
+              onClick={handleSubmit}
+              disabled={!isFormValid() || bagArr.length === 0 || loading}
+              className={`w-full py-3 rounded-lg text-sm font-semibold transition ${
+                isFormValid() && bagArr.length > 0 && !loading
+                  ? 'bg-red-500 text-white hover:bg-red-800'
+                  : 'bg-black text-white hover:bg-gray-800 cursor-not-allowed'
+              }`}
             >
-              Complete Order
+              {loading ? 'Placing Order...' : 'Complete Order'}
             </button>
+
+            {successMsg && (
+              <p className="text-green-600 font-semibold mt-3">{successMsg}</p>
+            )}
 
             {!isFormValid() && (
               <p className="font-semibold text-red-500 mt-2">*Please fill all fields</p>

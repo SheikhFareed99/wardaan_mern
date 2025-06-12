@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  items: [], 
+  items: [],
 };
 
 const bagSlice = createSlice({
@@ -9,20 +9,17 @@ const bagSlice = createSlice({
   initialState,
   reducers: {
     addItemToBag: (state, action) => {
-      
-        state.items.push({ ...action.payload, quantity: 1 });
-      
+      state.items.push({ ...action.payload, quantity: 1 });
     },
     removeItemFromBag: (state, action) => {
-   
-        state.items = state.items.filter(item => item.bagid !== action.payload.bagid);
-      
+      state.items = state.items.filter(item => item.bagid !== action.payload.bagid);
     },
     removeEntireItemFromBag: (state, action) => {
-      
-        state.items = state.items.filter(item => item.bagid !== action.payload.bagid);
-      
+      state.items = state.items.filter(item => item.bagid !== action.payload.bagid);
     },
+    clearBag: (state) => {
+      state.items = [];
+    }, 
   },
 });
 

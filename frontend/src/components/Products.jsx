@@ -15,14 +15,13 @@ function Products()
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/products')
+    axios.get(`http://localhost:5000/api/products/${category}`)
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
-  }, []);
 
-  const filteredProducts = category
-    ? products.filter(product => product.category === category)
-    : products;
+     
+  }, [category]);
+
 
   const handleProductClick = (product) => {
     console.log("product.ksx",product);
@@ -33,17 +32,17 @@ function Products()
   return (
     <>  
       <Header />
-      
+   
       <div className="container mx-auto px-1 py-8">
         {category && <h1 className="text-3xl font-bold mb-8 capitalize">{category}</h1>}
         
-        {filteredProducts.length === 0 ? (
+        {products.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-xl">No products found in this category.</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-            {filteredProducts.map(product => (
+            {products.map(product => (
               <div 
                 key={product.id} 
                 className="bg-white shadow-md overflow-hidden relative hover:shadow-none transition-all duration-300 group"
