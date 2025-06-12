@@ -13,8 +13,8 @@ const orderSchema = new mongoose.Schema({
   customerId: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Customer', 
-    required: false,   // 👈 Now optional
-    default: null      // 👈 Default is null
+    required: false,
+    default: null
   },
   products: [productSchema],
   shipping: Number,
@@ -31,6 +31,22 @@ const orderSchema = new mongoose.Schema({
   },
   totalAmount: Number,
   orderDate: { type: Date, default: Date.now },
+
+  // ✅ Order Status and Tracking Info
+  status: {
+    type: String,
+    enum: ['active', 'cancelled', 'completed', 'shipped'],
+    default: 'active'
+  },
+  trackingNumber: {
+    type: String,
+    default: null
+  },
+  shippingStatus: {
+    type: String,
+    enum: ['pending', 'in transit', 'delivered'],
+    default: 'pending'
+  }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -20,7 +20,7 @@ exports.adminLogin = async (req, res) => {
     }
 
     const isMatch = await admin.matchPassword(password);
-    console.log("Password match:", isMatch);
+
 
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });

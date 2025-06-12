@@ -2,6 +2,53 @@ const Order = require('../models/orderModel');
 const Invoice = require('../models/invoiceModel');
 const Product = require('../models/product'); // ✅ Product model
 
+
+exports.updateOrder = async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { $set: updates },
+      { new: true }
+    );
+
+       const wasNotCancelled = updatedOrder.status !== 'cancelled';
+    const isCancelling = updates.status === 'cancelled';
+
+    if (wasNotCancelled && isCancelling) {
+      // Restore stock for each product in the order
+      for (const item of Order.products) {
+        await Product.findByIdAndUpdate(item.productId, {
+          $inc: { stock: item.quantity }
+        });
+      }
+    } 
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json(updatedOrder);
+  } catch (error) {
+    console.error('Error updating order:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.GetactiveOrders=async (req, res) => {
+  try {
+
+    const orders = await Order.find({ status: "active" }).sort({ orderDate: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error("Failed to fetch orders:", err);
+    res.status(500).json({ message: "Server error while fetching orders" });
+  }
+};
+
 exports.placeOrder = async (req, res) => {
   try {
     let {

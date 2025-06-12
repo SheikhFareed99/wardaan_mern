@@ -21,6 +21,7 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 
 app.use("/api/admin/protected", require("./routes/protectedAdminRoutes"));
 
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Wardaan backend running on http://localhost:${PORT}`);
