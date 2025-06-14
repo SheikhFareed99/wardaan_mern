@@ -1,37 +1,39 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AdminHeader from "./AdminHeader";
-import axios from "axios";
+import AdminHeader from './AdminHeader';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-function AdminDashboard() {
-  const [orders, setOrders] = useState([])
+function OrdersManagement() {
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+  const [filter, setFilter] = useState("all");
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-useEffect(() => {
-  const fetchOrders = async () => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      navigate("/adminLogin");
-      return;
-    }
-const statusValue = "active";
-    try {
-      const { data } = await axios.get(`http://localhost:5000/api/orders?status=${statusValue}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log("Fetched orders:", data);
-      setOrders(data); 
-    } catch (error) {
-      console.error("Failed to fetch orders:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        navigate("/adminLogin");
+        return;
+      }
 
-  fetchOrders();
-}, [navigate]);
+      try {
+        const response = await axios.get(`http://localhost:5000/api/orders?status=${filter}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setOrders(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [navigate, filter]);
 
   const toggleOrderDetails = (orderId) => {
     setExpandedOrder((prev) => (prev === orderId ? null : orderId));
@@ -61,15 +63,13 @@ const statusValue = "active";
           order._id === orderId ? { ...order, ...updatedFields } : order
         )
       );
-
-      console.log("Order updated successfully!");
     } catch (error) {
       console.error("Failed to update order:", error);
       alert("Failed to update order");
     }
   };
 
-   if (loading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="p-8 bg-white rounded-xl shadow-sm w-full max-w-4xl">
@@ -78,7 +78,7 @@ const statusValue = "active";
               <div className="h-8 w-8 bg-blue-400 rounded-full"></div>
             </div>
           </div>
-          <h1 className="text-center text-xl text-gray-600 mt-4">Loading Dashboard...</h1>
+          <h1 className="text-center text-xl text-gray-600 mt-4">Loading Orders...</h1>
         </div>
       </div>
     );
@@ -91,10 +91,38 @@ const statusValue = "active";
       <main className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Order Management</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Orders Management</h1>
             <p className="mt-2 text-sm text-gray-600">
-              View and manage all active customer orders
+              View and manage all customer orders
             </p>
+          </div>
+
+          {/* Filter Buttons */}
+          <div className="flex gap-4 mb-6">
+            <button 
+              className={`px-4 py-2 rounded ${filter === "all" ? "bg-black text-white" : "bg-gray-200"}`} 
+              onClick={() => setFilter("all")}
+            >
+              All Orders
+            </button>
+            <button 
+              className={`px-4 py-2 rounded ${filter === "active" ? "bg-black text-white" : "bg-gray-200"}`} 
+              onClick={() => setFilter("active")}
+            >
+              Active
+            </button>
+            <button 
+              className={`px-4 py-2 rounded ${filter === "cancelled" ? "bg-black text-white" : "bg-gray-200"}`} 
+              onClick={() => setFilter("cancelled")}
+            >
+              Cancelled
+            </button>
+            <button 
+              className={`px-4 py-2 rounded ${filter === "completed" ? "bg-black text-white" : "bg-gray-200"}`} 
+              onClick={() => setFilter("completed")}
+            >
+              Completed
+            </button>
           </div>
 
           <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -113,9 +141,9 @@ const statusValue = "active";
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                   />
                 </svg>
-                <h3 className="mt-2 text-lg font-medium text-gray-900">No active orders</h3>
+                <h3 className="mt-2 text-lg font-medium text-gray-900">No orders found</h3>
                 <p className="mt-1 text-sm text-gray-500">
-                  There are currently no active orders to display.
+                  There are no orders matching the selected filter.
                 </p>
               </div>
             ) : (
@@ -157,15 +185,15 @@ const statusValue = "active";
                             <div className="flex items-center">
                               <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
                                 <span className="text-blue-600 font-medium">
-                                  {order.address.firstName.charAt(0)}{order.address.lastName.charAt(0)}
+                                  {order.address?.firstName?.charAt(0)}{order.address?.lastName?.charAt(0)}
                                 </span>
                               </div>
                               <div className="ml-4">
                                 <div className="text-sm font-medium text-gray-900">
-                                  {order.address.firstName} {order.address.lastName}
+                                  {order.address?.firstName} {order.address?.lastName}
                                 </div>
                                 <div className="text-sm text-gray-500">
-                                  {order.address.email}
+                                  {order.address?.email}
                                 </div>
                               </div>
                             </div>
@@ -192,7 +220,7 @@ const statusValue = "active";
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            PKR {order.totalAmount.toFixed(2)}
+                            Rs {order.totalAmount.toFixed(2)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -235,20 +263,20 @@ const statusValue = "active";
                                   <div className="space-y-2">
                                     <div className="flex">
                                       <span className="text-sm font-medium text-gray-500 w-24">Name:</span>
-                                      <span className="text-sm text-gray-900">{order.address.firstName} {order.address.lastName}</span>
+                                      <span className="text-sm text-gray-900">{order.address?.firstName} {order.address?.lastName}</span>
                                     </div>
                                     <div className="flex">
                                       <span className="text-sm font-medium text-gray-500 w-24">Email:</span>
-                                      <span className="text-sm text-gray-900">{order.address.email}</span>
+                                      <span className="text-sm text-gray-900">{order.address?.email}</span>
                                     </div>
                                     <div className="flex">
                                       <span className="text-sm font-medium text-gray-500 w-24">Phone:</span>
-                                      <span className="text-sm text-gray-900">{order.address.phone}</span>
+                                      <span className="text-sm text-gray-900">{order.address?.phone}</span>
                                     </div>
                                     <div className="flex">
                                       <span className="text-sm font-medium text-gray-500 w-24">Address:</span>
                                       <span className="text-sm text-gray-900">
-                                        {order.address.address}, {order.address.city}, {order.address.country} - {order.address.postalCode}
+                                        {order.address?.address}, {order.address?.city}, {order.address?.country} - {order.address?.postalCode}
                                       </span>
                                     </div>
                                   </div>
@@ -272,7 +300,7 @@ const statusValue = "active";
                                       <label className="block text-sm font-medium text-gray-700 mb-1">Shipping Status</label>
                                       <select
                                         className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-                                        value={order.shippingStatus}
+                                        value={order.shippingStatus || "pending"}
                                         onChange={(e) => handleOrderUpdate(order._id, { shippingStatus: e.target.value })}
                                       >
                                         <option value="pending">Pending</option>
@@ -332,4 +360,4 @@ const statusValue = "active";
   );
 }
 
-export default AdminDashboard;
+export default OrdersManagement;

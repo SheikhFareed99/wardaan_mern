@@ -28,19 +28,19 @@ export default function AdminHeader() {
         {/* Center: Desktop Nav */}
         <nav className="hidden md:flex space-x-6 font-medium">
           <button
-            onClick={() => navigate("/admin/orders")}
+            onClick={() => navigate("/OrdersManagment")}
             className="hover:text-amber-500 transition"
           >
             Order 
           </button>
           <button
-            onClick={() => navigate("/admin/products")}
+            onClick={() => navigate("/productManagment")}
             className="hover:text-amber-500 transition"
           >
             Products
           </button>
           <button
-            onClick={() => navigate("/admin/finance")}
+            onClick={() => navigate("/FinanceManagment")}
             className="hover:text-amber-500 transition"
           >
             Finance

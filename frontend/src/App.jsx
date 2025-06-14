@@ -7,6 +7,9 @@ import ProductDescription from './components/ProductDescription.jsx';
 import CheckOut from './components/CheckOut.jsx';
 import AdminDashboard from './components/AdminDashboard.jsx';
 import AdminLogin from './components/AdminLogin.jsx';
+import OrdersManagment from './components/OrdersManagment.jsx';
+import ProductManagment from './components/ProductManagment.jsx';
+import FinanceManagment from './components/FinanceManagment.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,6 +18,18 @@ const router = createBrowserRouter([
     {
     path: "/AdminDashboard",
     element: <AdminDashboard />
+  },
+     {
+    path: "/FinanceManagment",
+    element: <FinanceManagment />
+  },
+    {
+    path: "/ProductManagment",
+    element: <ProductManagment />
+  },
+      {
+    path: "/OrdersManagment",
+    element: <OrdersManagment />
   },
       {
     path: "/AdminLogin",

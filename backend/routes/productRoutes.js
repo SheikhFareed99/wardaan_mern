@@ -2,13 +2,24 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllProducts,
-  addProduct,
+  updateProducts,
+  getproducts,
   deleteProduct,
+  addProduct,
+  addAllDiscount
 } = require("../controllers/productController");
 
-router.get("/", getAllProducts);
-router.get("/:category", getAllProducts);
-router.post("/", addProduct);
-router.delete("/:id", deleteProduct);
+router.get("/admin", getproducts);     
+
+router.delete("/admin/:id", deleteProduct);
+
+router.put("/admin/:id", updateProducts);
+
+router.get("/:category", getAllProducts);   
+
+router.post('/admin', addProduct);
+
+router.patch('/admin/discount-all', addAllDiscount);
+
 
 module.exports = router;

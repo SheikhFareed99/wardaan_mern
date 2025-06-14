@@ -8,20 +8,48 @@ const getAllProducts = async (req, res) => {
   res.json(products);
 };
 
-const addProduct = async (req, res) => {
-  const newProduct = new Product(req.body);
-  await newProduct.save();
-  res.status(201).json(newProduct);
+const getproducts = async (req, res) => {
+  const products = await Product.find({});
+  res.json(products);
 };
 
+// Delete a product
 const deleteProduct = async (req, res) => {
-  const { id } = req.params;
-  await Product.findByIdAndDelete(id);
-  res.status(204).end();
+  await Product.findByIdAndDelete(req.params.id);
+  res.json({ message: "Product deleted successfully" });
+};
+
+// Update a product
+const updateProducts =async (req, res) => {
+  const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(updatedProduct);
+};
+
+const addProduct= async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).send(product);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+const addAllDiscount = async (req, res) => {
+  try {
+    const { discountPercentage } = req.body;
+    await Product.updateMany({}, { discountPercentage });
+    res.send({ message: `Discount applied to all products successfully!` });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 module.exports = {
   getAllProducts,
-  addProduct,
+   getproducts,
   deleteProduct,
+  updateProducts,
+  addProduct,
+  addAllDiscount
 };

@@ -5,9 +5,11 @@ const { protectAdmin } = require("../middleware/authMiddleware");
 
 const Order = require("../models/orderModel");
 
-router.get("/", protectAdmin,orderController.GetactiveOrders); 
+router.get("/", protectAdmin,orderController.GetselectedOrders); 
+
 
 router.post('/', orderController.placeOrder);
+
 
 
 router.patch('/:id', protectAdmin, orderController.updateOrder);

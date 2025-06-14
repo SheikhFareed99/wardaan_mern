@@ -2,33 +2,34 @@ const Order = require('../models/orderModel');
 const Invoice = require('../models/invoiceModel');
 const Product = require('../models/product'); // ✅ Product model
 
-
 exports.updateOrder = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
-
   try {
+    // Step 1: Get original order
+    const originalOrder = await Order.findById(id);
+    if (!originalOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    const wasNotCancelled = originalOrder.status !== 'cancelled';
+    const isCancellingNow = updates.status === 'cancelled';
+
+    // Step 2: Update the order
     const updatedOrder = await Order.findByIdAndUpdate(
       id,
       { $set: updates },
       { new: true }
     );
 
-       const wasNotCancelled = updatedOrder.status !== 'cancelled';
-    const isCancelling = updates.status === 'cancelled';
-
-    if (wasNotCancelled && isCancelling) {
-      // Restore stock for each product in the order
-      for (const item of Order.products) {
+    // Step 3: Only restore stock if order status changed to "cancelled"
+    if (wasNotCancelled && isCancellingNow) {
+      for (const item of originalOrder.products) {
         await Product.findByIdAndUpdate(item.productId, {
           $inc: { stock: item.quantity }
         });
       }
-    } 
-
-    if (!updatedOrder) {
-      return res.status(404).json({ message: 'Order not found' });
     }
 
     res.status(200).json(updatedOrder);
@@ -37,16 +38,43 @@ exports.updateOrder = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-exports.GetactiveOrders=async (req, res) => {
+exports.GetselectedOrders=async (req, res) => {
+    const s = req.query.status;
   try {
 
-    const orders = await Order.find({ status: "active" }).sort({ orderDate: -1 });
+    const orders = await Order.find({ status: s }).sort({ orderDate: -1 });
     res.json(orders);
   } catch (err) {
     console.error("Failed to fetch orders:", err);
     res.status(500).json({ message: "Server error while fetching orders" });
   }
+};
+
+
+exports.GetselectedOrders=async (req, res) => {
+    const s = req.query.status;
+    if(s=='all'){
+ try {
+                  
+    const orders = await Order.find().sort({ orderDate: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error("Failed to fetch orders:", err);
+    res.status(500).json({ message: "Server error while fetching orders" });
+  }
+    }
+    else
+    {
+ try {
+                  
+    const orders = await Order.find({ status: s }).sort({ orderDate: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error("Failed to fetch orders:", err);
+    res.status(500).json({ message: "Server error while fetching orders" });
+  }
+    }
+ 
 };
 
 exports.placeOrder = async (req, res) => {
