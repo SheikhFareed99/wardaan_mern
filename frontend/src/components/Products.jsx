@@ -21,13 +21,13 @@ function Products() {
       try {
         let endpoint = '';
         if (category === "kameez shalwar" || category === "chappal") {
-          endpoint = `http://localhost:5000/api/products/${category}`;
+          endpoint = `https://wardaan-mern.onrender.com/api/products/${category}`;
         } else if (category === "Wardaan Special") {
-          endpoint = `http://localhost:5000/api/products/Special`;
+          endpoint = `https://wardaan-mern.onrender.com/api/products/Special`;
         } else if (category === "Discount") {
-          endpoint = `http://localhost:5000/api/products/discounted`;
+          endpoint = `https://wardaan-mern.onrender.com/api/products/discounted`;
         } else {
-          endpoint = `http://localhost:5000/api/products/unstitched`;
+          endpoint = `https://wardaan-mern.onrender.com/api/products/unstitched`;
         }
 
         const res = await axios.get(endpoint);
