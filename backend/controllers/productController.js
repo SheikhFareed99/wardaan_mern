@@ -45,11 +45,54 @@ const addAllDiscount = async (req, res) => {
   }
 };
 
+const discountedProducts = async (req, res) => {
+
+  try {
+    const products = await Product.find({ discountPercentage: { $gt: 0 } });
+    if (!products.length) {
+      return res.status(404).json({ message: "No discounted products found" });
+    }
+    res.json(products);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const SpecialProducts=async (req,res)=>
+{
+  try
+  {
+    const product=await Product.find({ specialAttribute: "yes" });
+    if (!product.length) {
+      return res.status(404).json({ message: "No special products found" });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const unstitchedProducts=async (req,res)=>
+{
+  try
+  {
+  const product= await Product.find({subCategory:"Unstitched"});
+  if (!product.length) {
+    return res.status(404).json({ message: "No unstitched products found" });
+  }
+  res.json(product);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
 module.exports = {
   getAllProducts,
    getproducts,
   deleteProduct,
   updateProducts,
   addProduct,
-  addAllDiscount
+  addAllDiscount,
+  discountedProducts,
+  SpecialProducts,
+  unstitchedProducts
 };

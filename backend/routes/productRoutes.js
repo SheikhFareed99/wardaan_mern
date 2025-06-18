@@ -6,7 +6,10 @@ const {
   getproducts,
   deleteProduct,
   addProduct,
-  addAllDiscount
+  addAllDiscount,
+  discountedProducts,
+  SpecialProducts,
+  unstitchedProducts
 } = require("../controllers/productController");
 
 router.get("/admin", getproducts);     
@@ -15,7 +18,13 @@ router.delete("/admin/:id", deleteProduct);
 
 router.put("/admin/:id", updateProducts);
 
-router.get("/:category", getAllProducts);   
+router.get("/discounted", discountedProducts);
+
+router.get("/Special", SpecialProducts);
+
+router.get("/unstitched", unstitchedProducts);
+
+router.get("/:category", getAllProducts);
 
 router.post('/admin', addProduct);
 

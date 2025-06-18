@@ -14,10 +14,32 @@ function Products()
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => 
+    {
+      if(category==="kameez shalwar" || category==="chappal") {
     axios.get(`http://localhost:5000/api/products/${category}`)
+  
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
+      }
+      else if( category==="Wardaan Special")
+      {
+        axios.get(`http://localhost:5000/api/products/Special`)
+          .then(res => setProducts(res.data))
+          .catch(err => console.error(err));
+      }
+      else if(category==="Discount")
+      {
+        axios.get(`http://localhost:5000/api/products/discounted`)
+          .then(res => setProducts(res.data))
+          .catch(err => console.error(err));
+      }
+      else
+      {
+          axios.get(`http://localhost:5000/api/products/unstitched`)
+          .then(res => setProducts(res.data))
+          .catch(err => console.error(err));
+      }
 
      
   }, [category]);
