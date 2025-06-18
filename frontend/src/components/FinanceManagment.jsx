@@ -30,8 +30,12 @@ function FinanceManagement() {
 
   // Fetch Monthly Sales
   const fetchMonthlySales = async () => {
+    const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get(`http://localhost:5000/api/finance/monthly-sales?from=${fromDate}&to=${toDate}`);
+      const res = await axios.get(`http://localhost:5000/api/finance/monthly-sales?from=${fromDate}&to=${toDate}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       setSales(res.data.total);
     } catch (err) {
       console.error("Error fetching monthly sales:", err);
@@ -40,8 +44,11 @@ function FinanceManagement() {
 
   // Fetch Expected Sales
   const fetchExpectedSales = async () => {
+    const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get(`http://localhost:5000/api/finance/expected-sales?from=${fromDate}&to=${toDate}`);
+      const res = await axios.get(`http://localhost:5000/api/finance/expected-sales?from=${fromDate}&to=${toDate}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setExpectedSales(res.data.total);
     } catch (err) {
       console.error("Error fetching expected sales:", err);
@@ -50,8 +57,11 @@ function FinanceManagement() {
 
   // Fetch Top Products
   const fetchTopProducts = async () => {
+    const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get(`http://localhost:5000/api/finance/top-products?from=${fromDate}&to=${toDate}`);
+      const res = await axios.get(`http://localhost:5000/api/finance/top-products?from=${fromDate}&to=${toDate}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setTopProducts(res.data.products || []);
     } catch (err) {
       console.error("Error fetching top products:", err);
@@ -61,10 +71,15 @@ function FinanceManagement() {
 
   // Fetch Expenditures and Total
   const fetchExpenditures = async () => {
+    const token = localStorage.getItem("adminToken");
     try {
       const [expRes, totalRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/expenditures?from=${expFromDate}&to=${expToDate}`),
-        axios.get(`http://localhost:5000/api/expenditures/total?from=${expFromDate}&to=${expToDate}`)
+        axios.get(`http://localhost:5000/api/expenditures?from=${expFromDate}&to=${expToDate}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get(`http://localhost:5000/api/expenditures/total?from=${expFromDate}&to=${expToDate}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
       ]);
       setExpenditures(expRes.data);
       setTotalExpenditure(totalRes.data.total);
@@ -72,6 +87,7 @@ function FinanceManagement() {
       console.error("Error fetching expenditures:", err);
     }
   };
+  
 
   // Filter Expenditures
   const handleFetchExpenditures = () => {
@@ -80,11 +96,14 @@ function FinanceManagement() {
 
   // Add Expenditure
   const addExpenditure = async () => {
+    const token = localStorage.getItem("adminToken");
     if (!expAmount) return alert("Amount is required!");
     try {
       await axios.post("http://localhost:5000/api/expenditures", {
         amount: parseFloat(expAmount),
         description: expDesc
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       setExpAmount('');
       setExpDesc('');
@@ -96,8 +115,11 @@ function FinanceManagement() {
 
   // Delete Expenditure
   const deleteExpenditure = async (id) => {
+    const token = localStorage.getItem("adminToken");
     try {
-      await axios.delete(`http://localhost:5000/api/expenditures/${id}`);
+      await axios.delete(`http://localhost:5000/api/expenditures/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       fetchExpenditures();
     } catch (err) {
       console.error("Error deleting expenditure:", err);

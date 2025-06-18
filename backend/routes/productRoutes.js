@@ -1,4 +1,5 @@
 const express = require("express");
+const { protectAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
 const {
   getAllProducts,
@@ -12,11 +13,11 @@ const {
   unstitchedProducts
 } = require("../controllers/productController");
 
-router.get("/admin", getproducts);     
+router.get("/admin",protectAdmin, getproducts);     
 
-router.delete("/admin/:id", deleteProduct);
+router.delete("/admin/:id",protectAdmin, deleteProduct);
 
-router.put("/admin/:id", updateProducts);
+router.put("/admin/:id",protectAdmin, updateProducts);
 
 router.get("/discounted", discountedProducts);
 
@@ -26,9 +27,9 @@ router.get("/unstitched", unstitchedProducts);
 
 router.get("/:category", getAllProducts);
 
-router.post('/admin', addProduct);
+router.post('/admin',protectAdmin, addProduct);
 
-router.patch('/admin/discount-all', addAllDiscount);
+router.patch('/admin/discount-all',protectAdmin, addAllDiscount);
 
 
 module.exports = router;

@@ -42,8 +42,11 @@ function ProductManagement() {
   }, [navigate]);
 
   const fetchProducts = async () => {
+    const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get("http://localhost:5000/api/products/admin");
+      const res = await axios.get("http://localhost:5000/api/products/admin", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setProducts(res.data);
     } catch (err) {
       console.error("Error fetching products", err);
@@ -53,10 +56,13 @@ function ProductManagement() {
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem("adminToken");
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/products/admin/${id}`);
+      await axios.delete(`http://localhost:5000/api/products/admin/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setProducts(products.filter((p) => p._id !== id));
     } catch (err) {
       console.error("Error deleting product", err);
@@ -79,11 +85,14 @@ function ProductManagement() {
   };
 
   const handleSave = async () => {
+    const token = localStorage.getItem("adminToken");
     try {
       const res = await axios.put(
         `http://localhost:5000/api/products/admin/${editProductId}`,
         editedProduct
-      );
+        , {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       const updatedList = products.map((p) => (p._id === editProductId ? res.data : p));
       setProducts(updatedList);
       setEditProductId(null);
@@ -103,11 +112,14 @@ function ProductManagement() {
   };
 
   const handleAddProduct = async () => {
+    const token = localStorage.getItem("adminToken");
     try {
       const res = await axios.post(
         "http://localhost:5000/api/products/admin",
         newProduct
-      );
+        , {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       setProducts([...products, res.data]);
       setShowAddProduct(false);
       setNewProduct({
@@ -134,12 +146,15 @@ function ProductManagement() {
   };
 
   const handleApplyDiscountToAll = async () => {
+    const token = localStorage.getItem("adminToken");
     if (!window.confirm(`Apply ${discountAllPercentage}% discount to ALL products?`)) return;
 
     try {
       await axios.patch(
         "http://localhost:5000/api/products/admin/discount-all",
-        { discountPercentage: discountAllPercentage }
+        { discountPercentage: discountAllPercentage }, {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
       
       // Update local state to reflect the discount

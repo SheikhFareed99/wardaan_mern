@@ -7,4 +7,12 @@ cloudinary.config({
   secure: true                     
 });
 
-module.exports = cloudinary;
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+                 // Optional folder name
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+});
+
+module.exports = { cloudinary, storage };
