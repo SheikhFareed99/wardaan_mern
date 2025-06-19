@@ -32,7 +32,7 @@ function FinanceManagement() {
   const fetchMonthlySales = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get(`http://localhost:5000/api/finance/monthly-sales?from=${fromDate}&to=${toDate}`, {
+      const res = await axios.get(`https://wardaan-mern.onrender.com/api/finance/monthly-sales?from=${fromDate}&to=${toDate}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -46,7 +46,7 @@ function FinanceManagement() {
   const fetchExpectedSales = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get(`http://localhost:5000/api/finance/expected-sales?from=${fromDate}&to=${toDate}`, {
+      const res = await axios.get(`https://wardaan-mern.onrender.com/api/finance/expected-sales?from=${fromDate}&to=${toDate}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setExpectedSales(res.data.total);
@@ -59,7 +59,7 @@ function FinanceManagement() {
   const fetchTopProducts = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get(`http://localhost:5000/api/finance/top-products?from=${fromDate}&to=${toDate}`, {
+      const res = await axios.get(`https://wardaan-mern.onrender.com/api/finance/top-products?from=${fromDate}&to=${toDate}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTopProducts(res.data.products || []);
@@ -74,10 +74,10 @@ function FinanceManagement() {
     const token = localStorage.getItem("adminToken");
     try {
       const [expRes, totalRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/expenditures?from=${expFromDate}&to=${expToDate}`, {
+        axios.get(`https://wardaan-mern.onrender.com/api/expenditures?from=${expFromDate}&to=${expToDate}`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get(`http://localhost:5000/api/expenditures/total?from=${expFromDate}&to=${expToDate}`, {
+        axios.get(`https://wardaan-mern.onrender.com/api/expenditures/total?from=${expFromDate}&to=${expToDate}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
       ]);
@@ -99,7 +99,7 @@ function FinanceManagement() {
     const token = localStorage.getItem("adminToken");
     if (!expAmount) return alert("Amount is required!");
     try {
-      await axios.post("http://localhost:5000/api/expenditures", {
+      await axios.post("https://wardaan-mern.onrender.com/api/expenditures", {
         amount: parseFloat(expAmount),
         description: expDesc
       }, {
@@ -117,7 +117,7 @@ function FinanceManagement() {
   const deleteExpenditure = async (id) => {
     const token = localStorage.getItem("adminToken");
     try {
-      await axios.delete(`http://localhost:5000/api/expenditures/${id}`, {
+      await axios.delete(`https://wardaan-mern.onrender.com/api/expenditures/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchExpenditures();

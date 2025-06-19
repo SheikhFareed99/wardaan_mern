@@ -19,7 +19,7 @@ function OrdersManagement() {
       }
 
       try {
-        const response = await axios.get(`http://localhost:5000/api/orders?status=${filter}`, {
+        const response = await axios.get(`https://wardaan-mern.onrender.com/api/orders?status=${filter}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -49,7 +49,7 @@ function OrdersManagement() {
       const token = localStorage.getItem("adminToken");
 
       await axios.patch(
-        `http://localhost:5000/api/orders/${orderId}`,
+        `https://wardaan-mern.onrender.com/api/orders/${orderId}`,
         updatedFields,
         {
           headers: {

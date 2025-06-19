@@ -16,9 +16,9 @@ function Home() {
       <Header />
 
       {/* Hero Section */}
-      <div className="relative w-full">
-        <img
-          className="w-full h-[100vh] object-cover brightness-90"
+      <div className="relative w-full min-h-[80vh] sm:min-h-[100vh]">
+  <img
+    className="absolute inset-0 w-full h-full object-cover brightness-90"
           src="https://res.cloudinary.com/dswff96z5/image/upload/v1750154574/pexels-shvets-production-9775883_1_hofwuy.jpg"
           alt="main_pic"
         />
@@ -78,7 +78,15 @@ function Home() {
 </div>
 {/* Video Section */}
 <div>
-  <video src="https://res.cloudinary.com/dswff96z5/video/upload/v1750154591/6766325-uhd_3840_2160_25fps_wlfxb2.mp4" autoPlay loop muted className="w-full h-auto" />
+<video
+  src="https://res.cloudinary.com/dswff96z5/video/upload/v1750154591/6766325-uhd_3840_2160_25fps_wlfxb2.mp4"
+  autoPlay
+  loop
+  muted
+  playsInline
+  preload="auto"
+  className="w-full h-auto object-cover"
+/>
 </div>
       <Footer />
     </>

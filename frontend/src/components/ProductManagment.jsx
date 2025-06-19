@@ -44,7 +44,7 @@ function ProductManagement() {
   const fetchProducts = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get("http://localhost:5000/api/products/admin", {
+      const res = await axios.get("https://wardaan-mern.onrender.com/api/products/admin", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(res.data);
@@ -60,7 +60,7 @@ function ProductManagement() {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/products/admin/${id}`, {
+      await axios.delete(`https://wardaan-mern.onrender.com/api/products/admin/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(products.filter((p) => p._id !== id));
@@ -88,7 +88,7 @@ function ProductManagement() {
     const token = localStorage.getItem("adminToken");
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/products/admin/${editProductId}`,
+        `https://wardaan-mern.onrender.com/api/products/admin/${editProductId}`,
         editedProduct
         , {
           headers: { Authorization: `Bearer ${token}` },
@@ -115,7 +115,7 @@ function ProductManagement() {
     const token = localStorage.getItem("adminToken");
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/products/admin",
+        "https://wardaan-mern.onrender.com/api/products/admin",
         newProduct
         , {
           headers: { Authorization: `Bearer ${token}` },
@@ -151,7 +151,7 @@ function ProductManagement() {
 
     try {
       await axios.patch(
-        "http://localhost:5000/api/products/admin/discount-all",
+        "https://wardaan-mern.onrender.com/api/products/admin/discount-all",
         { discountPercentage: discountAllPercentage }, {
           headers: { Authorization: `Bearer ${token}` },
         }

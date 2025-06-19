@@ -133,9 +133,12 @@ export default function Header() {
                 </span>
               )}
             </button>
-            <button aria-label="Profile" className="p-2 rounded-md hover:bg-gray-800">
+            
+              {/* will do it when profile system for customer is done  */}
+
+            {/* <button aria-label="Profile" className="p-2 rounded-md hover:bg-gray-800">
               <FaUserCircle className="text-2xl text-white" />
-            </button>
+            </button> */}
           </div>
         </div>
       </header>
