@@ -16,27 +16,31 @@ function Home() {
       <Header />
 
       {/* Hero Section */}
-      <div className="relative w-full min-h-[80vh] sm:min-h-[100vh]">
-  <img
-    className="absolute inset-0 w-full h-full object-cover brightness-90"
-          src="https://res.cloudinary.com/dswff96z5/image/upload/v1750154574/pexels-shvets-production-9775883_1_hofwuy.jpg"
-          alt="main_pic"
-        />
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 pt-[25%] sm:pt-0">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-3 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] filter drop-shadow-lg">
-            Embrace the Legacy, Wear the Heritage
-          </h1>
-          <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-semibold text-amber-50 mb-4 [text-shadow:_0_2px_6px_rgba(0,0,0,0.7)] filter drop-shadow-md">
-            Live the Timeless Elegance
-          </h2>
-          <button
-        onClick={() => categoryRef.current?.scrollIntoView({ behavior: "smooth" })}
-        className="mt-4 px-6 py-2 sm:px-8 sm:py-3 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-medium rounded-full shadow-lg transition duration-300"
-      >
-        Explore More
-      </button>
+      <div className="relative w-full">
+        <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[90vh] lg:h-[100vh] overflow-hidden">
+          <img
+            className="w-full h-full object-cover brightness-90"
+            src="https://res.cloudinary.com/dswff96z5/image/upload/v1750154574/pexels-shvets-production-9775883_1_hofwuy.jpg"
+            alt="main_pic"
+            loading="eager"
+          />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 pt-[25%] sm:pt-0">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-3 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] filter drop-shadow-lg">
+              Embrace the Legacy, Wear the Heritage
+            </h1>
+            <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-semibold text-amber-50 mb-4 [text-shadow:_0_2px_6px_rgba(0,0,0,0.7)] filter drop-shadow-md">
+              Live the Timeless Elegance
+            </h2>
+            <button
+              onClick={() => categoryRef.current?.scrollIntoView({ behavior: "smooth" })}
+              className="mt-4 px-6 py-2 sm:px-8 sm:py-3 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-medium rounded-full shadow-lg transition duration-300"
+            >
+              Explore More
+            </button>
+          </div>
         </div>
       </div>
+
    {/* Shop by Category Section */}
    <div ref={categoryRef} className="py-12 px-4 max-w-7xl mx-auto">
 <div className="py-12 px-4 max-w-7xl mx-auto">

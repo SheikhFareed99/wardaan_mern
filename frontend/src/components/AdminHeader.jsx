@@ -72,7 +72,7 @@ export default function AdminHeader() {
         <div className="md:hidden px-4 pb-4 space-y-3 bg-black">
           <button
             onClick={() => {
-              navigate("/admin/orders");
+              navigate("/OrdersManagment");
               setMenuOpen(false);
             }}
             className="block w-full text-left hover:text-amber-500"
@@ -81,7 +81,7 @@ export default function AdminHeader() {
           </button>
           <button
             onClick={() => {
-              navigate("/admin/products");
+              navigate("/productManagment");
               setMenuOpen(false);
             }}
             className="block w-full text-left hover:text-amber-500"
@@ -90,7 +90,7 @@ export default function AdminHeader() {
           </button>
           <button
             onClick={() => {
-              navigate("/admin/finance");
+              navigate("/FinanceManagment");
               setMenuOpen(false);
             }}
             className="block w-full text-left hover:text-amber-500"
