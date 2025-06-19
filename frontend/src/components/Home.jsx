@@ -15,9 +15,9 @@ function Home() {
    
       <Header />
 
-   {/* Hero Section - Updated Responsive Solution */}
+{/* Hero Section - Updated Responsive Solution */}
 <div className="relative w-full">
-  <div className="relative w-full min-h-[50vh] sm:min-h-[70vh] md:min-h-[80vh] lg:min-h-[100vh]">
+  <div className="relative w-full min-h-[50vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-[100vh]">
     <img
       className="absolute w-full h-full object-cover brightness-90"
       src="https://res.cloudinary.com/dswff96z5/image/upload/v1750154574/pexels-shvets-production-9775883_1_hofwuy.jpg"
