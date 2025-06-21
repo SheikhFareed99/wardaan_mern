@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { bagActions } from '../store/bagslice'; // Adjust path
 import Header from './header.jsx';
 import Footer from './footer.jsx';
+import DraggableWhatsApp from "./DraggableWhatsApp";
 
 function CheckOut() {
   useEffect(() => {
@@ -47,8 +48,8 @@ function CheckOut() {
   const total = subtotal + formData.shipping;
 
   const isFormValid = () => {
-    const { firstName, lastName, address, city, postalCode, phone } = formData;
-    return firstName && lastName && address && city && postalCode && phone;
+    const { firstName, lastName, address, city, phone } = formData;
+    return firstName && lastName && address && city  && phone;
   };
 
   const getDeliveryDate = () => {
@@ -114,7 +115,7 @@ const handleSubmit = async () => {
   return (
     <>
       <Header />
-
+      <DraggableWhatsApp />
       <main className="flex flex-col lg:flex-row max-w-7xl mx-auto min-h-screen">
         {/* Left Side */}
         <div className="w-full lg:w-1/2 bg-gray-100 px-4 py-10">
@@ -145,7 +146,7 @@ const handleSubmit = async () => {
               <input name="apartment" value={formData.apartment} onChange={handleChange} placeholder="Apartment, suite, etc. (optional)" className="w-full p-3 border rounded-lg mt-4" />
               <div className="grid grid-cols-2 gap-4 mt-4">
                 <input name="city" value={formData.city} onChange={handleChange} placeholder="City" className="p-3 border rounded-lg" />
-                <input name="postalCode" value={formData.postalCode} onChange={handleChange} placeholder="Postal Code" className="p-3 border rounded-lg" />
+                <input name="postalCode" value={formData.postalCode} onChange={handleChange} placeholder="Postal Code(optional)" className="p-3 border rounded-lg" />
               </div>
               <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" className="w-full p-3 border rounded-lg mt-4" />
             </section>

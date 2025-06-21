@@ -4,7 +4,7 @@ import Footer from "./footer.jsx";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from "framer-motion";
-
+import DraggableWhatsApp from "./DraggableWhatsApp";
 function Products() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -77,7 +77,7 @@ function Products() {
   return (
     <>  
       <Header />
-   
+      <DraggableWhatsApp />
       <div className="container mx-auto px-1 py-8 min-h-screen">
         {category && (
           <motion.h1 

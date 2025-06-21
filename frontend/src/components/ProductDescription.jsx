@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bagActions } from '../store/bagslice'; 
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-
+import DraggableWhatsApp from "./DraggableWhatsApp";
 function ProductDescription() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,6 +68,7 @@ function ProductDescription() {
     return (
       <div className="min-h-screen">
         <Header />
+        <DraggableWhatsApp />
         <div className="container mx-auto px-4 py-8 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Image loader */}

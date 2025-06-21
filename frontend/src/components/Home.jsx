@@ -3,6 +3,7 @@ import Footer from './footer.jsx';
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
+import DraggableWhatsApp from "./DraggableWhatsApp";
 function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -14,7 +15,7 @@ function Home() {
       {/* Announcement Bar */}
    
       <Header />
-
+      <DraggableWhatsApp />
 {/* Hero Section - Updated Responsive Solution */}
 <div className="relative w-full">
   <div className="relative w-full min-h-[50vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-[100vh]">
