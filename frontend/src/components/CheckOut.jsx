@@ -3,9 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { bagActions } from '../store/bagslice'; // Adjust path
 import Header from './header.jsx';
 import Footer from './footer.jsx';
+import { useNavigate } from 'react-router-dom';
+
 import DraggableWhatsApp from "./DraggableWhatsApp";
 
 function CheckOut() {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
