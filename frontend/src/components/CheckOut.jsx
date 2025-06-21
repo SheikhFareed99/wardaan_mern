@@ -101,6 +101,7 @@ const handleSubmit = async () => {
     if (response.ok) {
       setSuccessMsg('Order placed successfully!');
       dispatch(bagActions.clearBag());
+      navigate('/OrderConfirmation');
     } else {
       alert(data.message || 'Order failed!');
     }
