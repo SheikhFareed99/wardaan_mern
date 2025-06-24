@@ -68,7 +68,7 @@ function ProductDescription() {
     return (
       <div className="min-h-screen">
         <Header />
-        <DraggableWhatsApp />
+    
         <div className="container mx-auto px-4 py-8 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Image loader */}
@@ -100,7 +100,7 @@ function ProductDescription() {
   return (
     <>
       <Header />
-
+      <DraggableWhatsApp />
       <motion.main 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -238,8 +238,12 @@ function ProductDescription() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
+                  
                 )}
+                
               </div>
+       
+
               <div className="grid grid-cols-5 gap-2">
                 {product.sizes.map((size, index) => (
                   <motion.button
@@ -258,6 +262,14 @@ function ProductDescription() {
                 ))}
               </div>
             </div>
+            <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 text-center">
+  <p className="text-amber-700 font-medium">
+    For custom-sized shalwar kameez, please contact us via WhatsApp.
+  </p>
+  <p className="text-sm text-amber-600 mt-1">
+    We'll be happy to create a perfect fit just for you.
+  </p>
+</div>
             
             {/* Action Buttons - Modern Gradient */}
             <div className="flex flex-col gap-3 mb-8">

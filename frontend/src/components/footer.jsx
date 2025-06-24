@@ -77,7 +77,7 @@ const Footer = () => {
         <hr className="border-slate-700 my-6" />
         <div className="text-center py-4">
           <p className="text-sm">
-            © 2025, <a href="/" className="hover:underline">Wardaan Clothing</a> – Powered by SheikhFareed
+            © 2025, <a href="/" className="hover:underline">Wardaan Clothing</a> – Powered by abdul basit
           </p>
         </div>
       </footer>

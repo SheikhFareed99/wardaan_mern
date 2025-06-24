@@ -56,18 +56,20 @@ function Home() {
   { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/download_d9wl5z.webp", title: "Wardaan Special" },
   { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", title: "Wardaan Unstitched" }
 ].map(({ src, title, contain }, idx) => (
-  <div
+<div
   key={idx}
   onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
-  className="cursor-pointer relative w-[270px] sm:w-[240px] md:w-[270px] h-[22rem] sm:h-[20rem] md:h-[24rem] rounded-xl overflow-hidden shadow-md group flex-shrink-0"
+  className="cursor-pointer relative w-[270px] sm:w-[240px] md:w-[270px] h-[22rem] sm:h-[20rem] md:h-[24rem] rounded-xl overflow-hidden shadow-md group flex-shrink-0 transition-all duration-500 ease-in-out transform hover:scale-105 hover:-translate-y-2 hover:shadow-2xl"
 >
-  <img
-    src={src}
-    alt={title}
-    className={`w-full h-full ${
-      contain ? "object-contain bg-white" : "object-cover object-top"
-    } transition-transform duration-300 transform group-hover:scale-105`}
-  />
+
+<img
+  src={src}
+  alt={title}
+  className={`w-full h-full ${
+    contain ? "object-contain bg-white" : "object-cover object-top"
+  } transition-transform duration-500 transform group-hover:scale-110 group-hover:brightness-110`}
+/>
+
   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
   <h2 className="absolute bottom-3 left-3 text-white text-base font-bold drop-shadow-md">
     {title}

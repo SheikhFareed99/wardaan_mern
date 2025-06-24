@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from "framer-motion";
 import DraggableWhatsApp from "./DraggableWhatsApp";
+
 function Products() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -43,7 +44,9 @@ function Products() {
   }, [category]);
 
   const handleProductClick = (product) => {
-    navigate(`/ProductDescrition/${product.id}`, { state: { product } });
+    if (product.stock > 0) {
+      navigate(`/ProductDescrition/${product.id}`, { state: { product } });
+    }
   };
 
   // Animation variants
@@ -141,45 +144,53 @@ function Products() {
               <motion.div
                 key={product.id}
                 variants={item}
-                whileHover={{ y: -5 }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden relative group transition-all duration-300 hover:shadow-xl"
+                whileHover={{ y: product.stock > 0 ? -5 : 0 }}
+                className={`bg-white rounded-xl shadow-lg overflow-hidden relative group transition-all duration-300 ${product.stock > 0 ? 'hover:shadow-xl' : ''}`}
               >
-                {/* Image container with hover effect */}
+                {/* Image container */}
                 <div 
-                  className="relative pb-[145%] bg-gray-50 overflow-hidden cursor-pointer"
-                  onClick={() => handleProductClick(product)}
-                >
-                 <img 
-  src={product.imageUrl[0]} 
-  alt={product.name}
-  className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-  loading="lazy"  // Add this
-/>
-                  
-                  {/* Discount badge */}
-                  {product.discountPercentage && (
-                    <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md transform rotate-12">
-                      {product.discountPercentage}% OFF
-                    </div>
-                  )}
-                  
-                  {/* Out of stock overlay */}
-                  {product.stock <= 0 && (
-                    <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-                      <span className="text-white font-bold text-lg tracking-wider">SOLD OUT</span>
-                    </div>
-                  )}
-                  
-                  {/* Quick view button */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center py-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="text-sm">QUICK VIEW</span>
-                  </div>
-                </div>
-                
+  className="relative pb-[145%] bg-gray-50 overflow-hidden cursor-pointer"
+  onClick={() => {
+    if (product.stock > 0) handleProductClick(product);
+  }}
+>
+  <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+    {/* Base image */}
+    <img
+      src={product.imageUrl[0]}
+      alt={`${product.name} default`}
+      className="absolute w-full h-full object-cover transition-transform duration-500"
+    />
+
+    {/* Hover image */}
+    {product.imageUrl[1] && (
+      <img
+        src={product.imageUrl[1]}
+        alt={`${product.name} hover`}
+        className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}
+      />
+    )}
+  </div>
+
+  {/* Discount badge */}
+  {product.discountPercentage && (
+    <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md transform rotate-12">
+      {product.discountPercentage}% OFF
+    </div>
+  )}
+
+  {/* Quick view only if in stock */}
+  {product.stock > 0 && (
+    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center py-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+      <span className="text-sm">QUICK VIEW</span>
+    </div>
+  )}
+</div>
+
                 {/* Product info */}
                 <div className="p-4">
                   <h3 
-                    className="text-sm font-semibold mb-2 line-clamp-2 hover:text-amber-600 transition-colors cursor-pointer"
+                    className={`text-sm font-semibold mb-2 line-clamp-2 ${product.stock > 0 ? 'hover:text-amber-600 cursor-pointer' : 'cursor-default'}`}
                     onClick={() => handleProductClick(product)}
                   >
                     {product.name}
@@ -199,10 +210,10 @@ function Products() {
                   </div>
                   
                   <motion.button 
-                    whileTap={{ scale: 0.95 }}
+                    whileTap={{ scale: product.stock > 0 ? 0.95 : 1 }}
                     className={`w-full py-2 rounded-md text-sm font-medium ${
                       product.stock > 0
-                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md' 
+                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md cursor-pointer' 
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     } transition-all duration-300`}
                     disabled={product.stock <= 0}
