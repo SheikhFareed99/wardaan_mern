@@ -77,12 +77,12 @@ const Footer = () => {
         <hr className="border-slate-700 my-6" />
         <div className="text-center py-4">
           <p className="text-sm">
-            © 2025, <a href="/" className="hover:underline">Wardaan Clothing</a> – Powered by abdul basit
+            © 2025, <a href="/" className="hover:underline">Wardaan Clothing</a> – Powered by Sheikh Fareed
           </p>
         </div>
       </footer>
     </>
   );
-};
+};  
 
 export default Footer;

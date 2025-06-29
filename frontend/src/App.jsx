@@ -10,7 +10,7 @@ import AdminLogin from './components/AdminLogin.jsx';
 import OrdersManagment from './components/OrdersManagment.jsx';
 import ProductManagment from './components/ProductManagment.jsx';
 import FinanceManagment from './components/FinanceManagment.jsx';
-import DraggableWhatsApp from './components/DraggableWhatsApp';
+
 import OrderConfirmation from './components/OrderConfirmation.jsx';
 const router = createBrowserRouter([
   {
