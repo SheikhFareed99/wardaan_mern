@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -15,6 +16,8 @@ function Home() {
       {/* Announcement Bar */}
    
       <Header />
+      <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
+      <SpeedInsights />
       <DraggableWhatsApp />
 {/* Hero Section - Updated Responsive Solution */}
 <div className="relative w-full">
