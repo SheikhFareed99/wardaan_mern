@@ -59,14 +59,14 @@ export default function Header() {
             onClick={() => goToCategory("Wardaan Special")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
-            Wardaan Special
+            Vardaan Special
           </button>
           <hr className="border-gray-600" />
           <button
             onClick={() => goToCategory("Wardaan Unstitched")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
-            Wardaan Unstitched
+            Vardaan Unstitched
           </button>
           <hr className="border-gray-600" />
           <button
@@ -81,7 +81,7 @@ export default function Header() {
       {/* Announcement Bar */}
       <div className="w-full bg-gradient-to-r from-purple-800 to-indigo-800 text-white py-2 overflow-hidden whitespace-nowrap z-50">
         <div className="animate-marquee inline-block px-10 text-sm font-medium tracking-wide">
-          🎉 10% OFF on Eid Collection! &nbsp; • &nbsp; Free Shipping on Orders Over PKR 5000 &nbsp; • &nbsp; New in: Wardaan Special Collection!
+          🎉 10% OFF on Eid Collection! &nbsp; • &nbsp; Free Shipping on Orders Over PKR 5000 &nbsp; • &nbsp; New in: Vardaan Special Collection!
         </div>
       </div>
 
@@ -116,7 +116,7 @@ export default function Header() {
               onClick={() => navigate("/")}
               className="text-3xl text-amber-600 font-bold select-none hover:text-amber-800 transition duration-200"
             >
-              Wardaan
+              Vardaan
             </button>
           </div>
 

@@ -21,7 +21,7 @@ export default function AdminHeader() {
             className="text-xl sm:text-2xl font-bold text-amber-600 hover:text-amber-700 cursor-pointer"
             onClick={() => navigate("/AdminDashboard")}
           >
-            Wardaan Admin
+            Vardaan Admin
           </h1>
         </div>
 
