@@ -30,7 +30,7 @@ export default function Header() {
         w-[60%] md:w-64`}
       >
         <div className="flex items-center justify-between px-4 py-4 border-b">
-          <h2 className="text-xl text-amber-600 font-bold">Menu</h2>
+          <h2 className="text-xl text-amber-500 font-bold">Menu</h2>
           <button
             onClick={() => setSidebarOpen(false)}
             aria-label="Close sidebar"
@@ -40,7 +40,14 @@ export default function Header() {
           </button>
         </div>
 
-        <nav className="flex flex-col px-6 py-6 space-y-4">
+        <nav className="flex flex-col px-5 py-5 space-y-3">
+        <button
+            onClick={() => navigate('/')}
+            className="text-left text-gray-100 hover:text-indigo-600 font-medium"
+          >
+            Home
+          </button>
+          <hr className="border-gray-600" />
           <button
             onClick={() => goToCategory("kameez shalwar")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
@@ -75,6 +82,14 @@ export default function Header() {
           >
             Discount
           </button>
+          <hr className="border-gray-600" />
+          <button
+            onClick={() => navigate('/')}
+            className="text-left text-gray-100 hover:text-indigo-600 font-medium"
+          >
+            Track your order
+          </button>
+       
         </nav>
       </aside>
 
@@ -114,7 +129,7 @@ export default function Header() {
           <div className="flex-grow flex justify-center">
             <button
               onClick={() => navigate("/")}
-              className="text-3xl text-amber-600 font-bold select-none hover:text-amber-800 transition duration-200"
+              className="text-3xl text-amber-600 font-bold select-none hover:text-amber-500 transition duration-200"
             >
               Vardaan
             </button>

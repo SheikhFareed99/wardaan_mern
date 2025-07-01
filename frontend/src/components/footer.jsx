@@ -14,7 +14,7 @@ const Footer = () => {
 
           {/* Logo and Support */}
           <div className="flex flex-col gap-4">
-            <h1 className="text-4xl text-amber-600 font-bold tracking-wide">Wardaan</h1>
+            <h1 className="text-4xl text-amber-600 font-bold tracking-wide">Vardaan</h1>
 
             <div>
               <h2 className="font-semibold">Customer Support</h2>
@@ -25,7 +25,7 @@ const Footer = () => {
             <div>
               <h2 className="font-semibold">Contact Information</h2>
               <p className="hover:underline">Landline: 0303-6578904</p>
-              <p className="hover:underline">Email: Wardaanofficial@gmail.com</p>
+              <p className="hover:underline">Email: thevardaansofficial@gmail.com</p>
             </div>
           </div>
 
@@ -77,7 +77,7 @@ const Footer = () => {
         <hr className="border-slate-700 my-6" />
         <div className="text-center py-4">
           <p className="text-sm">
-            © 2025, <a href="/" className="hover:underline">Wardaan Clothing</a> – Powered by Sheikh Fareed
+            © 2025, <a href="/" className="hover:underline">Vardaan Clothing</a> – Powered by Sheikh Fareed
           </p>
         </div>
       </footer>

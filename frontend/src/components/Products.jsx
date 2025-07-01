@@ -23,7 +23,7 @@ function Products() {
         let endpoint = '';
         if (category === "kameez shalwar" || category === "chappal") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/${category}`;
-        } else if (category === "Wardaan Special") {
+        } else if (category === "Vardaan Special") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/Special`;
         } else if (category === "Discount") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/discounted`;
