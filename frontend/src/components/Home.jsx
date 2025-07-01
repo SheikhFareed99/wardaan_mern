@@ -18,6 +18,7 @@ function Home() {
     const fetchdata = async () => {
       try {
         const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`);
+        console.log(response.data);
         setProducts(response.data);
       } catch (err) {
         console.error(err);
