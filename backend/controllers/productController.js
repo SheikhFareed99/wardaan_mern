@@ -8,6 +8,8 @@ const getAllProducts = async (req, res) => {
   res.json(products);
 };
 
+
+
 const getproducts = async (req, res) => {
   const products = await Product.find({});
   res.json(products);
@@ -85,6 +87,15 @@ const unstitchedProducts=async (req,res)=>
     res.status(500).send(error);
   }
 };
+
+const getall=async (req,res)=>
+{
+  const products = await Product.find({});
+  if (!products.length) {
+    return res.status(404).json({ message: "No products found" });
+  }
+  res.json(products);
+}
 module.exports = {
   getAllProducts,
    getproducts,
@@ -94,5 +105,6 @@ module.exports = {
   addAllDiscount,
   discountedProducts,
   SpecialProducts,
-  unstitchedProducts
+  unstitchedProducts,
+  getall
 };

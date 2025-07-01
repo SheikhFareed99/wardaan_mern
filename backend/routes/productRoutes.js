@@ -10,8 +10,11 @@ const {
   addAllDiscount,
   discountedProducts,
   SpecialProducts,
-  unstitchedProducts
+  unstitchedProducts,
+  getall
 } = require("../controllers/productController");
+
+router.get("/allproducts",getall); 
 
 router.get("/admin",protectAdmin, getproducts);     
 
