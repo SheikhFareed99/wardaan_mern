@@ -10,12 +10,16 @@ import AdminLogin from './components/AdminLogin.jsx';
 import OrdersManagment from './components/OrdersManagment.jsx';
 import ProductManagment from './components/ProductManagment.jsx';
 import FinanceManagment from './components/FinanceManagment.jsx';
-
+import OrderTrack from './components/OrderTrack.jsx'
 import OrderConfirmation from './components/OrderConfirmation.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />
+  },
+  {
+    path: "/OrderTrack",
+    element: <OrderTrack />
   },
   {
     path: "/OrderConfirmation",

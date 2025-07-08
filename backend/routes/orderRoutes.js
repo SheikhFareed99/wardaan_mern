@@ -5,6 +5,8 @@ const { protectAdmin } = require("../middleware/authMiddleware");
 
 const Order = require("../models/orderModel");
 
+router.get('/orderid/:status', orderController.orderstatus);
+
 router.get("/", protectAdmin,orderController.GetselectedOrders); 
 
 

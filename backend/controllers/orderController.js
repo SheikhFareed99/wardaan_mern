@@ -168,3 +168,26 @@ exports.placeOrder = async (req, res) => {
     res.status(500).json({ message: 'Failed to place order', error });
   }
 };
+
+
+exports.orderstatus = async (req, res) => {
+  const id = req.params.status;
+
+  try {
+    const response = await Order.findOne({ _id: id });
+
+    if (!response) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    return res.status(200).json({
+      status: response.status,
+      trackingNumber: response.trackingNumber
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: "Error fetching order status",
+      message: err.message
+    });
+  }
+};
