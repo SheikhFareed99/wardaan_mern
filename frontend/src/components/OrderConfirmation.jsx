@@ -35,8 +35,9 @@ function OrderConfirmation() {
         {/* Main Content */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
-            Order Confirmed!Your order Id is {orderId}
+            Order Confirmed!
           </h1>
+          <h1 className='text-xl font-bold text-gray-900 sm:text-2xl mb-4'>Your order Id is {orderId}</h1>
           <p className="text-lg text-gray-600 mb-8">
             Thank you for shopping with us. Your order has been received.
           </p>

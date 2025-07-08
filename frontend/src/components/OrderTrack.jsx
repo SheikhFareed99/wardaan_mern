@@ -12,7 +12,7 @@ function OrderTrack() {
         try {
             const response = await axios.get(`https://wardaan-mern.onrender.com/api/orders/orderid/${orderid}`);
             setstatus(response.data.status);
-            settrackingid(response.data.trackingid);
+            settrackingid(response.data.trackingNumber);
         } catch (err) {
             console.error("Error occurred:", err.message);
         }
