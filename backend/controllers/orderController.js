@@ -181,7 +181,7 @@ exports.orderstatus = async (req, res) => {
     }
 
     return res.status(200).json({
-      status: response.status,
+      status: response.shippingStatus,
       trackingNumber: response.trackingNumber
     });
   } catch (err) {
@@ -191,3 +191,4 @@ exports.orderstatus = async (req, res) => {
     });
   }
 };
+

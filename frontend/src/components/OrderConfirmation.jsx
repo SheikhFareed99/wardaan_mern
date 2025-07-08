@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useLocation} from 'react-router-dom';
 
 function OrderConfirmation() {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const orderId = location.state?.orderId;
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -34,7 +35,7 @@ function OrderConfirmation() {
         {/* Main Content */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
-            Order Confirmed!
+            Order Confirmed!Your order Id is {orderId}
           </h1>
           <p className="text-lg text-gray-600 mb-8">
             Thank you for shopping with us. Your order has been received.

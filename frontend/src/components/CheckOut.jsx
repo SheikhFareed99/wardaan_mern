@@ -102,9 +102,11 @@ const handleSubmit = async () => {
 
     const data = await response.json();
     if (response.ok) {
+      const id=data.orderId
       setSuccessMsg('Order placed successfully!');
       dispatch(bagActions.clearBag());
-      navigate('/OrderConfirmation');
+      navigate('/OrderConfirmation', { state: { orderId: data.orderId } });
+
     } else {
       alert(data.message || 'Order failed!');
     }
