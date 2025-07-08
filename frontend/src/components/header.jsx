@@ -84,7 +84,7 @@ export default function Header() {
           </button>
           <hr className="border-gray-600" />
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/OrderTrack')}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Track your order
