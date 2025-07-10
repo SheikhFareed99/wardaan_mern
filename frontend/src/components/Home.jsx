@@ -107,10 +107,10 @@ function Home() {
 
         <div className="flex gap-4 overflow-x-auto pb-4 whitespace-nowrap">
           {[
-            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154573/OIP_jspxrv.webp", title: "kameez shalwar" },
+            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154573/OIP_jspxrv.webp", title: "kameez-shalwar" },
             { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_oar9jt.webp", title: "chappal" },
-            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/download_d9wl5z.webp", title: "Vardaan Special" },
-            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", title: "Vardaan Unstitched" }
+            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/download_d9wl5z.webp", title: "Vardaans-Special" },
+            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", title: "Vardaans-Unstitched" }
           ].map(({ src, title }, idx) => (
             <div
               key={idx}

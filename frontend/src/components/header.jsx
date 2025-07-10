@@ -49,7 +49,7 @@ export default function Header() {
           </button>
           <hr className="border-gray-600" />
           <button
-            onClick={() => goToCategory("kameez shalwar")}
+            onClick={() => goToCategory("kameez-shalwar")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Salwar Kameez
@@ -63,14 +63,14 @@ export default function Header() {
           </button>
           <hr className="border-gray-600" />
           <button
-            onClick={() => goToCategory("Wardaan Special")}
+            onClick={() => goToCategory("Wardaan-Special")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Vardaan Special
           </button>
           <hr className="border-gray-600" />
           <button
-            onClick={() => goToCategory("Wardaan Unstitched")}
+            onClick={() => goToCategory("Wardaan-Unstitched")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Vardaan Unstitched

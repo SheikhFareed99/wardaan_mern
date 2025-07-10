@@ -21,9 +21,9 @@ function Products() {
     const fetchData = async () => {
       try {
         let endpoint = '';
-        if (category === "kameez shalwar" || category === "chappal") {
+        if (category === "kameez-shalwar" || category === "chappal") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/${category}`;
-        } else if (category === "Vardaan Special") {
+        } else if (category === "Vardaan-Special") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/Special`;
         } else if (category === "Discount") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/discounted`;
@@ -45,7 +45,7 @@ function Products() {
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
-      navigate(`/ProductDescrition/${product.id}`, { state: { product } });
+      navigate(`/ProductDescrition/${product.name}`, { state: { product } });
     }
   };
 
