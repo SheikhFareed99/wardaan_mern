@@ -21,7 +21,11 @@ function Products() {
     const fetchData = async () => {
       try {
         let endpoint = '';
-        if (category === "kameez-shalwar" || category === "chappal") {
+        if (category === "kameez-shalwar" ) {
+          category="kameez shalwar"
+          endpoint = `https://wardaan-mern.onrender.com/api/products/${category}`;
+        }
+          else if (category === "chappal") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/${category}`;
         } else if (category === "Vardaan-Special") {
           endpoint = `https://wardaan-mern.onrender.com/api/products/Special`;
