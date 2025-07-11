@@ -20,21 +20,17 @@ function Products() {
     setIsLoading(true);
     const fetchData = async () => {
       try {
-        let endpoint = '';
-        if (category === "kameez-shalwar" ) {
-          category="kameez shalwar"
-          endpoint = `https://wardaan-mern.onrender.com/api/products/${category}`;
-        }
-          else if (category === "chappal") {
-          endpoint = `https://wardaan-mern.onrender.com/api/products/${category}`;
+        let apiCategory = category;
+  
+        if (category === "kameez-shalwar") {
+          apiCategory = "kameez shalwar";
         } else if (category === "Vardaan-Special") {
-          endpoint = `https://wardaan-mern.onrender.com/api/products/Special`;
+          apiCategory = "Special";
         } else if (category === "Discount") {
-          endpoint = `https://wardaan-mern.onrender.com/api/products/discounted`;
-        } else {
-          endpoint = `https://wardaan-mern.onrender.com/api/products/unstitched`;
+          apiCategory = "discounted";
         }
-
+  
+        const endpoint = `https://wardaan-mern.onrender.com/api/products/${apiCategory}`;
         const res = await axios.get(endpoint);
         setProducts(res.data);
       } catch (err) {
@@ -43,9 +39,10 @@ function Products() {
         setIsLoading(false);
       }
     };
-
+  
     fetchData();
   }, [category]);
+  
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
