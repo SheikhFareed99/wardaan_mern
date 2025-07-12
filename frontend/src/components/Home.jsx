@@ -77,7 +77,7 @@ function Home() {
       alt="main_pic"
       loading="eager"
     />
-    <div className="absolute inset-0 flex flex-col justify-end items-center text-center px-4 pb-14 sm:pb-2 md:pb-6">
+    <div className="absolute inset-0 flex flex-col justify-end items-center text-center px-4 pb-8 sm:pb-2 md:pb-6">
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-yellow-800 mb-4 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">
         A Legacy Woven In Tradition
       </h1>
