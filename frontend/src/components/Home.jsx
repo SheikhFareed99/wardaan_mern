@@ -70,28 +70,23 @@ function Home() {
       {/* Hero Section */}
       <div className="relative w-full">
         <div className="relative w-full min-h-[50vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-[100vh]">
-        <video
-          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752351108/IMG_0972_ddwwud.mov"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-auto object-cover"
-        />
+          <img
+            className="absolute w-full h-full object-cover brightness-90"
+            src="https://res.cloudinary.com/dswff96z5/image/upload/v1752352295/WhatsApp_Image_2025-07-13_at_01.31.03_d2d97509_cg1g5w.jpg"
+            alt="main_pic"
+            loading="eager"
+          />
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 pt-[20vh] sm:pt-0">
-            {/* <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">
-              Embrace the Legacy, Wear the Heritage
+            <h1 className="text-2xl mt-110 sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-yellow-800 mb-3 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">
+              A Legacy Woven In Tradition
             </h1>
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-amber-50 mb-4 [text-shadow:_0_2px_6px_rgba(0,0,0,0.7)]">
-              Live the Timeless EleganceZZ
-            </h2>
+
             <button
               onClick={() => categoryRef.current?.scrollIntoView({ behavior: "smooth" })}
               className="mt-4 px-6 py-2 sm:px-8 sm:py-3 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-medium rounded-full shadow-lg transition duration-300"
             >
               Explore More
-            </button> */}
+            </button>
           </div>
         </div>
       </div>
@@ -278,7 +273,7 @@ function Home() {
       {/* Video Section */}
       <div>
         <video
-          src="https://res.cloudinary.com/dswff96z5/video/upload/v1750154591/6766325-uhd_3840_2160_25fps_wlfxb2.mp4"
+          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752350520/WhatsApp_Video_2025-07-13_at_00.59.46_33e8ad1b_e7hgqh.mp4"
           autoPlay
           loop
           muted
