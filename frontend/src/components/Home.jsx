@@ -272,7 +272,7 @@ function Home() {
       {/* Video Section */}
       <div className="mb-12 sm:mb-16 md:mb-20 lg:mb-24">
         <video
-          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752350520/WhatsApp_Video_2025-07-13_at_00.59.46_33e8ad1b_e7hgqh.mp4"
+          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752351108/IMG_0972_ddwwud.mov"
           autoPlay
           loop
           muted
