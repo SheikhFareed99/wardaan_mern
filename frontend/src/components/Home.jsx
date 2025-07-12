@@ -68,28 +68,28 @@ function Home() {
       <DraggableWhatsApp />
 
       {/* Hero Section */}
-      <div className="relative w-full">
-        <div className="relative w-full min-h-[50vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-[100vh]">
-          <img
-            className="absolute w-full h-full object-cover brightness-90"
-            src="https://res.cloudinary.com/dswff96z5/image/upload/v1752352295/WhatsApp_Image_2025-07-13_at_01.31.03_d2d97509_cg1g5w.jpg"
-            alt="main_pic"
-            loading="eager"
-          />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 pt-[10vh] sm:pt-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-yellow-800 mb-3 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">
-              A Legacy Woven In Tradition
-            </h1>
-            <button
-              onClick={() => categoryRef.current?.scrollIntoView({ behavior: "smooth" })}
-              className="mt-4 px-6 py-2 sm:px-8 sm:py-3 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-medium rounded-full shadow-lg transition duration-300"
-            >
-              Explore More
-            </button>
-          </div>
-        </div>
-      </div>
-
+    {/* Hero Section */}
+<div className="relative w-full">
+  <div className="relative w-full min-h-[50vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-[100vh]">
+    <img
+      className="absolute w-full h-full object-cover brightness-90"
+      src="https://res.cloudinary.com/dswff96z5/image/upload/v1752352295/WhatsApp_Image_2025-07-13_at_01.31.03_d2d97509_cg1g5w.jpg"
+      alt="main_pic"
+      loading="eager"
+    />
+    <div className="absolute inset-0 flex flex-col justify-end items-center text-center px-4 pb-8 sm:pb-12 md:pb-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-yellow-800 mb-4 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">
+        A Legacy Woven In Tradition
+      </h1>
+      <button
+        onClick={() => categoryRef.current?.scrollIntoView({ behavior: "smooth" })}
+        className="px-6 py-2 sm:px-8 sm:py-3 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-medium rounded-full shadow-lg transition duration-300"
+      >
+        Explore More
+      </button>
+    </div>
+  </div>
+</div>
       {/* Shop by Category Section */}
       <div ref={categoryRef} className="py-12 px-4 max-w-7xl mx-auto">
         <motion.h1
