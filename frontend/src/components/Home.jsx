@@ -85,12 +85,12 @@ function Home() {
       <div ref={categoryRef} className="w-full">
   {[
     { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg", 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752434364/IMG_8101_e86kmd_c_fill_w_1920_h_1080_ar_16_9_g_auto_eqg7p0.jpg", 
       title: "kameez-shalwar",
       description: "Explore our exquisite collection of traditional kameez shalwar sets"
     },
     { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752431722/IMG_8223_rw6t3c.png", 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752434368/IMG_8223_rw6t3c_c_pad_b_gen_fill_w_1920_h_1080_ar_16_9_1_dzjvlc.png", 
       title: "chappal",
       description: "Handcrafted footwear that combines comfort and tradition"
     },
