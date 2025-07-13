@@ -73,7 +73,7 @@ function Home() {
   <div className="relative w-full min-h-[50vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-[100vh]">
     <img
       className="absolute w-full h-full object-cover brightness-90"
-      src="https://res.cloudinary.com/dswff96z5/image/upload/v1752352295/WhatsApp_Image_2025-07-13_at_01.31.03_d2d97509_cg1g5w.jpg"
+      src="https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg"
       alt="main_pic"
       loading="eager"
     />
@@ -129,7 +129,7 @@ function Home() {
       </div>
 
       {/* All Products Section */}
-      <div className="container mx-auto px-1 py-8 min-h-screen">
+      <div className="container mx-auto px-1 py-6 min-h-screen">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -270,9 +270,9 @@ function Home() {
       </div>
 
       {/* Video Section */}
-      <div className="mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+      <div className="mb-12 sm:mb-8 md:mb-10 lg:mb-12">
         <video
-          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752355578/WhatsApp_Video_2025-07-13_at_01.09.46_ad010ed7_nyp6pg.mp4"
+          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
           autoPlay
           loop
           muted
