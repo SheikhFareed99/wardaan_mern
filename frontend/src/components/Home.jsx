@@ -88,7 +88,7 @@ function Home() {
 
         {[
           { 
-            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg", 
+            src: "https://res.cloudinary.com/dswff96z5/image/upload/c_crop,ar_16:9/v1752435544/IMG_8101_nxywzv.jpg", 
             title: "kameez-shalwar",
             description: "Explore our exquisite collection of traditional kameez shalwar sets"
           },
