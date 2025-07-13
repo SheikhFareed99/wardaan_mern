@@ -67,89 +67,102 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
- {/* Video Section */}
- <div className="">
-        <video
-          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-auto object-cover"
-        />
-      </div>
-  
+ {/* Responsive Header Video */}
+<div className="w-full">
+  {/* Desktop video */}
+  <div className="hidden md:block">
+    <video
+      src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      className="w-full h-auto object-cover"
+    />
+  </div>
 
-      {/* Shop by Category Section - Updated for full viewport height */}
-      <div ref={categoryRef} className="w-full">
-       
-      
-
-        {[
-          { 
-            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg", 
-            title: "kameez-shalwar",
-            description: "Explore our exquisite collection of traditional kameez shalwar sets"
-          },
-          { 
-            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752431722/IMG_8223_rw6t3c.png", 
-            title: "chappal",
-            description: "Handcrafted footwear that combines comfort and tradition"
-          },
-          { 
-            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
-            title: "Vardaans-Unstitched",
-            description: "Create your own style with our premium unstitched fabrics"
-          }
-        ].map(({ src, title, description }, idx) => (
-          <div 
-            key={idx} 
-            className="relative w-full h-screen flex items-center justify-center overflow-hidden"
-          >
-            <img
-              src={src}
-              alt={title}
-              className="absolute inset-0 w-full h-full object-cover object-center brightness-90"
-
-            />
-            <div className="absolute inset-0 bg-black/30"></div>
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-full px-4 text-center z-10">
-  <motion.h2 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
-    viewport={{ once: true }}
-    className="text-lg sm:text-xl md:text-2xl font-semibold text-white mb-1 capitalize"
-  >
-    {title}
-  </motion.h2>
-
-  <motion.p
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, delay: 0.2 }}
-    viewport={{ once: true }}
-    className="text-xs sm:text-sm text-white mb-3"
-  >
-    {description}
-  </motion.p>
-
-  <motion.button
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, delay: 0.4 }}
-    viewport={{ once: true }}
-    onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
-    className="px-6 py-2 border border-white text-white font-medium rounded-full backdrop-blur-sm hover:bg-white/10 transition duration-300 text-xs"
-  >
-    Shop Now
-  </motion.button>
+  {/* Mobile video */}
+  <div className="block md:hidden">
+    <video
+      src="https://res.cloudinary.com/dswff96z5/video/upload/v1752441768/IMG_0972_ow8a34.mp4"
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      className="w-full h-auto object-cover"
+    />
+  </div>
 </div>
 
-          </div>
-        ))}
+{/* Category Section */}
+<div ref={categoryRef} className="w-full">
+  {[
+    { 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752441769/IMG_8101_1_oej5lg.png", 
+      title: "kameez-shalwar",
+      description: "Explore our exquisite collection of traditional kameez shalwar sets"
+    },
+    { 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752431722/IMG_8223_rw6t3c.png", 
+      title: "chappal",
+      description: "Handcrafted footwear that combines comfort and tradition"
+    },
+    { 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
+      title: "Vardaans-Unstitched",
+      description: "Create your own style with our premium unstitched fabrics"
+    }
+  ].map(({ src, title, description }, idx) => (
+    <div 
+      key={idx} 
+      className="relative w-full min-h-[115vh] flex items-end justify-center overflow-hidden"
+    >
+      <img
+        src={src}
+        alt={title}
+        className="absolute inset-0 w-full h-full object-cover object-center brightness-90"
+      />
+      <div className="absolute inset-0 bg-black/30"></div>
+
+      {/* Text Box */}
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-full px-4 text-center z-10">
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-2 capitalize"
+        >
+          {title}
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-sm sm:text-base text-white mb-4"
+        >
+          {description}
+        </motion.p>
+
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
+          className="px-6 py-2 border border-white text-white font-medium rounded-full backdrop-blur-sm hover:bg-white/10 transition duration-300 text-sm"
+        >
+          Shop Now
+        </motion.button>
       </div>
+    </div>
+  ))}
+</div>
+
 
       {/* All Products Section */}
       <div className="container mx-auto px-1 py-6 min-h-screen">
