@@ -67,65 +67,84 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
-      {/* Hero Section */}
-    {/* Hero Section */}
-<div className="relative w-full">
-  <div className="relative w-full min-h-[50vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-[100vh]">
-    <img
-      className="absolute w-full h-full object-cover brightness-90"
-      src="https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg"
-      alt="main_pic"
-      loading="eager"
-    />
-    <div className="absolute inset-0 flex flex-col justify-end items-center text-center px-4 pb-8 sm:pb-2 md:pb-6">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-yellow-800 mb-4 [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">
-        A Legacy Woven In Tradition
-      </h1>
-      <button
-        onClick={() => categoryRef.current?.scrollIntoView({ behavior: "smooth" })}
-        className="px-6 py-2 sm:px-8 sm:py-3 bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base font-medium rounded-full shadow-lg transition duration-300"
-      >
-        Explore More
-      </button>
-    </div>
-  </div>
-</div>
-      {/* Shop by Category Section */}
-      <div ref={categoryRef} className="py-12 px-4 max-w-7xl mx-auto">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl md:text-4xl font-bold mb-8 capitalize text-center font-serif text-gray-800"
-        >
-          Shop by Category
-          <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
-        </motion.h1>
+ {/* Video Section */}
+ <div className="">
+        <video
+          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-auto object-cover"
+        />
+      </div>
+  
 
-        <div className="flex gap-4 overflow-x-auto pb-4 whitespace-nowrap">
-          {[
-            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154573/OIP_jspxrv.webp", title: "kameez-shalwar" },
-            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_oar9jt.webp", title: "chappal" },
-            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/download_d9wl5z.webp", title: "Vardaans-Special" },
-            { src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", title: "Vardaans-Unstitched" }
-          ].map(({ src, title }, idx) => (
-            <div
-              key={idx}
-              onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
-              className="cursor-pointer relative w-[270px] sm:w-[240px] md:w-[270px] h-[22rem] sm:h-[20rem] md:h-[24rem] rounded-xl overflow-hidden shadow-md group flex-shrink-0 transition-all duration-500 ease-in-out transform hover:scale-105 hover:-translate-y-2 hover:shadow-2xl"
-            >
-              <img
-                src={src}
-                alt={title}
-                className="w-full h-full object-cover object-top transition-transform duration-500 transform group-hover:scale-110 group-hover:brightness-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              <h2 className="absolute bottom-3 left-3 text-white text-base font-bold drop-shadow-md">
+      {/* Shop by Category Section - Updated for full viewport height */}
+      <div ref={categoryRef} className="w-full">
+       
+      
+
+        {[
+          { 
+            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg", 
+            title: "kameez-shalwar",
+            description: "Explore our exquisite collection of traditional kameez shalwar sets"
+          },
+          { 
+            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752431722/IMG_8223_rw6t3c.png", 
+            title: "chappal",
+            description: "Handcrafted footwear that combines comfort and tradition"
+          },
+          { 
+            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
+            title: "Vardaans-Unstitched",
+            description: "Create your own style with our premium unstitched fabrics"
+          }
+        ].map(({ src, title, description }, idx) => (
+          <div 
+            key={idx} 
+            className="relative w-full h-screen flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src={src}
+              alt={title}
+              className="absolute w-full h-full object-cover object-center brightness-90"
+            />
+            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 capitalize"
+              >
                 {title}
-              </h2>
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="text-lg md:text-xl text-white mb-8"
+              >
+                {description}
+              </motion.p>
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+                onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
+                className="px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-full shadow-lg transition duration-300"
+              >
+                Shop Now
+              </motion.button>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       {/* All Products Section */}
@@ -269,18 +288,7 @@ function Home() {
         )}
       </div>
 
-      {/* Video Section */}
-      <div className="mb-12 sm:mb-8 md:mb-10 lg:mb-12">
-        <video
-          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-auto object-cover"
-        />
-      </div>
+      
 
       <Footer />
     </>
