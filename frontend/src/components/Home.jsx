@@ -81,7 +81,7 @@ function Home() {
       </div>
   
 
-   {/* Shop by Category Section - Fixed for mobile */}
+   {/* Shop by Category Section - Fixed mobile display */}
 <div ref={categoryRef} className="w-full">
   {[
     { 
@@ -102,29 +102,19 @@ function Home() {
   ].map(({ src, title, description }, idx) => (
     <div 
       key={idx} 
-      className="relative w-full h-screen flex items-center justify-center overflow-hidden"
+      className="relative w-full h-[75vh] md:h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Updated image container */}
-      <div className="absolute inset-0 w-full h-full">
+      {/* Image container with responsive behavior */}
+      <div className="absolute inset-0 flex justify-center">
         <img
           src={src}
           alt={title}
-          className="w-full h-full object-cover min-w-full min-h-full"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            minWidth: '100%',
-            minHeight: '100%',
-            width: 'auto',
-            height: 'auto'
-          }}
+          className="h-full w-auto md:w-full md:h-auto md:object-cover"
         />
       </div>
       <div className="absolute inset-0 bg-black/30"></div>
       <div className="relative z-10 text-center px-4 pb-10 max-w-2xl mx-auto">
-        {/* Rest of your content remains the same */}
+        {/* Content remains the same */}
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
