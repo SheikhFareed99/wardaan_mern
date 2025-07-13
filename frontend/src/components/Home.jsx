@@ -68,18 +68,17 @@ function Home() {
       <DraggableWhatsApp />
 
  {/* Video Section */}
- <div className="">
-        <video
-          src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-auto object-cover"
-        />
-      </div>
-  
+ <div className="relative w-full aspect-video overflow-hidden">
+  <video
+    src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+    preload="auto"
+    className="absolute top-0 left-0 w-full h-full object-cover"
+  />
+</div>
 
       {/* Shop by Category Section - Updated for full viewport height */}
       <div ref={categoryRef} className="w-full">
@@ -100,10 +99,11 @@ function Home() {
       description: "Create your own style with our premium unstitched fabrics"
     }
   ].map(({ src, title, description }, idx) => (
-    <div 
-      key={idx} 
-      className="relative w-full min-h-[75vh] md:min-h-[90vh] lg:min-h-screen flex items-center justify-center overflow-hidden"
-    >
+<div 
+  key={idx} 
+  className="relative w-full aspect-video flex items-center justify-center overflow-hidden"
+>
+
       <img
         src={src}
         alt={title}
