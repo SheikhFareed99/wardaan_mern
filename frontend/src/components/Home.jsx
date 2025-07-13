@@ -67,8 +67,8 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
- {/* Video Section */}
- <div className="">
+      {/* Hero Section */}
+      <div className="">
         <video
           src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
           autoPlay
@@ -79,12 +79,13 @@ function Home() {
           className="w-full h-auto object-cover"
         />
       </div>
-  
+      
 
       {/* Shop by Category Section - Updated for full viewport height */}
-    {/* Shop by Category Section - Updated with lower text and transparent button */}
-<div ref={categoryRef} className="w-full">
-{[
+      <div ref={categoryRef} className="w-full">
+
+
+      {[
   { 
     src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435544/IMG_8101_nxywzv.jpg", 
     title: "kameez-shalwar",
@@ -147,7 +148,8 @@ function Home() {
   </div>
 ))}
 
-</div>
+      </div>
+
       {/* All Products Section */}
       <div className="container mx-auto px-1 py-6 min-h-screen">
         <motion.h1
@@ -289,7 +291,7 @@ function Home() {
         )}
       </div>
 
-      
+      {/* Video Section */}
 
       <Footer />
     </>
