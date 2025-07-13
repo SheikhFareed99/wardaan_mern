@@ -102,7 +102,7 @@ function Home() {
   ].map(({ src, title, description }, idx) => (
     <div 
       key={idx} 
-      className="relative w-full h-[90vh] md:h-screen flex items-center justify-center overflow-hidden"
+      className="relative w-full  md:h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Image container with responsive behavior */}
       <div className="absolute inset-0 flex justify-center">
