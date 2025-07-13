@@ -67,8 +67,8 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
-      {/* Hero Section */}
-      <div className="">
+ {/* Video Section */}
+ <div className="">
         <video
           src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
           autoPlay
@@ -79,76 +79,71 @@ function Home() {
           className="w-full h-auto object-cover"
         />
       </div>
-      
+  
 
       {/* Shop by Category Section - Updated for full viewport height */}
       <div ref={categoryRef} className="w-full">
-
-
-      {[
-  { 
-    src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435544/IMG_8101_nxywzv.jpg", 
-    title: "kameez-shalwar",
-    description: "Explore our exquisite collection of traditional kameez shalwar sets"
-  },
-  { 
-    src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435545/IMG_8223_eezrpv.png", 
-    title: "chappal",
-    description: "Handcrafted footwear that combines comfort and tradition"
-  },
-  { 
-    src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
-    title: "Vardaans-Unstitched",
-    description: "Create your own style with our premium unstitched fabrics"
-  }
-].map(({ src, title, description }, idx) => (
-  <div 
-    key={idx} 
-    className="relative w-full aspect-video flex items-end justify-center overflow-hidden"
-  >
-    <img
-      src={src}
-      alt={title}
-      className="absolute w-full h-full object-cover object-center brightness-90"
-    />
-    <div className="absolute inset-0 bg-black/30"></div>
-    
-    <div className="relative z-10 text-center px-4 pb-10 max-w-2xl mx-auto">
-      <motion.h2 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-2 capitalize"
-      >
-        {title}
-      </motion.h2>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        viewport={{ once: true }}
-        className="text-sm sm:text-base text-white mb-4"
-      >
-        {description}
-      </motion.p>
-
-      <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        viewport={{ once: true }}
-        onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
-        className="px-6 py-2 border border-white text-white font-medium rounded-full backdrop-blur-sm hover:bg-white/10 transition duration-300 text-sm"
-      >
-        Shop Now
-      </motion.button>
-    </div>
-  </div>
-))}
-
+  {[
+    { 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752434364/IMG_8101_e86kmd_c_fill_w_1920_h_1080_ar_16_9_g_auto_eqg7p0.jpg", 
+      title: "kameez-shalwar",
+      description: "Explore our exquisite collection of traditional kameez shalwar sets"
+    },
+    { 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752434368/IMG_8223_rw6t3c_c_pad_b_gen_fill_w_1920_h_1080_ar_16_9_1_dzjvlc.png", 
+      title: "chappal",
+      description: "Handcrafted footwear that combines comfort and tradition"
+    },
+    { 
+      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
+      title: "Vardaans-Unstitched",
+      description: "Create your own style with our premium unstitched fabrics"
+    }
+  ].map(({ src, title, description }, idx) => (
+    <div 
+      key={idx} 
+      className="relative w-full min-h-[75vh] md:min-h-[90vh] lg:min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      <img
+        src={src}
+        alt={title}
+        className="absolute w-full h-full object-cover object-center md:object-center brightness-90"
+      />
+      <div className="absolute inset-0 bg-black/30"></div>
+      <div className="relative z-10 text-center px-4 max-w-2xl mx-auto">
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4 capitalize"
+        >
+          {title}
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-base sm:text-lg md:text-xl text-white mb-6"
+        >
+          {description}
+        </motion.p>
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
+          className="px-6 py-2 sm:px-8 sm:py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-full shadow-lg transition duration-300 text-sm sm:text-base"
+        >
+          Shop Now
+        </motion.button>
       </div>
+    </div>
+  ))}
+</div>
+
 
       {/* All Products Section */}
       <div className="container mx-auto px-1 py-6 min-h-screen">
@@ -291,7 +286,7 @@ function Home() {
         )}
       </div>
 
-      {/* Video Section */}
+      
 
       <Footer />
     </>
@@ -299,3 +294,4 @@ function Home() {
 }
 
 export default Home;
+
