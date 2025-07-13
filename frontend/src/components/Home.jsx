@@ -81,72 +81,76 @@ function Home() {
       </div>
   
 
-   {/* Shop by Category Section - Fixed mobile display */}
-<div ref={categoryRef} className="w-full">
-  {[
-    { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg", 
-      title: "kameez-shalwar",
-      description: "Explore our exquisite collection of traditional kameez shalwar sets"
-    },
-    { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752431722/IMG_8223_rw6t3c.png", 
-      title: "chappal",
-      description: "Handcrafted footwear that combines comfort and tradition"
-    },
-    { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
-      title: "Vardaans-Unstitched",
-      description: "Create your own style with our premium unstitched fabrics"
-    }
-  ].map(({ src, title, description }, idx) => (
-    <div 
-      key={idx} 
-      className="relative w-full  md:h-screen flex items-center justify-center overflow-hidden"
-    >
-      {/* Image container with responsive behavior */}
-      <div className="absolute inset-0 flex justify-center">
-        <img
-          src={src}
-          alt={title}
-          className="h-full w-auto md:w-full md:h-auto md:object-cover"
-        />
-      </div>
-      <div className="absolute inset-0 bg-black/30"></div>
-      <div className="relative z-10 text-center px-4 pb-10 max-w-2xl mx-auto">
-        {/* Content remains the same */}
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-2 capitalize"
-        >
-          {title}
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-sm sm:text-base text-white mb-4"
-        >
-          {description}
-        </motion.p>
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
-          className="px-6 py-2 border border-white text-white font-medium rounded-full backdrop-blur-sm hover:bg-white/10 transition duration-300 text-sm"
-        >
-          Shop Now
-        </motion.button>
-      </div>
-    </div>
-  ))}
+      {/* Shop by Category Section - Updated for full viewport height */}
+      <div ref={categoryRef} className="w-full">
+       
+      
+
+        {[
+          { 
+            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752412619/IMG_8101_e86kmd.jpg", 
+            title: "kameez-shalwar",
+            description: "Explore our exquisite collection of traditional kameez shalwar sets"
+          },
+          { 
+            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752431722/IMG_8223_rw6t3c.png", 
+            title: "chappal",
+            description: "Handcrafted footwear that combines comfort and tradition"
+          },
+          { 
+            src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
+            title: "Vardaans-Unstitched",
+            description: "Create your own style with our premium unstitched fabrics"
+          }
+        ].map(({ src, title, description }, idx) => (
+          <div 
+            key={idx} 
+            className="relative w-full h-screen flex items-center justify-center overflow-hidden"
+          >
+            <img
+              src={src}
+              alt={title}
+              className="absolute inset-0 w-full h-full object-cover object-center brightness-90"
+
+            />
+            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-full px-4 text-center z-10">
+  <motion.h2 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    viewport={{ once: true }}
+    className="text-lg sm:text-xl md:text-2xl font-semibold text-white mb-1 capitalize"
+  >
+    {title}
+  </motion.h2>
+
+  <motion.p
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.2 }}
+    viewport={{ once: true }}
+    className="text-xs sm:text-sm text-white mb-3"
+  >
+    {description}
+  </motion.p>
+
+  <motion.button
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.4 }}
+    viewport={{ once: true }}
+    onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
+    className="px-6 py-2 border border-white text-white font-medium rounded-full backdrop-blur-sm hover:bg-white/10 transition duration-300 text-xs"
+  >
+    Shop Now
+  </motion.button>
 </div>
+
+          </div>
+        ))}
+      </div>
+
       {/* All Products Section */}
       <div className="container mx-auto px-1 py-6 min-h-screen">
         <motion.h1
