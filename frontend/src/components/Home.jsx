@@ -100,7 +100,7 @@ function Home() {
   {[
     {
       desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435544/IMG_8101_nxywzv.jpg",
-      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752485328/IMG_8223_1_gnqoxx.png",
+      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752441769/IMG_8101_1_oej5lg.png",
       title: "kameez-shalwar",
       description: "Explore our exquisite collection of traditional kameez shalwar sets"
     },
