@@ -85,7 +85,7 @@ function Home() {
   {/* Mobile video */}
   <div className="block md:hidden">
     <video
-      src="https://res.cloudinary.com/dswff96z5/video/upload/v1752441768/IMG_0972_ow8a34.mp4"
+      src="https://res.cloudinary.com/dswff96z5/video/upload/v1752485334/IMG_0990_vimyrl.mp4"
       autoPlay
       loop
       muted
