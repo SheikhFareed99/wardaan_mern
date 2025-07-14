@@ -95,40 +95,51 @@ function Home() {
     />
   </div>
 </div>
-
 {/* Category Section */}
 <div ref={categoryRef} className="w-full">
   {[
-    { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752441769/IMG_8101_1_oej5lg.png", 
+    {
+      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435544/IMG_8101_nxywzv.jpg",
+      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752485328/IMG_8223_1_gnqoxx.png",
       title: "kameez-shalwar",
       description: "Explore our exquisite collection of traditional kameez shalwar sets"
     },
-    { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1752431722/IMG_8223_rw6t3c.png", 
+    {
+      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435545/IMG_8223_eezrpv.png",
+      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752485328/IMG_8223_1_gnqoxx.png",
       title: "chappal",
       description: "Handcrafted footwear that combines comfort and tradition"
     },
-    { 
-      src: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg", 
+    {
+      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg",
+      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg ",
       title: "Vardaans-Unstitched",
       description: "Create your own style with our premium unstitched fabrics"
     }
-  ].map(({ src, title, description }, idx) => (
-    <div 
-      key={idx} 
+  ].map(({ desktopImage, mobileImage, title, description }, idx) => (
+    <div
+      key={idx}
       className="relative w-full min-h-[115vh] flex items-end justify-center overflow-hidden"
     >
+      {/* Mobile Image */}
       <img
-        src={src}
-        alt={title}
-        className="absolute inset-0 w-full h-full object-cover object-center brightness-90"
+        src={mobileImage}
+        alt={`${title} mobile`}
+        className="block md:hidden absolute inset-0 w-full h-full object-cover object-center brightness-90"
       />
+
+      {/* Desktop Image */}
+      <img
+        src={desktopImage}
+        alt={`${title} desktop`}
+        className="hidden md:block absolute inset-0 w-full h-full object-cover object-center brightness-90"
+      />
+
       <div className="absolute inset-0 bg-black/30"></div>
 
       {/* Text Box */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-full px-4 text-center z-10">
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -162,7 +173,6 @@ function Home() {
     </div>
   ))}
 </div>
-
 
       {/* All Products Section */}
       <div className="container mx-auto px-1 py-6 min-h-screen">

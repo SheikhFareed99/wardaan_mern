@@ -80,7 +80,7 @@ const ComingSoonPage = () => {
             </a>
           </div>
           <p className="mt-4 text-sm text-amber-600">
-           +92 30345723001
+           +92 3036578904
           </p>
         </div>
 
@@ -91,7 +91,7 @@ const ComingSoonPage = () => {
           transition={{ delay: 1.5 }}
           className="mt-12 text-amber-700 font-serif italic"
         >
-          With love, The Wardaan Team
+          With love, The Vardaan Team
         </motion.p>
       </motion.div>
     </div>
