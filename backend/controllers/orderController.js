@@ -2,6 +2,42 @@ const Order = require('../models/orderModel');
 const Invoice = require('../models/invoiceModel');
 const Product = require('../models/product'); // ✅ Product model
 
+const nodemailer = require("nodemailer");
+
+// reusable transporter
+const transporter = nodemailer.createTransport({
+  service: 'Gmail', // or use 'hotmail', 'yahoo', or a custom SMTP
+  auth: {
+    user: 'thevardaansofficial@gmail.com',        // replace with your email
+    pass: 'agfdpfeqepiehctn',        // use Gmail App Password (not regular password)
+  },
+});
+
+async function sendConfirmationEmail(toEmail, firstName, orderId) {
+  const mailOptions = {
+    from: '"Vardaan Wear" <thevardaansofficial@gmail.com>',
+    to: toEmail,
+    subject: `Vardaan Order Confirmation - Order #${orderId}`,
+    html: `
+      <div style="font-family: sans-serif; color: #333;">
+        <h2>Hi ${firstName},</h2>
+        <p>🎉 Thank you for your order! <br/>
+        Your order <strong>#${orderId}</strong> has been successfully placed.</p>
+        <p>We will process and deliver it in <strong>3–4 working days</strong>.</p>
+        <p>You'll hear from us if there's anything else we need.</p>
+        <br/>
+        <p style="font-size: 14px;">Regards,<br/><strong>Team Wardaan</strong></p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error("Email sending failed:", err);
+  }
+}
+
 exports.updateOrder = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -158,15 +194,22 @@ exports.placeOrder = async (req, res) => {
 
     await invoice.save();
 
-    res.status(201).json({
-      message: 'Order placed and invoice generated',
-      orderId: savedOrder._id,
-    });
+if (address.email) {
+  await sendConfirmationEmail(address.email, address.firstName, savedOrder._id);
+}
+
+res.status(201).json({
+  message: 'Order placed and invoice generated',
+  orderId: savedOrder._id,
+});
 
   } catch (error) {
     console.error('Order Placement Error:', error);
     res.status(500).json({ message: 'Failed to place order', error });
   }
+
+
+  
 };
 
 
