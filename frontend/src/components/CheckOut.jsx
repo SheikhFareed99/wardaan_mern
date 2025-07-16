@@ -33,8 +33,8 @@ function CheckOut() {
 
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
-  const [discountPercent, setDiscountPercent] = useState(0);
-  const [discountError, setDiscountError] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [discountApplied, setDiscountApplied] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,8 +50,8 @@ function CheckOut() {
     0
   );
 
-  const discountAmount = subtotal * (discountPercent / 100);
-  const total = subtotal - discountAmount + formData.shipping;
+  const discountAmount = discount > 0 ? (subtotal * discount / 100) : 0;
+  const total = (subtotal - discountAmount) + formData.shipping;
 
   const isFormValid = () => {
     const { firstName, lastName, address, city, phone } = formData;
@@ -69,23 +69,31 @@ function CheckOut() {
   };
 
   const applyDiscount = async () => {
-    if (!formData.discountCode) return;
+    if (!formData.discountCode) {
+      alert('Please enter a discount code');
+      return;
+    }
 
     try {
-      const res = await fetch(`https://wardaan-mern.onrender.com/api/orders/DiscountCode/${formData.discountCode}`);
-      const data = await res.json();
-
-      if (res.ok && data.amount) {
-        setDiscountPercent(data.amount);
-        setDiscountError('');
-      } else {
-        setDiscountPercent(0);
-        setDiscountError('Invalid or expired discount code.');
+      const response = await fetch(`https://wardaan-mern.onrender.com/api/orders/DiscountCode/${formData.discountCode}`);
+      if (!response.ok) {
+        throw new Error('Invalid discount code');
       }
-    } catch (err) {
-      setDiscountPercent(0);
-      setDiscountError('Error applying discount.');
+      const data = await response.json();
+      setDiscount(data.amount);
+      setDiscountApplied(true);
+      alert(`Discount of ${data.amount}% applied successfully!`);
+    } catch (error) {
+      alert(error.message);
+      setDiscount(0);
+      setDiscountApplied(false);
     }
+  };
+
+  const removeDiscount = () => {
+    setDiscount(0);
+    setDiscountApplied(false);
+    setFormData(prev => ({...prev, discountCode: ''}));
   };
 
   const handleSubmit = async () => {
@@ -108,7 +116,6 @@ function CheckOut() {
             style: item.category !== 'chappal' ? item.style : undefined,
           })),
           shipping: formData.shipping,
-          discountPercent: discountPercent,  // Optional: send this to backend
           address: {
             firstName: formData.firstName,
             lastName: formData.lastName,
@@ -120,6 +127,8 @@ function CheckOut() {
             country: formData.country,
             postalCode: formData.postalCode,
           },
+          discountCode: discountApplied ? formData.discountCode : undefined,
+          discountAmount: discountAmount,
           totalAmount: total,
         }),
       });
@@ -197,26 +206,37 @@ function CheckOut() {
                   </p>
                   <p className="text-xs text-gray-400">Arrives by: {getDeliveryDate()}</p>
                   <p className="text-sm font-medium mt-1">Qty: {item.quantity}</p>
+
                   <div className="mt-2 space-y-1 text-sm">
                     {item.discount > 0 ? (
                       <>
                         <p>
-                          <span className="line-through text-gray-500">Rs {item.price.toLocaleString()}</span>{' '}
-                          <span className="text-red-600 font-semibold">Rs {(item.price * (1 - item.discount / 100)).toLocaleString()}</span>
+                          <span className="line-through text-gray-500">
+                            Rs {item.price.toLocaleString()}
+                          </span>{" "}
+                          <span className="text-red-600 font-semibold">
+                            Rs {(item.price * (1 - item.discount / 100)).toLocaleString()}
+                          </span>
                         </p>
-                        <span className="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded">{item.discount}% OFF</span>
+                        <span className="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded">
+                          {item.discount}% OFF
+                        </span>
                         <p className="text-xs text-gray-700 font-medium">
                           Total: Rs {(item.price * (1 - item.discount / 100) * item.quantity).toLocaleString()}
                         </p>
                       </>
                     ) : (
-                      <p className="font-medium text-black">Rs {(item.price * item.quantity).toLocaleString()}</p>
+                      <p className="font-medium text-black">
+                        Rs {(item.price * item.quantity).toLocaleString()}
+                      </p>
                     )}
                   </div>
                 </div>
 
                 <button
-                  onClick={() => dispatch(bagActions.removeEntireItemFromBag({ bagid: item.bagid }))}
+                  onClick={() =>
+                    dispatch(bagActions.removeEntireItemFromBag({ bagid: item.bagid }))
+                  }
                   className="text-red-500 text-lg font-bold"
                 >
                   ×
@@ -225,28 +245,35 @@ function CheckOut() {
             ))}
 
             {/* Discount Code */}
-            <div>
-              <h3 className="font-medium mb-2">Apply Discount Code</h3>
-              <div className="flex gap-2 mb-2">
+            <div className="border-t pt-4">
+              <div className="flex items-center gap-2 mb-2">
                 <input
+                  type="text"
                   name="discountCode"
                   value={formData.discountCode}
                   onChange={handleChange}
-                  placeholder="Enter discount code"
+                  placeholder="Discount code"
                   className="flex-1 p-3 border rounded-lg"
+                  disabled={discountApplied}
                 />
-                <button
-                  onClick={applyDiscount}
-                  className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg"
-                >
-                  Apply
-                </button>
+                {!discountApplied ? (
+                  <button
+                    onClick={applyDiscount}
+                    className="bg-black text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-gray-800 transition"
+                  >
+                    Apply
+                  </button>
+                ) : (
+                  <button
+                    onClick={removeDiscount}
+                    className="bg-red-500 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-red-600 transition"
+                  >
+                    Remove
+                  </button>
+                )}
               </div>
-              {discountPercent > 0 && (
-                <p className="text-green-600 text-sm">Discount applied: {discountPercent}%</p>
-              )}
-              {discountError && (
-                <p className="text-red-500 text-sm">{discountError}</p>
+              {discountApplied && (
+                <p className="text-green-600 text-sm">Discount of {discount}% applied successfully!</p>
               )}
             </div>
 
@@ -256,9 +283,9 @@ function CheckOut() {
                 <span>Subtotal</span>
                 <span>Rs {subtotal.toFixed(2)}</span>
               </div>
-              {discountPercent > 0 && (
+              {discount > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Discount ({discountPercent}%)</span>
+                  <span>Discount ({discount}%)</span>
                   <span>- Rs {discountAmount.toFixed(2)}</span>
                 </div>
               )}
