@@ -82,7 +82,7 @@ function CheckOut() {
       const data = await response.json();
       setDiscount(data.amount);
       setDiscountApplied(true);
-      alert(`Discount of ${data.amount}% applied successfully!`);
+  
     } catch (error) {
       alert(error.message);
       setDiscount(0);
