@@ -5,12 +5,21 @@ const { protectAdmin } = require("../middleware/authMiddleware");
 
 const Order = require("../models/orderModel");
 
+router.get('/DiscountCode/:code',orderController.DiscountCode);
+
+router.post('/DiscountCode',orderController.InsertCode);
+
+router.delete('/DiscountCode',orderController.DeleteCode);
+
+router.get('/AllDiscountedCodes',orderController.getDiscountedCodes);
+
 router.get('/orderid/:status', orderController.orderstatus);
 
 router.get("/", protectAdmin,orderController.GetselectedOrders); 
 
 
 router.post('/', orderController.placeOrder);
+
 
 
 

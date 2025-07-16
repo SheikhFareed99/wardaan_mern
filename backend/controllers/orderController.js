@@ -1,7 +1,7 @@
 const Order = require('../models/orderModel');
 const Invoice = require('../models/invoiceModel');
-const Product = require('../models/product'); // ✅ Product model
-
+const Product = require('../models/product');
+const Discount=require('../models/DiscountCode')
 const nodemailer = require("nodemailer");
 
 // reusable transporter
@@ -235,3 +235,53 @@ exports.orderstatus = async (req, res) => {
   }
 };
 
+
+exports.DiscountCode = async (req, res) => {
+  const disCode = req.params.code;
+  try {
+    const result = await Discount.findOne({ code: disCode });
+    if (!result) {
+      return res.status(404).json({ message: "Discount code not found" });
+    }
+    return res.status(200).json({ amount: result.Limit });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// 2. Insert new discount code
+exports.InsertCode = async (req, res) => {
+  const { DisCode, amount } = req.body;
+
+  try {
+    const resp = await Discount.create({ code: DisCode, Limit: amount }); 
+    res.status(200).json({ message: "Code is inserted" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// 3. Get all discount codes
+exports.getDiscountedCodes = async (req, res) => {
+  try {
+    const resp = await Discount.find({});
+    res.status(200).json({ codes: resp });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// 4. Delete discount code
+exports.DeleteCode = async (req, res) => {
+  const { DisCode } = req.body; 
+
+  try {
+    const resp = await Discount.deleteOne({ code: DisCode });
+    if (resp.deletedCount === 0) {
+      return res.status(404).json({ message: "Discount code not found" });
+    }
+    res.status(200).json({ message: "Code is deleted" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};

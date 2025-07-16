@@ -61,16 +61,16 @@ export default function Header() {
           >
             Shoes
           </button>
-          <hr className="border-gray-600" />
+          {/* <hr className="border-gray-600" />
           <button
             onClick={() => goToCategory("Wardaan-Special")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Vardaan Special
-          </button>
-          <hr className="border-gray-600" />
+          </button> */}
+          <hr className="border-gray-600"/>
           <button
-            onClick={() => goToCategory("Wardaan-Unstitched")}
+            onClick={() => goToCategory("Vardaan-Unstitched")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Vardaan Unstitched

@@ -29,6 +29,13 @@ function Products() {
         } else if (category === "Discount") {
           apiCategory = "discounted";
         }
+        else if (category === "chappal")
+        {
+          apiCategory = "chappal";
+        }
+        else{
+          apiCategory = "unstitched";
+        }
   
         const endpoint = `https://wardaan-mern.onrender.com/api/products/${apiCategory}`;
         const res = await axios.get(endpoint);
@@ -46,7 +53,7 @@ function Products() {
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
-      navigate(`/ProductDescrition/${product.name}`, { state: { product } });
+      navigate(`/ProductDescrition/${product.name}`, { state: { product, category} });
     }
   };
 

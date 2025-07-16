@@ -15,6 +15,7 @@ function ProductDescription() {
   const dispatch = useDispatch();
   const location = useLocation();
   const product = location.state?.product;
+  const category=location.state?.category;
   const navigate = useNavigate();
 
   // State management
@@ -201,7 +202,7 @@ function ProductDescription() {
             </div>
 
             {/* Style Options - Chip Style */}
-            {product.category === "kameez shalwar" && (
+            {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched"&& (
               <div className="mb-8">
                 <h3 className="text-sm font-medium text-gray-500 mb-3">SELECT STYLE</h3>
                 <div className="flex flex-wrap gap-2">
@@ -225,6 +226,7 @@ function ProductDescription() {
             )}
             
             {/* Size Selection - Modern Toggle */}
+            {category!=="Vardaans-Unstitched"&&(
             <div className="mb-8">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-sm font-medium text-gray-500">SELECT SIZE</h3>
@@ -262,6 +264,8 @@ function ProductDescription() {
                 ))}
               </div>
             </div>
+          )}
+          { product.category==="kameez shalwar" && category!=="Vardaans-Unstitched"&&(
             <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 text-center">
   <p className="text-amber-700 font-medium">
     For custom-sized shalwar kameez, please contact us via WhatsApp.
@@ -270,7 +274,7 @@ function ProductDescription() {
     We'll be happy to create a perfect fit just for you.
   </p>
 </div>
-            
+          )}     
             {/* Action Buttons - Modern Gradient */}
             <div className="flex flex-col gap-3 mb-8">
               <motion.button 
