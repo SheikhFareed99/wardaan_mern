@@ -9,6 +9,10 @@ function OrdersManagement() {
   const [filter, setFilter] = useState("all");
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [discountCodes, setDiscountCodes] = useState([]);
+  const [newCode, setNewCode] = useState('');
+  const [newAmount, setNewAmount] = useState('');
+  const [showDiscountSection, setShowDiscountSection] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -33,7 +37,22 @@ function OrdersManagement() {
     };
 
     fetchOrders();
+    fetchDiscountCodes();
   }, [navigate, filter]);
+
+  const fetchDiscountCodes = async () => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await axios.get('https://wardaan-mern.onrender.com/api/orders/AllDiscountedCodes', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDiscountCodes(response.data.codes);
+    } catch (error) {
+      console.error("Error fetching discount codes:", error);
+    }
+  };
 
   const toggleOrderDetails = (orderId) => {
     setExpandedOrder((prev) => (prev === orderId ? null : orderId));
@@ -69,6 +88,40 @@ function OrdersManagement() {
     }
   };
 
+  const handleAddDiscountCode = async () => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      await axios.post('https://wardaan-mern.onrender.com/api/orders/DiscountCode', 
+        { DisCode: newCode, amount: newAmount },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert('Discount code added successfully');
+      setNewCode('');
+      setNewAmount('');
+      fetchDiscountCodes();
+    } catch (error) {
+      console.error("Error adding discount code:", error);
+      alert(error.response?.data?.message || "Failed to add discount code");
+    }
+  };
+
+  const handleDeleteDiscountCode = async (code) => {
+    try {
+   
+        await axios.delete("https://wardaan-mern.onrender.com/api/orders/DiscountCode", {
+          data: { DisCode: code },
+        });
+        alert("Code deleted");
+        fetchDiscountCodes();
+      } catch (error) {
+        alert("Delete failed: " + error.response?.data?.message || error.message);
+      }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -90,12 +143,106 @@ function OrdersManagement() {
       
       <main className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Orders Management</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              View and manage all customer orders
-            </p>
+          <div className="mb-8 flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Orders Management</h1>
+              <p className="mt-2 text-sm text-gray-600">
+                View and manage all customer orders
+              </p>
+            </div>
+            <button
+              onClick={() => setShowDiscountSection(!showDiscountSection)}
+              className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
+            >
+              {showDiscountSection ? 'Hide Discount Codes' : 'Manage Discount Codes'}
+            </button>
           </div>
+
+          {showDiscountSection && (
+            <div className="bg-white shadow rounded-lg overflow-hidden mb-6">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Discount Codes Management</h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">New Code</label>
+                    <input
+                      type="text"
+                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                      value={newCode}
+                      onChange={(e) => setNewCode(e.target.value)}
+                      placeholder="Enter discount code"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Discount Amount</label>
+                    <input
+                      type="number"
+                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                      value={newAmount}
+                      onChange={(e) => setNewAmount(e.target.value)}
+                      placeholder="Enter discount amount"
+                    />
+                  </div>
+                  <div className="flex items-end">
+                    <button
+                      onClick={handleAddDiscountCode}
+                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                      disabled={!newCode || !newAmount}
+                    >
+                      Add Discount Code
+                    </button>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Discount Code
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Amount
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {discountCodes.length === 0 ? (
+                        <tr>
+                          <td colSpan="3" className="px-6 py-4 text-center text-sm text-gray-500">
+                            No discount codes found
+                          </td>
+                        </tr>
+                      ) : (
+                        discountCodes.map((code) => (
+                          <tr key={code._id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {code.code}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              Rs {code.Limit}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <button
+                                onClick={() => handleDeleteDiscountCode(code.code)}
+                                className="text-red-600 hover:text-red-900"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Filter Buttons */}
           <div className="flex gap-4 mb-6">

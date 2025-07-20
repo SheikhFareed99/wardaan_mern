@@ -70,7 +70,7 @@ export default function Header() {
           </button> */}
           <hr className="border-gray-600"/>
           <button
-            onClick={() => goToCategory("Vardaan-Unstitched")}
+            onClick={() => goToCategory("Vardaans-Unstitched")}
             className="text-left text-gray-100 hover:text-indigo-600 font-medium"
           >
             Vardaan Unstitched
