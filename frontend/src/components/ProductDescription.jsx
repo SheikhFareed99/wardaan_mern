@@ -313,36 +313,15 @@ function ProductDescription() {
 
             {/* Product Details - Accordion */}
             <div className="border-t border-gray-100 pt-6">
-              <button
-                onClick={() => setShowDescription(!showDescription)}
-                className="flex items-center justify-between w-full text-left py-3 group"
-              >
-                <span className="text-lg font-medium text-gray-900 group-hover:text-amber-600">PRODUCT DETAILS</span>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className={`h-6 w-6 text-gray-400 transition-transform ${showDescription ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <AnimatePresence>
-                {showDescription && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <p className="mt-4 text-gray-600 leading-relaxed">
+
+                <span className="text-lg font-bold  text-amber-600 ">PRODUCT DETAILS</span>
+
+            
+  
+                    <p className="mt-4 text-black-600 leading-relaxed font-semibold">
                       {product.description}
                     </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+          
             </div>
           </motion.div>
         </div>
