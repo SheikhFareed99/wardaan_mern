@@ -393,11 +393,12 @@ function ProductDescription() {
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {[
-                        { size: 'S', chest: 20.5, shoulders: 16.5, length: 38.5, sleeves: 24.5, collar: 15, shalwar: 39, pajama: 40 },
-                        { size: 'M', chest: 21.5, shoulders: 17.5, length: 39.5, sleeves: 25, collar: 16, shalwar: 40, pajama: 40 },
-                        { size: 'L', chest: 23, shoulders: 18.5, length: 40.5, sleeves: 25.5, collar: 17, shalwar: 41, pajama: 42 },
-                        { size: 'XL', chest: 24, shoulders: 19.5, length: 41.5, sleeves: 26, collar: 18, shalwar: 42, pajama: 42 },
-                        { size: 'XXL', chest: 25.5, shoulders: 20.5, length: 42, sleeves: 26, collar: 18.5, shalwar: 42, pajama: 43 }
+                        { size: 'XS', chest: 22, shoulders: 17, length: 39.5, sleeves: 23, collar: 14.5, shalwar: 39, pajama: 39 },
+                        { size: 'S', chest: 23, shoulders: 17.5, length: 40.75, sleeves: 23.5, collar: 15, shalwar: 40, pajama: 40 },
+                        { size: 'M', chest: 24, shoulders: 18.5, length: 42.25, sleeves: 24.25, collar: 16, shalwar: 42, pajama: 42 },
+                        { size: 'L', chest: 25, shoulders: 19.5, length: 44, sleeves: 25, collar: 17, shalwar: 44, pajama: 44 },
+                        { size: 'XL', chest: 27, shoulders: 20.5, length: 45.25, sleeves: 25.5, collar: 18, shalwar: 45, pajama: 45 },
+                        { size: 'XXL', chest: 28.5, shoulders: 21.5, length: 46.5, sleeves: 26, collar: 18.5, shalwar: 46, pajama: 46 }
                       ].map((row) => (
                         <tr key={row.size} className="hover:bg-gray-50">
                           <td className="px-4 py-3 font-medium">{row.size}</td>
