@@ -18,8 +18,10 @@ function Home() {
     const fetchdata = async () => {
       try {
         const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`);
+        
         console.log(response.data);
         setProducts(response.data);
+        
       } catch (err) {
         console.error(err);
       } finally {
@@ -126,6 +128,7 @@ function Home() {
         src={mobileImage}
         alt={`${title} mobile`}
         className="block md:hidden absolute inset-0 w-full h-full object-cover object-center brightness-90"
+        loading="lazy"
       />
 
       {/* Desktop Image */}
@@ -133,6 +136,7 @@ function Home() {
         src={desktopImage}
         alt={`${title} desktop`}
         className="hidden md:block absolute inset-0 w-full h-full object-cover object-center brightness-90"
+        loading="lazy"
       />
 
       <div className="absolute inset-0 bg-black/30"></div>
@@ -245,17 +249,22 @@ function Home() {
                     if (product.stock > 0) handleProductClick(product);
                   }}
                 >
+                    { console.log(product.imageUrl[1])}
                   <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
                     <img
                       src={product.imageUrl[0]}
                       alt={`${product.name} default`}
                       className="absolute w-full h-full object-cover transition-transform duration-500"
+                      loading="lazy"
                     />
                     {product.imageUrl[1] && (
+                   
                       <img
+                      
                         src={product.imageUrl[1]}
                         alt={`${product.name} hover`}
                         className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}
+                        loading="lazy"
                       />
                     )}
                   </div>

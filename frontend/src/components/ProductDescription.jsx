@@ -153,6 +153,7 @@ function ProductDescription() {
                       }`}
                     >
                       <img 
+                      loading="lazy"
                         src={img} 
                         alt={`Thumbnail ${index + 1}`}
                         className="w-full h-full object-cover"

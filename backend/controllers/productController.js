@@ -1,4 +1,47 @@
 const Product = require("../models/product");
+const Feedback=require("../models/feedback");
+
+
+
+const addFeedback = async (req, res) => {
+  try {
+    const { name, review, star } = req.body;
+    const feedback = new Feedback({ name, review, star });
+    await feedback.save();
+    res.status(201).json({ message: "Feedback submitted", feedback });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add feedback", details: err.message });
+  }
+};
+
+
+const getAllFeedbacks = async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find();
+    res.status(200).json(feedbacks);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch feedbacks", details: err.message });
+  }
+};
+
+
+const updateFeedbackStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const updated = await Feedback.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ message: "Feedback not found" });
+    }
+    res.status(200).json({ message: "Status updated", feedback: updated });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update status", details: err.message });
+  }
+};
+
 
 const getAllProducts = async (req, res) => {
   const products = await Product.find(req.params.category ? { category: req.params.category } : {});
@@ -106,5 +149,8 @@ module.exports = {
   discountedProducts,
   SpecialProducts,
   unstitchedProducts,
-  getall
+  getall,
+  addFeedback,
+  getAllFeedbacks,
+  updateFeedbackStatus
 };

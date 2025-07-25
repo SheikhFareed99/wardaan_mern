@@ -74,10 +74,32 @@ function ProductManagement() {
     setEditedProduct({ ...product });
   };
 
+  const handleAddProductChange = (e) => {
+    const { name, value } = e.target;
+  
+    if (name === "imageUrl") {
+      // Split by $ and trim each URL
+      setNewProduct((prev) => ({ 
+        ...prev, 
+        [name]: value.split('$').map(v => v.trim()).filter(v => v) 
+      }));
+    } else if (["sizes", "styleOptions"].includes(name)) {
+      setNewProduct((prev) => ({ ...prev, [name]: value.split(",").map(v => v.trim()) }));
+    } else {
+      setNewProduct((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+  
   const handleEditChange = (e) => {
     const { name, value } = e.target;
-
-    if (["sizes", "styleOptions", "imageUrl"].includes(name)) {
+  
+    if (name === "imageUrl") {
+      // Split by $ and trim each URL
+      setEditedProduct((prev) => ({ 
+        ...prev, 
+        [name]: value.split('$').map(v => v.trim()).filter(v => v) 
+      }));
+    } else if (["sizes", "styleOptions"].includes(name)) {
       setEditedProduct((prev) => ({ ...prev, [name]: value.split(",").map(v => v.trim()) }));
     } else {
       setEditedProduct((prev) => ({ ...prev, [name]: value }));
@@ -101,15 +123,6 @@ function ProductManagement() {
     }
   };
 
-  const handleAddProductChange = (e) => {
-    const { name, value } = e.target;
-
-    if (["sizes", "styleOptions", "imageUrl"].includes(name)) {
-      setNewProduct((prev) => ({ ...prev, [name]: value.split(",").map(v => v.trim()) }));
-    } else {
-      setNewProduct((prev) => ({ ...prev, [name]: value }));
-    }
-  };
 
   const handleAddProduct = async () => {
     const token = localStorage.getItem("adminToken");
@@ -411,12 +424,13 @@ function ProductManagement() {
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Image URLs (comma separated)</label>
                   <textarea
-                    name="imageUrl"
-                    value={newProduct.imageUrl.join(", ")}
-                    onChange={handleAddProductChange}
-                    rows={3}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  />
+  name="imageUrl"
+  value={newProduct.imageUrl.join("$")}
+  onChange={handleAddProductChange}
+  rows={3}
+  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+  placeholder="Enter image URLs separated by $"
+/>
                 </div>
               </div>
               <div className="flex justify-end space-x-3 pt-4">
@@ -620,12 +634,13 @@ function ProductManagement() {
     <div className="md:col-span-2">
       <label className="block text-sm font-medium text-gray-700 mb-1">Image URLs (comma separated)</label>
       <textarea
-        name="imageUrl"
-        value={editedProduct.imageUrl?.join(", ") || ''}
-        onChange={handleEditChange}
-        rows={3}
-        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-      />
+  name="imageUrl"
+  value={editedProduct.imageUrl?.join("$") || ''}
+  onChange={handleEditChange}
+  rows={3}
+  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+  placeholder="Enter image URLs separated by $"
+/>
     </div>
   </div>
   <div className="flex justify-end space-x-3 pt-4">

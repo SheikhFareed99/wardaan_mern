@@ -34,6 +34,7 @@ function CheckOut() {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [discount, setDiscount] = useState(0);
+  const [discountcode, setDiscountcode] = useState('');
   const [discountApplied, setDiscountApplied] = useState(false);
 
   const handleChange = (e) => {
@@ -81,6 +82,7 @@ function CheckOut() {
       }
       const data = await response.json();
       setDiscount(data.amount);
+      setDiscountcode(data.code);
       setDiscountApplied(true);
   
     } catch (error) {

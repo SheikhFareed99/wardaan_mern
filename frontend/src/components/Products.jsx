@@ -168,11 +168,13 @@ function Products() {
       src={product.imageUrl[0]}
       alt={`${product.name} default`}
       className="absolute w-full h-full object-cover transition-transform duration-500"
+      loading="lazy"
     />
 
     {/* Hover image */}
     {product.imageUrl[1] && (
       <img
+      loading="lazy"
         src={product.imageUrl[1]}
         alt={`${product.name} hover`}
         className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}

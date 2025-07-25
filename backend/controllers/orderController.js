@@ -244,7 +244,7 @@ exports.DiscountCode = async (req, res) => {
     if (!result) {
       return res.status(404).json({ message: "Discount code not found" });
     }
-    return res.status(200).json({ amount: result.Limit });
+    return res.status(200).json({ amount: result.Limit ,code:result.code});
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
