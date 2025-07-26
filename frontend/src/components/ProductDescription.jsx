@@ -33,6 +33,14 @@ function ProductDescription() {
     return () => clearTimeout(timer);
   }, []);
 
+  function transformCloudinaryUrl(url, width) {
+    const [prefix, suffix] = url.split("/upload/");
+    const transformedUrl = `${prefix}/upload/w_${width},f_auto,q_auto/${suffix}`;
+    console.log("Transformed URL:", transformedUrl); // For debug
+    return transformedUrl;
+  }
+
+  
   const getSelectedProduct = () => ({
     id: product._id,
     category: product.category,
@@ -118,12 +126,13 @@ function ProductDescription() {
               whileHover={{ scale: 1.01 }}
               className="relative aspect-[2.5/4] bg-gray-50 rounded-3xl overflow-hidden shadow-2xl"
             >
-              <img 
-                src={product.imageUrl[selectedImage]} 
-                alt={product.name}
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
+             <img 
+  src={transformCloudinaryUrl(product.imageUrl[selectedImage], 3000)} 
+  alt={product.name}
+  className="absolute inset-0 w-full h-full object-cover"
+  loading="lazy"
+/>
+
               
               {/* Discount Badge */}
               {product.discountPercentage > 0 && (
@@ -152,12 +161,13 @@ function ProductDescription() {
                           : 'border-transparent hover:border-gray-200'
                       }`}
                     >
-                      <img 
-                      loading="lazy"
-                        src={img} 
-                        alt={`Thumbnail ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
+                    <img 
+  loading="lazy"
+  src={transformCloudinaryUrl(img, 500)} 
+  alt={`Thumbnail ${index + 1}`}
+  className="w-full h-full object-cover"
+/>
+
                     </motion.button>
                   ))}
                 </div>
