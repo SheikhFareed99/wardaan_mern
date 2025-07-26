@@ -58,6 +58,12 @@ const getproducts = async (req, res) => {
   res.json(products);
 };
 
+const getselectedproduct = async (req, res) => {
+  const product = await Product.find(req.params.id);
+  res.json(product);
+};
+
+
 // Delete a product
 const deleteProduct = async (req, res) => {
   await Product.findByIdAndDelete(req.params.id);
@@ -152,5 +158,6 @@ module.exports = {
   getall,
   addFeedback,
   getAllFeedbacks,
-  updateFeedbackStatus
+  updateFeedbackStatus,
+  getselectedproduct
 };

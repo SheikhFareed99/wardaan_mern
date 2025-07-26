@@ -53,7 +53,7 @@ function Products() {
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
-      navigate(`/ProductDescrition/${product.name}`, { state: { product, category} });
+      navigate(`/ProductDescrition/${product._id}`, { state: { product, category} });
     }
   };
 

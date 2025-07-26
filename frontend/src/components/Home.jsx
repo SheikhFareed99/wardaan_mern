@@ -32,6 +32,15 @@ function Home() {
     fetchdata();
   }, []);
 
+  const insertWidth = (url, width) => {
+    const uploadIndex = url.indexOf("/upload/");
+    if (uploadIndex === -1) return url;
+    const prefix = url.slice(0, uploadIndex + 8); // includes '/upload/'
+    const suffix = url.slice(uploadIndex + 8);
+    console.log(`${prefix}w_${width},f_auto,q_auto/${suffix}`)
+    return `${prefix}w_${width},f_auto,q_auto/${suffix}`;
+  };
+
   const handleProductClick = (product) => {
     if (product.stock > 0) {
       navigate(`/ProductDescrition/${product.id}`, { state: { product } });
@@ -251,17 +260,27 @@ function Home() {
                 >
                     { console.log(product.imageUrl[1])}
                   <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-                    <img
-                      src={product.imageUrl[0]}
+                   <img
+                      src={insertWidth(product.imageUrl[0], 1000)}
+                      srcSet={`
+                        ${insertWidth(product.imageUrl[0], 500)} 1000w,
+                        ${insertWidth(product.imageUrl[0], 1000)} 1000w,
+                        ${insertWidth(product.imageUrl[0], 1600)} 1000w
+                      `}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       alt={`${product.name} default`}
                       className="absolute w-full h-full object-cover transition-transform duration-500"
                       loading="lazy"
                     />
                     {product.imageUrl[1] && (
-                   
                       <img
-                      
-                        src={product.imageUrl[1]}
+                        src={insertWidth(product.imageUrl[1], 1000)}
+                        srcSet={`
+                          ${insertWidth(product.imageUrl[1], 500)} 1000w,
+                          ${insertWidth(product.imageUrl[1], 1000)} 1000w,
+                          ${insertWidth(product.imageUrl[1], 1600)} 1000w
+                        `}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         alt={`${product.name} hover`}
                         className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}
                         loading="lazy"
