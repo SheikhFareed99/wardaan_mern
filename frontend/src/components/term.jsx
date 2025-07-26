@@ -91,7 +91,7 @@ function Term() {
             
             <div className="flex flex-col sm:flex-row justify-center gap-6">
               <a 
-                href="https://instagram.com/vardaan.official" 
+                href="https://instagram.com/vardaanswear" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-6 py-3 rounded-full hover:from-amber-700 hover:to-amber-800 transition-all duration-300 shadow-md"
@@ -103,7 +103,7 @@ function Term() {
               </a>
               
               <a 
-                href="https://wa.me/923001234567" 
+                href="https://wa.me/923028016744" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md"
