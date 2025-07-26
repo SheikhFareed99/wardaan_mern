@@ -105,17 +105,17 @@ function Home() {
       desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435544/IMG_8101_nxywzv.jpg",
       mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752441769/IMG_8101_1_oej5lg.png",
       title: "kameez-shalwar",
-      description: "Explore our exquisite collection of traditional kameez shalwar sets"
+      description: "Explore our exquisite Rivayat collection of traditional kameez shalwar sets"
     },
     {
       desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435545/IMG_8223_eezrpv.png",
-      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752485328/IMG_8223_1_gnqoxx.png",
+      mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556992/IMG_8113_fmkfip.jpg",
       title: "chappal",
       description: "Handcrafted footwear that combines comfort and tradition"
     },
     {
-      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_1600,f_auto,q_auto/v1750154572/OIP_1_gfgr8r.jpg",
-      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_1600,f_auto,q_auto/v1750154572/OIP_1_gfgr8r.jpg ",
+      desktopImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556680/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug_c_crop_ar_4_3_tfrbfa.webp",
+      mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556626/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug.webp",
       title: "Vardaans-Unstitched",
       description: "Create your own style with our premium unstitched fabrics"
     }
