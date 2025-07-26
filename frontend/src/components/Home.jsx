@@ -83,7 +83,7 @@ function Home() {
 
   <div className="hidden md:block">
     <img
-      src="https://res.cloudinary.com/dxqz169dw/image/upload/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg"
+      src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg"
 
       className="w-full h-auto object-cover"
     />
@@ -92,7 +92,7 @@ function Home() {
 
   <div className="block md:hidden">
     <img
-      src="https://res.cloudinary.com/dxqz169dw/image/upload/v1753550460/home_pic_okqgxk.jpg"
+      src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753550460/home_pic_okqgxk.jpg"
 
       className="w-full h-auto object-cover"
     />
@@ -102,20 +102,20 @@ function Home() {
 <div ref={categoryRef} className="w-full">
   {[
     {
-      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435544/IMG_8101_nxywzv.jpg",
-      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752441769/IMG_8101_1_oej5lg.png",
+      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435544/IMG_8101_nxywzv.jpg",
+      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752441769/IMG_8101_1_oej5lg.png",
       title: "kameez-shalwar",
       description: "Explore our exquisite collection of traditional kameez shalwar sets"
     },
     {
-      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435545/IMG_8223_eezrpv.png",
-      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752485328/IMG_8223_1_gnqoxx.png",
+      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435545/IMG_8223_eezrpv.png",
+      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752485328/IMG_8223_1_gnqoxx.png",
       title: "chappal",
       description: "Handcrafted footwear that combines comfort and tradition"
     },
     {
-      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg",
-      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1750154572/OIP_1_gfgr8r.jpg ",
+      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_1600,f_auto,q_auto/v1750154572/OIP_1_gfgr8r.jpg",
+      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_1600,f_auto,q_auto/v1750154572/OIP_1_gfgr8r.jpg ",
       title: "Vardaans-Unstitched",
       description: "Create your own style with our premium unstitched fabrics"
     }

@@ -16,17 +16,17 @@ import Delete from './components/delete.jsx';
 import Term from './components/term.jsx'
 const router = createBrowserRouter([
   {
-    path: "/home",
+    path: "/",
     element: <Home />
   },
   {
     path: "/terms",
     element: <Term />
   },
-  {
-    path: "/",
-    element: <Delete />
-  },
+  // {
+  //   path: "/",
+  //   element: <Delete />
+  // },
   {
     path: "/OrderTrack",
     element: <OrderTrack />
