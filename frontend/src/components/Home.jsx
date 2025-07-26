@@ -78,30 +78,22 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
- {/* Responsive Header Video */}
+
 <div className="w-full">
-  {/* Desktop video */}
+
   <div className="hidden md:block">
-    <video
-      src="https://res.cloudinary.com/dswff96z5/video/upload/v1752409848/IMG_0972_1_zikpgq.mp4"
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
+    <img
+      src="https://res.cloudinary.com/dxqz169dw/image/upload/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg"
+
       className="w-full h-auto object-cover"
     />
   </div>
 
-  {/* Mobile video */}
+
   <div className="block md:hidden">
-    <video
-      src="https://res.cloudinary.com/dswff96z5/video/upload/v1752485334/IMG_0990_vimyrl.mp4"
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
+    <img
+      src="https://res.cloudinary.com/dxqz169dw/image/upload/v1753550460/home_pic_okqgxk.jpg"
+
       className="w-full h-auto object-cover"
     />
   </div>

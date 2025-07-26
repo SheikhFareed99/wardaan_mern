@@ -13,10 +13,15 @@ import FinanceManagment from './components/FinanceManagment.jsx';
 import OrderTrack from './components/OrderTrack.jsx'
 import OrderConfirmation from './components/OrderConfirmation.jsx';
 import Delete from './components/delete.jsx';
+import Term from './components/term.jsx'
 const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home />
+  },
+  {
+    path: "/term",
+    element: <Term />
   },
   {
     path: "/",

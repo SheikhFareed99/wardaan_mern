@@ -127,7 +127,7 @@ function ProductDescription() {
               className="relative aspect-[2.5/4] bg-gray-50 rounded-3xl overflow-hidden shadow-2xl"
             >
              <img 
-  src={transformCloudinaryUrl(product.imageUrl[selectedImage], 2400)} 
+  src={transformCloudinaryUrl(product.imageUrl[selectedImage], 1800)} 
   alt={product.name}
   className="absolute inset-0 w-full h-full object-cover"
   loading="lazy"
