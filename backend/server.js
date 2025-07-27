@@ -44,16 +44,15 @@ app.get('/feed/products.csv', async (req, res) => {
       const title = p.name.replace(/,/g, " ");
       const description = p.description.replace(/,/g, " ");
       const availability = p.stock > 0 ? "in stock" : "out of stock";
-      const condition = "new";
       const price = Number(p.price);
       const discountPercentage = Number(p.discountPercentage) || 0;
-      const discountedPrice = (price - (price * discountPercentage / 100)).toFixed(2);
+      const discountedPrice = (price - (price * discountPercentage / 100)).toFixed(0);
       const priceStr = `${price} PKR`;
       const discountedStr = `${discountedPrice} PKR`;
-      const link = `https://vardaan.pk/product/${id}`;
+      const link = `https://vardaanswear.pk/ProductDescrition/${id}`;
       const image = p.imageUrl[0] || "";
 
-      csv += `${id},${title},${description},${availability},${condition},${priceStr},${discountPercentage},${discountedStr},${link},${image}\n`;
+      csv += `${id},${title},${description},${availability},${priceStr},${discountPercentage},${discountedStr},${link},${image}\n`;
     });
 
     res.setHeader('Content-Type', 'text/csv');
