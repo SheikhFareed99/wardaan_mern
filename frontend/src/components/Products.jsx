@@ -243,7 +243,7 @@ function Products() {
                   </div>: <div className="flex items-center gap-2 mb-3">
                     {product.discountPercentage ? (
                       <>
-                        <span className="text-xs text-gray-400 line-through">Rs.{(Math.round(product.price).toLocaleString())}</span>
+                        <span className="text-xs text-gray-400 line-through">Rs.{(Math.round(product.price)).toLocaleString()}</span>
                         <span className="text-sm font-bold text-red-600">
                           Rs.{Math.round(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
                         </span>
