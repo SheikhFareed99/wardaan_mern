@@ -28,7 +28,7 @@ function CheckOut() {
     postalCode: '',
     phone: '',
     discountCode: '',
-    shipping: 195.0,
+    shipping: 0,
   });
 
   const [loading, setLoading] = useState(false);
@@ -217,19 +217,19 @@ function CheckOut() {
                             Rs {item.price.toLocaleString()}
                           </span>{" "}
                           <span className="text-red-600 font-semibold">
-                            Rs {(item.price * (1 - item.discount / 100)).toLocaleString()}
+                            Rs {(Math.round(item.price * (1 - item.discount / 100))).toLocaleString()}
                           </span>
                         </p>
                         <span className="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded">
                           {item.discount}% OFF
                         </span>
                         <p className="text-xs text-gray-700 font-medium">
-                          Total: Rs {(item.price * (1 - item.discount / 100) * item.quantity).toLocaleString()}
+                          Total: Rs {Math.round(item.price * (1 - item.discount / 100) * item.quantity).toLocaleString()}
                         </p>
                       </>
                     ) : (
                       <p className="font-medium text-black">
-                        Rs {(item.price * item.quantity).toLocaleString()}
+                        Rs {Math.round(item.price * item.quantity).toLocaleString()}
                       </p>
                     )}
                   </div>

@@ -51,7 +51,7 @@ function ProductDescription() {
       name: product.name,
       brand: product.brand,
       price: isUnstitchedKameezShalwar 
-        ? product.price - 1200 
+        ? product.price - 1215
         : product.price,
       discount: product.discountPercentage,
       image: product.imageUrl[0],
@@ -88,7 +88,7 @@ function ProductDescription() {
 
   // Delivery date calculation
   const today = new Date();
-  const deliveryRange = `${new Date(today.setDate(today.getDate() + 3)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })} - ${new Date(today.setDate(today.getDate() + 2)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`;
+  const deliveryRange = `${new Date(today.setDate(today.getDate() + 5)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })} - ${new Date(today.setDate(today.getDate() + 3)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`;
 
   if (isLoading) {
     return (
@@ -205,21 +205,21 @@ function ProductDescription() {
               {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched"?
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-3xl font-extrabold text-gray-900">
-                  Rs.{(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
+                  Rs.{Math.round(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
                 </span>
                 {product.discountPercentage > 0 && (
                   <span className="text-lg text-gray-500 line-through">
-                    Rs.{product.price.toLocaleString()}
+                    Rs.{Math.round(product.price.toLocaleString())}
                   </span>
                 )}
               </div>:
                             <div className="flex items-baseline gap-3 mb-6">
                             <span className="text-3xl font-extrabold text-gray-900">
-                              Rs.{((product.price-1200) * (1 - product.discountPercentage / 100)).toLocaleString()}
+                              Rs.{Math.round((product.price-1215) * (1 - product.discountPercentage / 100)).toLocaleString()}
                             </span>
                             {product.discountPercentage > 0 && (
                               <span className="text-lg text-gray-500 line-through">
-                                Rs.{(product.price-1200).toLocaleString()}
+                                Rs.{Math.round(product.price-1215).toLocaleString()}
                               </span>
                             )}
                           </div>
