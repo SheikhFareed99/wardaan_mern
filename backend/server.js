@@ -37,7 +37,7 @@ app.get('/feed/products.csv', async (req, res) => {
   try {
     const products = await Product.find({});
 
-    let csv = `id,title,description,availability,condition,price,discount_percentage,discounted_price,link,image_link\n`;
+    let csv = `id,title,description,availability,price,discount_percentage,discounted_price,link,image_link\n`;
 
     products.forEach((p) => {
       const id = p._id.toString();
