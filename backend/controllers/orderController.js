@@ -23,10 +23,10 @@ async function sendConfirmationEmail(toEmail, firstName, orderId) {
         <h2>Hi ${firstName},</h2>
         <p>🎉 Thank you for your order! <br/>
         Your order <strong>#${orderId}</strong> has been successfully placed.</p>
-        <p>We will process and deliver it in <strong>3–4 working days</strong>.</p>
+        <p>We will process and deliver it in <strong>3–5 working days</strong>.</p>
         <p>You'll hear from us if there's anything else we need.</p>
         <br/>
-        <p style="font-size: 14px;">Regards,<br/><strong>Team Wardaan</strong></p>
+        <p style="font-size: 14px;">Regards,<br/><strong>Team Vardaan</strong></p>
       </div>
     `,
   };
