@@ -306,7 +306,7 @@ function Home() {
                         </span>
                       </>
                     ) : (
-                      <span className="text-sm font-bold text-gray-800">Rs.{(Math.round(product.price).toLocaleString())}</span>
+                      <span className="text-sm font-bold text-gray-800">Rs.{(Math.round(product.price)).toLocaleString()}</span>
                     )}
                   </div>
                   <motion.button
