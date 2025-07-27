@@ -12,7 +12,7 @@ function ProductDescription() {
   const { id } = useParams();
   const category=localStorage.getItem("category")
   const [product, setProduct] = useState(null);
-
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
