@@ -32,6 +32,24 @@ function Home() {
     fetchdata();
   }, []);
 
+  // Add this to your component if you want to ensure smooth scrolling in all browsers
+useEffect(() => {
+  const handleAnchorClick = (e) => {
+    const target = e.target.closest('a[href^="#"]');
+    if (target) {
+      e.preventDefault();
+      const id = target.getAttribute('href').slice(1);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  document.addEventListener('click', handleAnchorClick);
+  return () => document.removeEventListener('click', handleAnchorClick);
+}, []);
+
   const insertWidth = (url, width) => {
     const uploadIndex = url.indexOf("/upload/");
     if (uploadIndex === -1) return url;
@@ -87,11 +105,19 @@ function Home() {
       className="w-full h-auto object-cover"
       alt="Traditional clothing"
     />
-    <div className="absolute inset-0 flex items-end justify-center pb-100">
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 tracking-wider" 
-          style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
+    <div className="absolute inset-0 flex flex-col items-center justify-end pb-100">
+      <h1
+        className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 tracking-wider mb-4"
+        style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
+      >
         A legacy woven in tradition
       </h1>
+      <a
+        href="#products"
+        className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition text-sm md:text-base"
+      >
+        Explore More
+      </a>
     </div>
   </div>
 
@@ -102,14 +128,23 @@ function Home() {
       className="w-full h-auto object-cover"
       alt="Traditional clothing"
     />
-    <div className="absolute inset-0 flex items-end justify-center pb-60">
-      <h1 className="text-2xl font-bold text-white text-center px-4 tracking-wide"
-          style={{ textShadow: '2px 2px 6px rgba(0,0,0,0.7)' }}>
+    <div className="absolute inset-0 flex flex-col items-center justify-end pb-60">
+      <h1
+        className="text-2xl font-bold text-white text-center px-4 tracking-wide mb-3"
+        style={{ textShadow: '2px 2px 6px rgba(0,0,0,0.7)' }}
+      >
         A legacy woven in tradition
       </h1>
+      <a
+        href="#products"
+        className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-5 py-2 rounded-full shadow-md transition text-sm"
+      >
+        Explore More
+      </a>
     </div>
   </div>
 </div>
+
 {/* Category Section */}
 <div ref={categoryRef} className="w-full">
   {[
@@ -192,7 +227,7 @@ function Home() {
 </div>
 
       {/* All Products Section */}
-      <div className="container mx-auto px-1 py-6 min-h-screen">
+      <div id="products"  className="container mx-auto px-1 py-6 min-h-screen ">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
