@@ -41,20 +41,37 @@ function ProductDescription() {
   }
 
   
-  const getSelectedProduct = () => ({
-    id: product._id,
-    category: product.category,
-    name: product.name,
-    brand: product.brand,
-    price: product.price,
-    discount: product.discountPercentage,
-    image: product.imageUrl[0],
-    selectedSize: product.sizes[selectedSize],
-    ...(product.category === "kameez shalwar" && { 
-      style: product.styleOptions[selectedStyle] 
-    }),
-    bagid: bagItems.length,
-  });
+  const getSelectedProduct = () => {
+    const isUnstitchedKameezShalwar = 
+      product.category === "kameez shalwar" && category === "Vardaans-Unstitched";
+  
+    const productObject = {
+      id: product._id,
+      category: product.category,
+      name: product.name,
+      brand: product.brand,
+      price: isUnstitchedKameezShalwar 
+        ? product.price - 1200 
+        : product.price,
+      discount: product.discountPercentage,
+      image: product.imageUrl[0],
+      bagid: bagItems.length,
+    };
+  
+   
+    if (!isUnstitchedKameezShalwar) {
+      productObject.selectedSize = product.sizes[selectedSize];
+      productObject.style = product.styleOptions[selectedStyle];
+    }
+  
+    else {
+      productObject.selectedSize ="nill"
+      productObject.style = "nill"
+    }
+  
+    return productObject;
+  };
+  
 
   const handleAddToCart = () => {
     const selectedProduct = getSelectedProduct();
@@ -185,7 +202,7 @@ function ProductDescription() {
             <div className="mb-6">
               <span className="text-sm font-medium text-amber-600">{product.brand}</span>
               <h1 className="text-3xl font-bold text-gray-900 mt-1 mb-3">{product.name}</h1>
-              
+              {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched"?
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-3xl font-extrabold text-gray-900">
                   Rs.{(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
@@ -195,7 +212,18 @@ function ProductDescription() {
                     Rs.{product.price.toLocaleString()}
                   </span>
                 )}
-              </div>
+              </div>:
+                            <div className="flex items-baseline gap-3 mb-6">
+                            <span className="text-3xl font-extrabold text-gray-900">
+                              Rs.{((product.price-1200) * (1 - product.discountPercentage / 100)).toLocaleString()}
+                            </span>
+                            {product.discountPercentage > 0 && (
+                              <span className="text-lg text-gray-500 line-through">
+                                Rs.{(product.price-1200).toLocaleString()}
+                              </span>
+                            )}
+                          </div>
+}
               
               <div className="flex items-center gap-4 mb-6">
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${

@@ -50,6 +50,15 @@ function Products() {
     fetchData();
   }, [category]);
   
+  const insertWidth = (url, width) => {
+    const uploadIndex = url.indexOf("/upload/");
+    if (uploadIndex === -1) return url;
+    const prefix = url.slice(0, uploadIndex + 8); // includes '/upload/'
+    const suffix = url.slice(uploadIndex + 8);
+    console.log(`${prefix}w_${width},f_auto,q_auto/${suffix}`)
+    return `${prefix}w_${width},f_auto,q_auto/${suffix}`;
+  };
+
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
@@ -165,7 +174,13 @@ function Products() {
   <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
     {/* Base image */}
     <img
-      src={product.imageUrl[0]}
+                      src={insertWidth(product.imageUrl[0], 1000)}
+                      srcSet={`
+                        ${insertWidth(product.imageUrl[0], 500)} 1000w,
+                        ${insertWidth(product.imageUrl[0], 1000)} 1000w,
+                        ${insertWidth(product.imageUrl[0], 1600)} 1000w
+                      `}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
       alt={`${product.name} default`}
       className="absolute w-full h-full object-cover transition-transform duration-500"
       loading="lazy"
@@ -175,7 +190,13 @@ function Products() {
     {product.imageUrl[1] && (
       <img
       loading="lazy"
-        src={product.imageUrl[1]}
+                        src={insertWidth(product.imageUrl[1], 1000)}
+                        srcSet={`
+                          ${insertWidth(product.imageUrl[1], 500)} 1000w,
+                          ${insertWidth(product.imageUrl[1], 1000)} 1000w,
+                          ${insertWidth(product.imageUrl[1], 1600)} 1000w
+                        `}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         alt={`${product.name} hover`}
         className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}
       />
@@ -206,7 +227,20 @@ function Products() {
                     {product.name}
                   </h3>
                   
-                  <div className="flex items-center gap-2 mb-3">
+                  {/* unstitched */}
+                  {category==="Vardaans-Unstitched"? <div className="flex items-center gap-2 mb-3">
+                    {product.discountPercentage ? (
+                      <>
+                        <span className="text-xs text-gray-400 line-through">Rs.{(product.price-1200).toLocaleString()}</span>
+                        <span className="text-sm font-bold text-red-600">
+                          Rs.{((product.price-1200) * (1 - product.discountPercentage / 100)).toLocaleString()}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-sm font-bold text-gray-800">Rs.{(product.price-1200).toLocaleString()}</span>
+                    )}
+                     {/* stitched */}
+                  </div>: <div className="flex items-center gap-2 mb-3">
                     {product.discountPercentage ? (
                       <>
                         <span className="text-xs text-gray-400 line-through">Rs.{product.price.toLocaleString()}</span>
@@ -217,7 +251,11 @@ function Products() {
                     ) : (
                       <span className="text-sm font-bold text-gray-800">Rs.{product.price.toLocaleString()}</span>
                     )}
-                  </div>
+                  </div> }
+                 
+
+
+                 
                   
                   <motion.button 
                     whileTap={{ scale: product.stock > 0 ? 0.95 : 1 }}
