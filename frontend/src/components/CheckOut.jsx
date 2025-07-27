@@ -283,21 +283,21 @@ function CheckOut() {
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>Rs {subtotal.toFixed(2)}</span>
+                <span>Rs {subtotal.toFixed(0)}</span>
               </div>
               {discount > 0 && (
                 <div className="flex justify-between text-green-600">
                   <span>Discount ({discount}%)</span>
-                  <span>- Rs {discountAmount.toFixed(2)}</span>
+                  <span>- Rs {discountAmount.toFixed(0)}</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>Rs {formData.shipping.toFixed(2)}</span>
+                <span>Rs {formData.shipping.toFixed(0)}</span>
               </div>
               <div className="flex justify-between font-bold text-base border-t pt-2">
                 <span>Total</span>
-                <span>Rs {total.toFixed(2)}</span>
+                <span>Rs {total.toFixed(0)}</span>
               </div>
             </div>
 
