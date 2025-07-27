@@ -55,14 +55,15 @@ function Products() {
     if (uploadIndex === -1) return url;
     const prefix = url.slice(0, uploadIndex + 8); // includes '/upload/'
     const suffix = url.slice(uploadIndex + 8);
-    console.log(`${prefix}w_${width},f_auto,q_auto/${suffix}`)
+
     return `${prefix}w_${width},f_auto,q_auto/${suffix}`;
   };
 
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
-      navigate(`/ProductDescrition/${product._id}`, { state: { product, category} });
+      localStorage.setItem("category",category)
+      navigate(`/ProductDescrition/${product._id}`);
     }
   };
 

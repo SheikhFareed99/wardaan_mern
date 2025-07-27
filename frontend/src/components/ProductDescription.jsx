@@ -3,19 +3,40 @@ import Footer from "./footer";
 import Header from "./header";
 import { useDispatch, useSelector } from 'react-redux';
 import { bagActions } from '../store/bagslice'; 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import axios from 'axios';
+
 function ProductDescription() {
+  const { id } = useParams();
+  const category=localStorage.getItem("category")
+  const [product, setProduct] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
+    console.log(id)
     window.scrollTo(0, 0);
-  }, []);
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/selectedproduct/${id}`);
+        setProduct(response.data);
+       
+     
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    
+    fetchProduct();
+  }, [id]);
 
   const bagItems = useSelector((state) => state.bag.items);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const product = location.state?.product;
-  const category=location.state?.category;
   const navigate = useNavigate();
 
   // State management
@@ -25,22 +46,13 @@ function ProductDescription() {
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Simulate loading
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
 
   function transformCloudinaryUrl(url, width) {
+    if (!url) return '';
     const [prefix, suffix] = url.split("/upload/");
-    const transformedUrl = `${prefix}/upload/w_${width},f_auto,q_auto/${suffix}`;
-    console.log("Transformed URL:", transformedUrl); // For debug
-    return transformedUrl;
+    return `${prefix}/upload/w_${width},f_auto,q_auto/${suffix}`;
   }
 
-  
   const getSelectedProduct = () => {
     const isUnstitchedKameezShalwar = 
       product.category === "kameez shalwar" && category === "Vardaans-Unstitched";
@@ -58,20 +70,16 @@ function ProductDescription() {
       bagid: bagItems.length,
     };
   
-   
     if (!isUnstitchedKameezShalwar) {
       productObject.selectedSize = product.sizes[selectedSize];
       productObject.style = product.styleOptions[selectedStyle];
-    }
-  
-    else {
-      productObject.selectedSize ="nill"
-      productObject.style = "nill"
+    } else {
+      productObject.selectedSize = "nill";
+      productObject.style = "nill";
     }
   
     return productObject;
   };
-  
 
   const handleAddToCart = () => {
     const selectedProduct = getSelectedProduct();
@@ -90,11 +98,10 @@ function ProductDescription() {
   const today = new Date();
   const deliveryRange = `${new Date(today.setDate(today.getDate() + 5)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })} - ${new Date(today.setDate(today.getDate() + 3)).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`;
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen">
         <Header />
-    
         <div className="container mx-auto px-4 py-8 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Image loader */}
@@ -123,6 +130,47 @@ function ProductDescription() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-grow flex items-center justify-center">
+          <div className="text-center p-6 max-w-md">
+            <h2 className="text-2xl font-bold text-red-500 mb-4">Error loading product</h2>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-600"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-grow flex items-center justify-center">
+          <div className="text-center p-6 max-w-md">
+            <h2 className="text-2xl font-bold text-gray-700 mb-4">Product not found</h2>
+            <button 
+              onClick={() => navigate('/')}
+              className="px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-600"
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <>
       <Header />
@@ -133,25 +181,20 @@ function ProductDescription() {
         transition={{ duration: 0.5 }}
         className="container mx-auto px-4 py-8 max-w-7xl"
       >
-        {/* Modern Product Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
-          {/* Trendy Image Gallery */}
+          {/* Image Gallery */}
           <div className="relative">
-            {/* Oversized Main Image with Floating Badges */}
             <motion.div 
               whileHover={{ scale: 1.01 }}
               className="relative aspect-[2.5/4] bg-gray-50 rounded-3xl overflow-hidden shadow-2xl"
             >
-             <img 
-  src={transformCloudinaryUrl(product.imageUrl[selectedImage], 1800)} 
-  alt={product.name}
-  className="absolute inset-0 w-full h-full object-cover"
-  loading="lazy"
-/>
-
+              <img 
+                src={transformCloudinaryUrl(product.imageUrl[selectedImage], 1800)} 
+                alt={product.name}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
               
-              {/* Discount Badge */}
               {product.discountPercentage > 0 && (
                 <motion.div 
                   initial={{ scale: 0 }}
@@ -163,7 +206,6 @@ function ProductDescription() {
                 </motion.div>
               )}
               
-              {/* Floating Thumbnail Carousel */}
               <div className="absolute bottom-6 left-0 right-0 flex justify-center">
                 <div className="flex gap-2 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
                   {product.imageUrl.map((img, index) => (
@@ -178,13 +220,12 @@ function ProductDescription() {
                           : 'border-transparent hover:border-gray-200'
                       }`}
                     >
-                    <img 
-  loading="lazy"
-  src={transformCloudinaryUrl(img, 500)} 
-  alt={`Thumbnail ${index + 1}`}
-  className="w-full h-full object-cover"
-/>
-
+                      <img 
+                        loading="lazy"
+                        src={transformCloudinaryUrl(img, 500)} 
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
                     </motion.button>
                   ))}
                 </div>
@@ -192,7 +233,7 @@ function ProductDescription() {
             </motion.div>
           </div>
           
-          {/* Product Details - Modern Card Style */}
+          {/* Product Details */}
           <motion.div 
             initial={{ y: 20 }}
             animate={{ y: 0 }}
@@ -202,35 +243,35 @@ function ProductDescription() {
             <div className="mb-6">
               <span className="text-sm font-medium text-amber-600">{product.brand}</span>
               <h1 className="text-3xl font-bold text-gray-900 mt-1 mb-3">{product.name}</h1>
-              {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched"?
-              <div className="flex items-baseline gap-3 mb-6">
-                <span className="text-3xl font-extrabold text-gray-900">
-                  Rs.{Math.round(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
-                </span>
-                {product.discountPercentage > 0 && (
-                  <span className="text-lg text-gray-500 line-through">
-                    Rs.{(Math.round(product.price).toLocaleString())}
+              {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched" ? (
+                <div className="flex items-baseline gap-3 mb-6">
+                  <span className="text-3xl font-extrabold text-gray-900">
+                    Rs.{Math.round(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
                   </span>
-                )}
-              </div>:
-                            <div className="flex items-baseline gap-3 mb-6">
-                            <span className="text-3xl font-extrabold text-gray-900">
-                              Rs.{Math.round((product.price-1215) * (1 - product.discountPercentage / 100)).toLocaleString()}
-                            </span>
-                            {product.discountPercentage > 0 && (
-                              <span className="text-lg text-gray-500 line-through">
-                                Rs.{(Math.round(product.price-1215)).toLocaleString()}
-                              </span>
-                            )}
-                          </div>
-}
+                  {product.discountPercentage > 0 && (
+                    <span className="text-lg text-gray-500 line-through">
+                      Rs.{(Math.round(product.price).toLocaleString())}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-baseline gap-3 mb-6">
+                  <span className="text-3xl font-extrabold text-gray-900">
+                    Rs.{Math.round((product.price-1215) * (1 - product.discountPercentage / 100)).toLocaleString()}
+                  </span>
+                  {product.discountPercentage > 0 && (
+                    <span className="text-lg text-gray-500 line-through">
+                      Rs.{(Math.round(product.price-1215)).toLocaleString()}
+                    </span>
+                  )}
+                </div>
+              )}
               
               <div className="flex items-center gap-4 mb-6">
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                   product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                 }`}>
-                {product.stock > 0 ? product.stock + ' In Stock' : 'Out of Stock'}
-
+                  {product.stock > 0 ? product.stock + ' In Stock' : 'Out of Stock'}
                 </span>
                 <div className="flex items-center gap-1 text-gray-600">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -241,8 +282,8 @@ function ProductDescription() {
               </div>
             </div>
 
-            {/* Style Options - Chip Style */}
-            {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched"&& (
+            {/* Style Options */}
+            {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched" && (
               <div className="mb-8">
                 <h3 className="text-sm font-medium text-gray-500 mb-3">SELECT STYLE</h3>
                 <div className="flex flex-wrap gap-2">
@@ -265,57 +306,55 @@ function ProductDescription() {
               </div>
             )}
             
-            {/* Size Selection - Modern Toggle */}
-            {category!=="Vardaans-Unstitched"&&(
-            <div className="mb-8">
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-sm font-medium text-gray-500">SELECT SIZE</h3>
-                {product.category === "kameez shalwar" && (
-                  <button 
-                    onClick={() => setShowSizeChart(true)}
-                    className="text-xs font-medium text-amber-600 hover:text-amber-700 flex items-center gap-1"
-                  >
-                    SIZE GUIDE
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                  
-                )}
-                
+            {/* Size Selection */}
+            {category!=="Vardaans-Unstitched" && (
+              <div className="mb-8">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-sm font-medium text-gray-500">SELECT SIZE</h3>
+                  {product.category === "kameez shalwar" && (
+                    <button 
+                      onClick={() => setShowSizeChart(true)}
+                      className="text-xs font-medium text-amber-600 hover:text-amber-700 flex items-center gap-1"
+                    >
+                      SIZE GUIDE
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-5 gap-2">
+                  {product.sizes.map((size, index) => (
+                    <motion.button
+                      key={size}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setSelectedSize(index)}
+                      className={`aspect-square flex items-center justify-center rounded-lg font-medium transition-all ${
+                        selectedSize === index
+                          ? 'bg-amber-500 text-white shadow-md'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {size}
+                    </motion.button>
+                  ))}
+                </div>
               </div>
-       
-
-              <div className="grid grid-cols-5 gap-2">
-                {product.sizes.map((size, index) => (
-                  <motion.button
-                    key={size}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedSize(index)}
-                    className={`aspect-square flex items-center justify-center rounded-lg font-medium transition-all ${
-                      selectedSize === index
-                        ? 'bg-amber-500 text-white shadow-md'
-                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    {size}
-                  </motion.button>
-                ))}
+            )}
+            
+            {product.category==="kameez shalwar" && category!=="Vardaans-Unstitched" && (
+              <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 text-center">
+                <p className="text-amber-700 font-medium">
+                  For custom-sized shalwar kameez, please contact us via WhatsApp.
+                </p>
+                <p className="text-sm text-amber-600 mt-1">
+                  We'll be happy to create a perfect fit just for you.
+                </p>
               </div>
-            </div>
-          )}
-          { product.category==="kameez shalwar" && category!=="Vardaans-Unstitched"&&(
-            <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 text-center">
-  <p className="text-amber-700 font-medium">
-    For custom-sized shalwar kameez, please contact us via WhatsApp.
-  </p>
-  <p className="text-sm text-amber-600 mt-1">
-    We'll be happy to create a perfect fit just for you.
-  </p>
-</div>
-          )}     
-            {/* Action Buttons - Modern Gradient */}
+            )}     
+            
+            {/* Action Buttons */}
             <div className="flex flex-col gap-3 mb-8">
               <motion.button 
                 whileHover={{ y: -2 }}
@@ -350,23 +389,92 @@ function ProductDescription() {
               </motion.button>
             </div>
 
-            {/* Product Details - Accordion */}
-            <div className="border-t border-gray-100 pt-6">
-
-                <span className="text-lg font-bold  text-amber-600 ">PRODUCT DETAILS</span>
-
-            
+            {/* Product Details */}
+{/* Product Details */}
+<div className="border-t border-gray-100 pt-6">
+  <span className="text-lg font-bold text-amber-600">PRODUCT DETAILS</span>
+  <p className="mt-4 text-gray-700 leading-relaxed font-medium">
+    {product.description}
+  </p>
   
-                    <p className="mt-4 text-black-600 leading-relaxed font-semibold">
-                      {product.description}
-                    </p>
-          
+  {/* More Information Section - Collapsible */}
+  <div className="mt-6">
+    <motion.div
+      initial={false}
+      animate={{ 
+        backgroundColor: showMoreInfo ? 'rgba(253, 230, 138, 0.1)' : 'transparent'
+      }}
+      className="rounded-xl p-1"
+    >
+      <button 
+        onClick={() => setShowMoreInfo(!showMoreInfo)}
+        className="w-full flex justify-between items-center py-3 px-2 focus:outline-none"
+      >
+        <h3 className="text-lg font-bold text-amber-600">MORE INFORMATION</h3>
+        <motion.div
+          animate={{ rotate: showMoreInfo ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-5 w-5 text-amber-500" 
+            viewBox="0 0 20 20" 
+            fill="currentColor"
+          >
+            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </motion.div>
+      </button>
+    </motion.div>
+
+    <AnimatePresence>
+      {showMoreInfo && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <div className="grid grid-cols-1 gap-4 py-4 px-2">
+            {/* Single column layout - one item per row */}
+            <div className="flex items-start border-b border-gray-100 pb-3">
+              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Color</span>
+              <span className="text-gray-600 font-medium">{product.color || 'Brown'}</span>
             </div>
+            
+            <div className="flex items-start border-b border-gray-100 pb-3">
+              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Fabric</span>
+              <span className="text-gray-600 font-medium">{product.fabric || 'Blended'}</span>
+            </div>
+            
+            <div className="flex items-start border-b border-gray-100 pb-3">
+              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Product Category</span>
+              <span className="text-gray-600 font-medium">{product.category || 'Casual Kameez Shalwar'}</span>
+            </div>
+            
+            <div className="flex items-start border-b border-gray-100 pb-3">
+              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Season</span>
+              <span className="text-gray-600 font-medium">{product.season || 'All Seasons'}</span>
+            </div>
+            
+            <div className="flex items-start">
+              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Disclaimer</span>
+              <span className="text-gray-500 text-sm italic">
+                {product.disclaimer || 'Due to photographic lighting & screen differences, colors may vary slightly'}
+              </span>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+</div>
           </motion.div>
         </div>
       </motion.main>
 
-      {/* Modern Size Chart Modal */}
+      {/* Size Chart Modal */}
       <AnimatePresence>
         {showSizeChart && (
           <motion.div 
@@ -393,7 +501,6 @@ function ProductDescription() {
                 </button>
               </div>
               
-              {/* Scrollable Content */}
               <div className="overflow-y-auto p-6">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">

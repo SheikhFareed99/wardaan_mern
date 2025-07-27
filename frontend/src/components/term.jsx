@@ -14,7 +14,7 @@ function Term() {
         },
         {
           title: "Payment",
-          content: "We accept payments via JazzCash, Easypaisa, bank transfer, and COD (Cash on Delivery) for selected regions. COD may involve a confirmation call or pre-booking amount. Full payment must be made before dispatch for custom orders."
+          content: "We accept payments via JazzCash, Easypaisa, bank transfer, and COD (Cash on Delivery) for selected regions. COD may involve a confirmation call or pre-booking amount. half payment must be made before dispatch for custom size shalwar kameez orders."
         },
         {
           title: "Delivery & Shipping",
