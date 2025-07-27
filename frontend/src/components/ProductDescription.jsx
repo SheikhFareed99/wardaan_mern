@@ -353,7 +353,15 @@ function ProductDescription() {
                   We'll be happy to create a perfect fit just for you.
                 </p>
               </div>
-            )}     
+            )}
+            {/* Fitting Info */}
+{product.category === "kameez shalwar" && category !== "Vardaans-Unstitched" && product.fitting && (
+  <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 text-sm font-medium my-5">
+    <span className="text-amber-600 font-semibold block mb-1">Fitting:</span>
+    {product.fitting}
+  </div>
+)}
+
             
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 mb-8">
@@ -437,6 +445,7 @@ function ProductDescription() {
           transition={{ duration: 0.3 }}
           className="overflow-hidden"
         >
+          
           <div className="grid grid-cols-1 gap-4 py-4 px-2">
             {/* Single column layout - one item per row */}
             <div className="flex items-start border-b border-gray-100 pb-3">
