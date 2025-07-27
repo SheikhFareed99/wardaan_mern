@@ -21,6 +21,7 @@ function ProductDescription() {
     window.scrollTo(0, 0);
     const fetchProduct = async () => {
       try {
+        console.log(id)
         const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/selectedproduct/${id}`);
         setProduct(response.data);
        
