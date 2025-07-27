@@ -33,12 +33,11 @@ app.use('/api/expenditures', expenditureRoutes);
 
 
 //  for insta catalog
-
 app.get('/feed/products.csv', async (req, res) => {
   try {
     const products = await Product.find({});
-    
-    let csv = `id,title,description,availability,condition,price,link,image_link\n`;
+
+    let csv = `id,title,description,availability,condition,price,discount_percentage,discounted_price,link,image_link\n`;
 
     products.forEach((p) => {
       const id = p._id.toString();
@@ -46,11 +45,15 @@ app.get('/feed/products.csv', async (req, res) => {
       const description = p.description.replace(/,/g, " ");
       const availability = p.stock > 0 ? "in stock" : "out of stock";
       const condition = "new";
-      const price = `${p.price} PKR`;
+      const price = Number(p.price);
+      const discountPercentage = Number(p.discountPercentage) || 0;
+      const discountedPrice = (price - (price * discountPercentage / 100)).toFixed(2);
+      const priceStr = `${price} PKR`;
+      const discountedStr = `${discountedPrice} PKR`;
       const link = `https://vardaan.pk/product/${id}`;
       const image = p.imageUrl[0] || "";
 
-      csv += `${id},${title},${description},${availability},${condition},${price},${link},${image}\n`;
+      csv += `${id},${title},${description},${availability},${condition},${priceStr},${discountPercentage},${discountedStr},${link},${image}\n`;
     });
 
     res.setHeader('Content-Type', 'text/csv');
