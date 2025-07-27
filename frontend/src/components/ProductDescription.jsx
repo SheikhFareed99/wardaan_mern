@@ -209,7 +209,7 @@ function ProductDescription() {
                 </span>
                 {product.discountPercentage > 0 && (
                   <span className="text-lg text-gray-500 line-through">
-                    Rs.{Math.round(product.price.toLocaleString())}
+                    Rs.{(Math.round(product.price).toLocaleString())}
                   </span>
                 )}
               </div>:
@@ -219,7 +219,7 @@ function ProductDescription() {
                             </span>
                             {product.discountPercentage > 0 && (
                               <span className="text-lg text-gray-500 line-through">
-                                Rs.{Math.round(product.price-1215).toLocaleString()}
+                                Rs.{(Math.round(product.price-1215)).toLocaleString()}
                               </span>
                             )}
                           </div>
@@ -229,7 +229,8 @@ function ProductDescription() {
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                   product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                 }`}>
-                  {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                {product.stock > 0 ? product.stock + ' In Stock' : 'Out of Stock'}
+
                 </span>
                 <div className="flex items-center gap-1 text-gray-600">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
