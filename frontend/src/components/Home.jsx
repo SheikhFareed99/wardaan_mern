@@ -79,24 +79,35 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
-
-<div className="w-full">
-
-  <div className="hidden md:block">
+      <div className="w-full relative">
+  {/* Desktop Image */}
+  <div className="hidden md:block relative">
     <img
       src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg"
-
       className="w-full h-auto object-cover"
+      alt="Traditional clothing"
     />
+    <div className="absolute inset-0 flex items-end justify-center pb-100">
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 tracking-wider" 
+          style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
+        A legacy woven in tradition
+      </h1>
+    </div>
   </div>
 
-
-  <div className="block md:hidden">
+  {/* Mobile Image */}
+  <div className="block md:hidden relative">
     <img
       src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753550460/home_pic_okqgxk.jpg"
-
       className="w-full h-auto object-cover"
+      alt="Traditional clothing"
     />
+    <div className="absolute inset-0 flex items-end justify-center pb-60">
+      <h1 className="text-2xl font-bold text-white text-center px-4 tracking-wide"
+          style={{ textShadow: '2px 2px 6px rgba(0,0,0,0.7)' }}>
+        A legacy woven in tradition
+      </h1>
+    </div>
   </div>
 </div>
 {/* Category Section */}
