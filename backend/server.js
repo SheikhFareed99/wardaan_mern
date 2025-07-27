@@ -6,6 +6,8 @@ const cors = require("cors");
 const orderRoutes = require('./routes/orderRoutes');
 const financeRoute = require('./routes/financeRoute');
 const expenditureRoutes = require('./routes/expenditureRoutes');
+const router = express.Router();
+const Product = require('./models/product');
 
 
 dotenv.config();
@@ -29,10 +31,37 @@ app.use("/api/finance", financeRoute);
 
 app.use('/api/expenditures', expenditureRoutes);
 
+
+//  for insta catalog
+
+app.get('/feed/products.csv', async (req, res) => {
+  try {
+    const products = await Product.find({});
+    
+    let csv = `id,title,description,availability,condition,price,link,image_link\n`;
+
+    products.forEach((p) => {
+      const id = p._id.toString();
+      const title = p.name.replace(/,/g, " ");
+      const description = p.description.replace(/,/g, " ");
+      const availability = p.stock > 0 ? "in stock" : "out of stock";
+      const condition = "new";
+      const price = `${p.price} PKR`;
+      const link = `https://vardaan.pk/product/${id}`;
+      const image = p.imageUrl[0] || "";
+
+      csv += `${id},${title},${description},${availability},${condition},${price},${link},${image}\n`;
+    });
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.status(200).send(csv);
+
+  } catch (err) {
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Wardaan backend running on http://localhost:${PORT}`);
 });
-
-
-
