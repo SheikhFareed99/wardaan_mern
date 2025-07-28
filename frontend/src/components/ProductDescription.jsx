@@ -244,7 +244,7 @@ function ProductDescription() {
             <div className="mb-6">
               <span className="text-sm font-medium text-amber-600">{product.brand}</span>
               <h1 className="text-3xl font-bold text-gray-900 mt-1 mb-3">{product.name}</h1>
-              {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched" ? (
+              {(product.category === "kameez shalwar" && category!=="Vardaans-Unstitched")||(product.category === "chappal") ? (
                 <div className="flex items-baseline gap-3 mb-6">
                   <span className="text-3xl font-extrabold text-gray-900">
                     Rs.{Math.round(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
