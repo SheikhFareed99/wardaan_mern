@@ -10,6 +10,12 @@ function CheckOut() {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (typeof fbq !== "undefined") {
+      fbq('track', 'InitiateCheckout', {
+        value: subtotal.toFixed(0),
+        currency: 'PKR'
+      });
+    }
   }, []);
 
   const bagArr = useSelector((state) => state.bag.items);

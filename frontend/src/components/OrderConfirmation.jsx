@@ -7,6 +7,19 @@ function OrderConfirmation() {
   const orderId = location.state?.orderId;
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (typeof fbq !== "undefined" && orderId) {
+      fbq('track', 'Purchase', {
+        value: 3700, // 0 because price is unknown
+        currency: 'PKR',
+        contents: [{
+          id: orderId,
+          quantity: 1
+        }],
+        content_type: 'order'
+      });
+    }
+    
   }, []);
 
   return (

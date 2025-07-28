@@ -15,6 +15,15 @@ function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
+    if (typeof fbq !== "undefined") {
+      fbq('track', 'ViewContent', {
+        content_name: 'Home Page',
+        content_category: 'Landing',
+        content_type: 'home',
+      });
+    }
+
+    
     const fetchdata = async () => {
       try {
         const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`);
