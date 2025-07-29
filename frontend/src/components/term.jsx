@@ -58,7 +58,7 @@ function Term() {
           >
             <h1 className="text-4xl font-serif font-bold text-amber-800 mb-4">Terms & Conditions</h1>
             <div className="w-24 h-1 bg-amber-600 mx-auto mb-6"></div>
-            <p className="text-amber-700 italic">Last updated:26 June 2024</p>
+            <p className="text-amber-700 italic">Last updated:27 July 2025</p>
             <p className="text-lg text-amber-900 mt-4">Welcome to Vardaan – Tradition, Tailored.</p>
             <p className="text-amber-800">By placing an order with Vardaan, you agree to the following Terms & Conditions. Please read them carefully before making a purchase.</p>
           </motion.div>
