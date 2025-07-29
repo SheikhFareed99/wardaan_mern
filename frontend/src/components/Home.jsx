@@ -472,7 +472,7 @@ function Home() {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">{feedback.name}</p>
-                      <p className="text-xs text-gray-400">{new Date(feedback.createdAt).toLocaleDateString()}</p>
+                   
                     </div>
                   </div>
                   <div className="flex mb-3">
