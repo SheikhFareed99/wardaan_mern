@@ -9,7 +9,16 @@ import { motion } from "framer-motion";
 function Home() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [feedbackForm, setFeedbackForm] = useState({
+    name: '',
+    review: '',
+    star: 0
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
   const categoryRef = useRef(null);
+  const feedbackContainerRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,55 +32,89 @@ function Home() {
       });
     }
 
-    
-    const fetchdata = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`);
-        
-        console.log(response.data);
-        setProducts(response.data);
-        
+        // Fetch products
+        const productResponse = await axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`);
+        setProducts(productResponse.data);
+
+        // Fetch approved feedbacks
+        const feedbackResponse = await axios.get(`https://wardaan-mern.onrender.com/api/products/feedbacks`);
+        console.log('Feedback response:', feedbackResponse.data);
+        const approvedFeedbacks = Array.isArray(feedbackResponse.data)
+          ? feedbackResponse.data.filter(fb => fb.status === true)
+          : [];
+        setFeedbacks(approvedFeedbacks);
+        if (approvedFeedbacks.length === 0) {
+          console.log('No approved feedbacks found');
+        }
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching data:', err.response?.status, err.response?.data || err.message);
+        setSubmitMessage('Failed to load feedbacks. Please try again later.');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchdata();
+    fetchData();
   }, []);
 
-  // Add this to your component if you want to ensure smooth scrolling in all browsers
-useEffect(() => {
-  const handleAnchorClick = (e) => {
-    const target = e.target.closest('a[href^="#"]');
-    if (target) {
-      e.preventDefault();
-      const id = target.getAttribute('href').slice(1);
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+  useEffect(() => {
+    const handleAnchorClick = (e) => {
+      const target = e.target.closest('a[href^="#"]');
+      if (target) {
+        e.preventDefault();
+        const id = target.getAttribute('href').slice(1);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-    }
-  };
+    };
 
-  document.addEventListener('click', handleAnchorClick);
-  return () => document.removeEventListener('click', handleAnchorClick);
-}, []);
+    document.addEventListener('click', handleAnchorClick);
+    return () => document.removeEventListener('click', handleAnchorClick);
+  }, []);
 
   const insertWidth = (url, width) => {
     const uploadIndex = url.indexOf("/upload/");
     if (uploadIndex === -1) return url;
-    const prefix = url.slice(0, uploadIndex + 8); // includes '/upload/'
+    const prefix = url.slice(0, uploadIndex + 8);
     const suffix = url.slice(uploadIndex + 8);
-    console.log(`${prefix}w_${width},f_auto,q_auto/${suffix}`)
     return `${prefix}w_${width},f_auto,q_auto/${suffix}`;
   };
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
-      localStorage.setItem("category","")
+      localStorage.setItem("category", "");
       navigate(`/ProductDescrition/${product._id}`, { state: { product } });
+    }
+  };
+
+  const handleFeedbackSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      const response = await axios.post('https://wardaan-mern.onrender.com/api/products/feedbacks', feedbackForm);
+      setSubmitMessage('Feedback submitted successfully! Awaiting approval.');
+      setFeedbackForm({ name: '', review: '', star: 0 });
+    } catch (err) {
+      setSubmitMessage('Failed to submit feedback. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleStarClick = (starValue) => {
+    setFeedbackForm({ ...feedbackForm, star: starValue });
+  };
+
+  const scrollFeedbacks = (direction) => {
+    if (feedbackContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -300 : 300; // Adjust based on card width
+      feedbackContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
@@ -107,136 +150,128 @@ useEffect(() => {
       <DraggableWhatsApp />
 
       <div className="w-full relative">
-  {/* Desktop Image */}
-  <div className="hidden md:block relative">
-    <img
-      src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg"
-      className="w-full h-auto object-cover"
-      alt="Traditional clothing"
-    />
-    <div className="absolute inset-0 flex flex-col items-center justify-end pb-100">
-      <h1
-        className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 tracking-wider mb-4"
-        style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
-      >
-        A legacy woven in tradition
-      </h1>
-      <a
-        href="#products"
-        className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition text-sm md:text-base"
-      >
-        Explore More
-      </a>
-    </div>
-  </div>
+        {/* Desktop Image */}
+        <div className="hidden md:block relative">
+          <img
+            src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg"
+            className="w-full h-auto object-cover"
+            alt="Traditional clothing"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-100">
+            <h1
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 tracking-wider mb-4"
+              style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
+            >
+              A legacy woven in tradition
+            </h1>
+            <a
+              href="#products"
+              className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition text-sm md:text-base"
+            >
+              Explore More
+            </a>
+          </div>
+        </div>
 
-  {/* Mobile Image */}
-  <div className="block md:hidden relative">
-    <img
-      src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753550460/home_pic_okqgxk.jpg"
-      className="w-full h-auto object-cover"
-      alt="Traditional clothing"
-    />
-    <div className="absolute inset-0 flex flex-col items-center justify-end pb-60">
-      <h1
-        className="text-2xl font-bold text-white text-center px-4 tracking-wide mb-3"
-        style={{ textShadow: '2px 2px 6px rgba(0,0,0,0.7)' }}
-      >
-        A legacy woven in tradition
-      </h1>
-      <a
-        href="#products"
-        className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-5 py-2 rounded-full shadow-md transition text-sm"
-      >
-        Explore More
-      </a>
-    </div>
-  </div>
-</div>
-
-{/* Category Section */}
-<div ref={categoryRef} className="w-full">
-  {[
-    {
-      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435544/IMG_8101_nxywzv.jpg",
-      mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752441769/IMG_8101_1_oej5lg.png",
-      title: "kameez-shalwar",
-      description: "Explore our exquisite Rivayat collection of traditional kameez shalwar sets"
-    },
-    {
-      desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435545/IMG_8223_eezrpv.png",
-      mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556992/IMG_8113_fmkfip.jpg",
-      title: "chappal",
-      description: "Handcrafted footwear that combines comfort and tradition"
-    },
-    {
-      desktopImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556680/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug_c_crop_ar_4_3_tfrbfa.webp",
-      mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556626/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug.webp",
-      title: "Vardaans-Unstitched",
-      description: "Create your own style with our premium unstitched fabrics"
-    }
-  ].map(({ desktopImage, mobileImage, title, description }, idx) => (
-    <div
-      key={idx}
-      className="relative w-full min-h-[115vh] flex items-end justify-center overflow-hidden"
-    >
-      {/* Mobile Image */}
-      <img
-        src={mobileImage}
-        alt={`${title} mobile`}
-        className="block md:hidden absolute inset-0 w-full h-full object-cover object-center brightness-90"
-        loading="lazy"
-      />
-
-      {/* Desktop Image */}
-      <img
-        src={desktopImage}
-        alt={`${title} desktop`}
-        className="hidden md:block absolute inset-0 w-full h-full object-cover object-center brightness-90"
-        loading="lazy"
-      />
-
-      <div className="absolute inset-0 bg-black/30"></div>
-
-      {/* Text Box */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-full px-4 text-center z-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-2 capitalize"
-        >
-          {title}
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-sm sm:text-base text-white mb-4"
-        >
-          {description}
-        </motion.p>
-
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
-          className="px-6 py-2 border border-white text-white font-medium rounded-full backdrop-blur-sm hover:bg-white/10 transition duration-300 text-sm"
-        >
-          Shop Now
-        </motion.button>
+        {/* Mobile Image */}
+        <div className="block md:hidden relative">
+          <img
+            src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753550460/home_pic_okqgxk.jpg"
+            className="w-full h-auto object-cover"
+            alt="Traditional clothing"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-60">
+            <h1
+              className="text-2xl font-bold text-white text-center px-4 tracking-wide mb-3"
+              style={{ textShadow: '2px 2px 6px rgba(0,0,0,0.7)' }}
+            >
+              A legacy woven in tradition
+            </h1>
+            <a
+              href="#products"
+              className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-5 py-2 rounded-full shadow-md transition text-sm"
+            >
+              Explore More
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  ))}
-</div>
+
+      {/* Category Section */}
+      <div ref={categoryRef} className="w-full">
+        {[
+          {
+            desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435544/IMG_8101_nxywzv.jpg",
+            mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752441769/IMG_8101_1_oej5lg.png",
+            title: "kameez-shalwar",
+            description: "Explore our exquisite Rivayat collection of traditional kameez shalwar sets"
+          },
+          {
+            desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435545/IMG_8223_eezrpv.png",
+            mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556992/IMG_8113_fmkfip.jpg",
+            title: "chappal",
+            description: "Handcrafted footwear that combines comfort and tradition"
+          },
+          {
+            desktopImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556680/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug_c_crop_ar_4_3_tfrbfa.webp",
+            mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556626/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug.webp",
+            title: "Vardaans-Unstitched",
+            description: "Create your own style with our premium unstitched fabrics"
+          }
+        ].map(({ desktopImage, mobileImage, title, description }, idx) => (
+          <div
+            key={idx}
+            className="relative w-full min-h-[115vh] flex items-end justify-center overflow-hidden"
+          >
+            <img
+              src={mobileImage}
+              alt={`${title} mobile`}
+              className="block md:hidden absolute inset-0 w-full h-full object-cover object-center brightness-90"
+              loading="lazy"
+            />
+            <img
+              src={desktopImage}
+              alt={`${title} desktop`}
+              className="hidden md:block absolute inset-0 w-full h-full object-cover object-center brightness-90"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-full px-4 text-center z-10">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-2 capitalize"
+              >
+                {title}
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="text-sm sm:text-base text-white mb-4"
+              >
+                {description}
+              </motion.p>
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+                onClick={() => navigate(`/products/${encodeURIComponent(title)}`)}
+                className="px-6 py-2 border border-white text-white font-medium rounded-full backdrop-blur-sm hover:bg-white/10 transition duration-300 text-sm"
+              >
+                Shop Now
+              </motion.button>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* All Products Section */}
-      <div id="products"  className="container mx-auto px-1 py-6 min-h-screen ">
+      <div id="products" className="container mx-auto px-1 py-6 min-h-screen">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -306,9 +341,8 @@ useEffect(() => {
                     if (product.stock > 0) handleProductClick(product);
                   }}
                 >
-                    { console.log(product.imageUrl[1])}
                   <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-                   <img
+                    <img
                       src={insertWidth(product.imageUrl[0], 1000)}
                       srcSet={`
                         ${insertWidth(product.imageUrl[0], 500)} 1000w,
@@ -391,7 +425,179 @@ useEffect(() => {
         )}
       </div>
 
-      
+      {/* Feedback Section */}
+      <div id="feedback" className="container mx-auto px-4 py-12">
+        {/* Customer Reviews Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-bold mb-12 text-center font-serif text-gray-800"
+        >
+          Customer Reviews
+          <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
+        </motion.h2>
+
+        {/* Feedback Cards */}
+        {feedbacks.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-center py-10"
+          >
+            <p className="text-lg text-gray-600">No reviews yet. Be the first to share your feedback!</p>
+          </motion.div>
+        ) : (
+          <div className="relative">
+            <motion.div
+              ref={feedbackContainerRef}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              variants={container}
+              className="flex flex-row flex-nowrap overflow-x-auto scrollbar-hidden snap-x snap-mandatory gap-4"
+            >
+              {feedbacks.map((feedback) => (
+                <motion.div
+                  key={feedback._id}
+                  variants={item}
+                  whileHover={{ scale: 1.02 }}
+                  className="flex-none w-1/2 sm:w-1/2 lg:w-1/4 snap-center bg-white rounded-2xl shadow-xl p-6 border border-gray-100 hover:shadow-2xl transition-all duration-300 relative"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-300 to-yellow-400 text-white flex items-center justify-center text-lg font-bold">
+                      {feedback.name?.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">{feedback.name}</p>
+                      <p className="text-xs text-gray-400">{new Date(feedback.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                  <div className="flex mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <span
+                        key={i}
+                        className={`text-lg ${i < feedback.star ? 'text-yellow-400' : 'text-gray-300'}`}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-gray-700 text-sm leading-relaxed">"{feedback.review}"</p>
+                  <div className="absolute bottom-4 right-4 text-yellow-300 text-4xl opacity-20">“</div>
+                </motion.div>
+              ))}
+            </motion.div>
+            {/* Navigation Arrows */}
+            {feedbacks.length > 4 && (
+              <>
+                <button
+                  onClick={() => scrollFeedbacks('left')}
+                  className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-amber-500 text-white rounded-full p-2 shadow-md hover:bg-amber-600 transition-colors duration-200"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => scrollFeedbacks('right')}
+                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-amber-500 text-white rounded-full p-2 shadow-md hover:bg-amber-600 transition-colors duration-200"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Feedback Form Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-bold mt-20 mb-8 text-center font-serif text-gray-800"
+        >
+          Share Your Feedback
+          <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
+        </motion.h1>
+
+        {/* Feedback Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="max-w-lg mx-auto bg-white rounded-xl shadow-lg p-6 mb-12"
+        >
+          <form onSubmit={handleFeedbackSubmit}>
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={feedbackForm.name}
+                onChange={(e) => setFeedbackForm({ ...feedbackForm, name: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="review" className="block text-sm font-medium text-gray-700 mb-1">
+                Your Review
+              </label>
+              <textarea
+                id="review"
+                value={feedbackForm.review}
+                onChange={(e) => setFeedbackForm({ ...feedbackForm, review: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+                rows="4"
+              ></textarea>
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Rating
+              </label>
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => handleStarClick(star)}
+                    className={`text-2xl ${feedbackForm.star >= star ? 'text-amber-500' : 'text-gray-300'} hover:text-amber-400 transition-colors duration-200`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-2 px-4 rounded-md text-white font-medium ${
+                isSubmitting
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700'
+              } transition-all duration-300`}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
+            </motion.button>
+            {submitMessage && (
+              <p className={`mt-3 text-sm text-center ${submitMessage.includes('Failed') ? 'text-red-600' : 'text-green-600'}`}>
+                {submitMessage}
+              </p>
+            )}
+          </form>
+        </motion.div>
+      </div>
 
       <Footer />
     </>

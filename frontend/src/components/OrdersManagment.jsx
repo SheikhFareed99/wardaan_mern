@@ -13,6 +13,8 @@ function OrdersManagement() {
   const [newCode, setNewCode] = useState('');
   const [newAmount, setNewAmount] = useState('');
   const [showDiscountSection, setShowDiscountSection] = useState(false);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [showFeedbackSection, setShowFeedbackSection] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -36,8 +38,23 @@ function OrdersManagement() {
       }
     };
 
+    const fetchFeedbacks = async () => {
+      try {
+        const token = localStorage.getItem("adminToken");
+        const response = await axios.get('https://wardaan-mern.onrender.com/api/products/feedbacks', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setFeedbacks(response.data);
+      } catch (error) {
+        console.error("Error fetching feedbacks:", error);
+      }
+    };
+
     fetchOrders();
     fetchDiscountCodes();
+    fetchFeedbacks();
   }, [navigate, filter]);
 
   const fetchDiscountCodes = async () => {
@@ -111,15 +128,35 @@ function OrdersManagement() {
 
   const handleDeleteDiscountCode = async (code) => {
     try {
-   
-        await axios.delete("https://wardaan-mern.onrender.com/api/orders/DiscountCode", {
-          data: { DisCode: code },
-        });
-        alert("Code deleted");
-        fetchDiscountCodes();
-      } catch (error) {
-        alert("Delete failed: " + error.response?.data?.message || error.message);
-      }
+      const token = localStorage.getItem("adminToken");
+      await axios.delete("https://wardaan-mern.onrender.com/api/orders/DiscountCode", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { DisCode: code },
+      });
+      alert("Code deleted");
+      fetchDiscountCodes();
+    } catch (error) {
+      alert("Delete failed: " + error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleFeedbackStatusUpdate = async (feedbackId, newStatus) => {
+    try {
+
+      const response =await axios.patch(`https://wardaan-mern.onrender.com/api/products/feedbacks/${feedbackId}/status`, { status: newStatus });
+
+      setFeedbacks((prevFeedbacks) =>
+        prevFeedbacks.map((feedback) =>
+          feedback._id === feedbackId ? { ...feedback, status: newStatus } : feedback
+        )
+      );
+      alert("Feedback status updated successfully");
+    } catch (error) {
+      console.error("Failed to update feedback status:", error);
+      alert(error.response?.data?.message || "Failed to update feedback status");
+    }
   };
 
   if (loading) {
@@ -147,15 +184,23 @@ function OrdersManagement() {
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Orders Management</h1>
               <p className="mt-2 text-sm text-gray-600">
-                View and manage all customer orders
+                View and manage all customer orders and feedbacks
               </p>
             </div>
-            <button
-              onClick={() => setShowDiscountSection(!showDiscountSection)}
-              className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
-            >
-              {showDiscountSection ? 'Hide Discount Codes' : 'Manage Discount Codes'}
-            </button>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setShowDiscountSection(!showDiscountSection)}
+                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
+              >
+                {showDiscountSection ? 'Hide Discount Codes' : 'Manage Discount Codes'}
+              </button>
+              <button
+                onClick={() => setShowFeedbackSection(!showFeedbackSection)}
+                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
+              >
+                {showFeedbackSection ? 'Hide Feedbacks' : 'Manage Feedbacks'}
+              </button>
+            </div>
           </div>
 
           {showDiscountSection && (
@@ -233,6 +278,93 @@ function OrdersManagement() {
                               >
                                 Delete
                               </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showFeedbackSection && (
+            <div className="bg-white shadow rounded-lg overflow-hidden mb-6">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Feedback Management</h2>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Review
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Rating
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Date
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {feedbacks.length === 0 ? (
+                        <tr>
+                          <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">
+                            No feedbacks found
+                          </td>
+                        </tr>
+                      ) : (
+                        feedbacks.map((feedback) => (
+                          <tr key={feedback._id} className="hover:bg-gray-50 transition-colors duration-150">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {feedback.name}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                              {feedback.review || 'No review provided'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <div className="flex">
+                                {[...Array(5)].map((_, i) => (
+                                  <span
+                                    key={i}
+                                    className={`text-lg ${i < feedback.star ? 'text-amber-500' : 'text-gray-300'}`}
+                                  >
+                                    ★
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {formatDate(feedback.createdAt)}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                feedback.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                              }`}>
+                                {feedback.status ? 'Approved' : 'Pending'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={feedback.status}
+                                  onChange={() => handleFeedbackStatusUpdate(feedback._id, !feedback.status)}
+                                  className="sr-only peer"
+                                />
+                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                              </label>
                             </td>
                           </tr>
                         ))
