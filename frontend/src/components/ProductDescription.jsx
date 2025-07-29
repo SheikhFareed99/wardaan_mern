@@ -10,22 +10,19 @@ import axios from 'axios';
 
 function ProductDescription() {
   const { id } = useParams();
-  const category=localStorage.getItem("category")
+  const category = localStorage.getItem("category");
   const [product, setProduct] = useState(null);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log(id)
+    console.log(id);
     window.scrollTo(0, 0);
     const fetchProduct = async () => {
       try {
-        console.log(id)
         const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/selectedproduct/${id}`);
         setProduct(response.data);
-       
-     
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -207,7 +204,7 @@ function ProductDescription() {
                 </motion.div>
               )}
               
-              <div className="absolute bottom-6 left-0 right-0 flex justify-center">
+              <div className="absolute bottom-0 left-0 right-0 flex justify-center">
                 <div className="flex gap-2 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
                   {product.imageUrl.map((img, index) => (
                     <motion.button 
@@ -244,7 +241,7 @@ function ProductDescription() {
             <div className="mb-6">
               <span className="text-sm font-medium text-amber-600">{product.brand}</span>
               <h1 className="text-3xl font-bold text-gray-900 mt-1 mb-3">{product.name}</h1>
-              {(product.category === "kameez shalwar" && category!=="Vardaans-Unstitched")||(product.category === "chappal") ? (
+              {(product.category === "kameez shalwar" && category !== "Vardaans-Unstitched") || (product.category === "chappal") ? (
                 <div className="flex items-baseline gap-3 mb-6">
                   <span className="text-3xl font-extrabold text-gray-900">
                     Rs.{Math.round(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
@@ -258,16 +255,17 @@ function ProductDescription() {
               ) : (
                 <div className="flex items-baseline gap-3 mb-6">
                   <span className="text-3xl font-extrabold text-gray-900">
-                    Rs.{Math.round((product.price-1215) * (1 - product.discountPercentage / 100)).toLocaleString()}
+                    Rs.{Math.round((product.price - 1215) * (1 - product.discountPercentage / 100)).toLocaleString()}
                   </span>
                   {product.discountPercentage > 0 && (
                     <span className="text-lg text-gray-500 line-through">
-                      Rs.{(Math.round(product.price-1215)).toLocaleString()}
+                      Rs.{(Math.round(product.price - 1215)).toLocaleString()}
                     </span>
                   )}
                 </div>
               )}
               
+              {/* Delivery and Stock Section */}
               <div className="flex items-center gap-4 mb-6">
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                   product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -281,10 +279,23 @@ function ProductDescription() {
                   <span className="text-sm">Delivery by {deliveryRange}</span>
                 </div>
               </div>
+
+              {/* Return and Refund Policy Section */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex items-center gap-1 text-gray-600 mb-6"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                </svg>
+                <span className="text-sm">Easy Returns & Refunds within 3 Days</span>
+              </motion.div>
             </div>
 
             {/* Style Options */}
-            {product.category === "kameez shalwar" && category!=="Vardaans-Unstitched" && (
+            {product.category === "kameez shalwar" && category !== "Vardaans-Unstitched" && (
               <div className="mb-8">
                 <h3 className="text-sm font-medium text-gray-500 mb-3">SELECT STYLE</h3>
                 <div className="flex flex-wrap gap-2">
@@ -308,7 +319,7 @@ function ProductDescription() {
             )}
             
             {/* Size Selection */}
-            {category!=="Vardaans-Unstitched" && (
+            {category !== "Vardaans-Unstitched" && (
               <div className="mb-8">
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="text-sm font-medium text-gray-500">SELECT SIZE</h3>
@@ -344,7 +355,7 @@ function ProductDescription() {
               </div>
             )}
             
-            {product.category==="kameez shalwar" && category!=="Vardaans-Unstitched" && (
+            {product.category === "kameez shalwar" && category !== "Vardaans-Unstitched" && (
               <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 text-center">
                 <p className="text-amber-700 font-medium">
                   For custom-sized shalwar kameez, please contact us via WhatsApp.
@@ -355,13 +366,12 @@ function ProductDescription() {
               </div>
             )}
             {/* Fitting Info */}
-{product.category === "kameez shalwar" && category !== "Vardaans-Unstitched" && product.fitting && (
-  <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 text-sm font-medium my-5">
-    <span className="text-amber-600 font-semibold block mb-1">Fitting:</span>
-    {product.fitting}
-  </div>
-)}
-
+            {product.category === "kameez shalwar" && category !== "Vardaans-Unstitched" && product.fitting && (
+              <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 text-sm font-medium my-5">
+                <span className="text-amber-600 font-semibold block mb-1">Fitting:</span>
+                {product.fitting}
+              </div>
+            )}
             
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 mb-8">
@@ -399,87 +409,84 @@ function ProductDescription() {
             </div>
 
             {/* Product Details */}
-{/* Product Details */}
-<div className="border-t border-gray-100 pt-6">
-  <span className="text-lg font-bold text-amber-600">PRODUCT DETAILS</span>
-  <p className="mt-4 text-gray-700 leading-relaxed font-medium">
-    {product.description}
-  </p>
-  
-  {/* More Information Section - Collapsible */}
-  <div className="mt-6">
-    <motion.div
-      initial={false}
-      animate={{ 
-        backgroundColor: showMoreInfo ? 'rgba(253, 230, 138, 0.1)' : 'transparent'
-      }}
-      className="rounded-xl p-1"
-    >
-      <button 
-        onClick={() => setShowMoreInfo(!showMoreInfo)}
-        className="w-full flex justify-between items-center py-3 px-2 focus:outline-none"
-      >
-        <h3 className="text-lg font-bold text-amber-600">MORE INFORMATION</h3>
-        <motion.div
-          animate={{ rotate: showMoreInfo ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="h-5 w-5 text-amber-500" 
-            viewBox="0 0 20 20" 
-            fill="currentColor"
-          >
-            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
-        </motion.div>
-      </button>
-    </motion.div>
+            <div className="border-t border-gray-100 pt-6">
+              <span className="text-lg font-bold text-amber-600">PRODUCT DETAILS</span>
+              <p className="mt-4 text-gray-700 leading-relaxed font-medium">
+                {product.description}
+              </p>
+              
+              {/* More Information Section - Collapsible */}
+              <div className="mt-6">
+                <motion.div
+                  initial={false}
+                  animate={{ 
+                    backgroundColor: showMoreInfo ? 'rgba(253, 230, 138, 0.1)' : 'transparent'
+                  }}
+                  className="rounded-xl p-1"
+                >
+                  <button 
+                    onClick={() => setShowMoreInfo(!showMoreInfo)}
+                    className="w-full flex justify-between items-center py-3 px-2 focus:outline-none"
+                  >
+                    <h3 className="text-lg font-bold text-amber-600">MORE INFORMATION</h3>
+                    <motion.div
+                      animate={{ rotate: showMoreInfo ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-5 w-5 text-amber-500" 
+                        viewBox="0 0 20 20" 
+                        fill="currentColor"
+                      >
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </motion.div>
+                  </button>
+                </motion.div>
 
-    <AnimatePresence>
-      {showMoreInfo && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-          className="overflow-hidden"
-        >
-          
-          <div className="grid grid-cols-1 gap-4 py-4 px-2">
-            {/* Single column layout - one item per row */}
-            <div className="flex items-start border-b border-gray-100 pb-3">
-              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Color</span>
-              <span className="text-gray-600 font-medium">{product.color || 'Brown'}</span>
+                <AnimatePresence>
+                  {showMoreInfo && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="grid grid-cols-1 gap-4 py-4 px-2">
+                        <div className="flex items-start border-b border-gray-100 pb-3">
+                          <span className="font-medium text-gray-700 w-40 flex-shrink-0">Color</span>
+                          <span className="text-gray-600 font-medium">{product.color || 'Brown'}</span>
+                        </div>
+                        
+                        <div className="flex items-start border-b border-gray-100 pb-3">
+                          <span className="font-medium text-gray-700 w-40 flex-shrink-0">Fabric</span>
+                          <span className="text-gray-600 font-medium">{product.fabric || 'Blended'}</span>
+                        </div>
+                        
+                        <div className="flex items-start border-b border-gray-100 pb-3">
+                          <span className="font-medium text-gray-700 w-40 flex-shrink-0">Product Category</span>
+                          <span className="text-gray-600 font-medium">{product.category || 'Casual Kameez Shalwar'}</span>
+                        </div>
+                        
+                        <div className="flex items-start border-b border-gray-100 pb-3">
+                          <span className="font-medium text-gray-700 w-40 flex-shrink-0">Season</span>
+                          <span className="text-gray-600 font-medium">{product.season || 'All Seasons'}</span>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <span className="font-medium text-gray-700 w-40 flex-shrink-0">Disclaimer</span>
+                          <span className="text-gray-500 text-sm italic">
+                            {product.disclaimer || 'Due to photographic lighting & screen differences, colors may vary slightly'}
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
-            
-            <div className="flex items-start border-b border-gray-100 pb-3">
-              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Fabric</span>
-              <span className="text-gray-600 font-medium">{product.fabric || 'Blended'}</span>
-            </div>
-            
-            <div className="flex items-start border-b border-gray-100 pb-3">
-              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Product Category</span>
-              <span className="text-gray-600 font-medium">{product.category || 'Casual Kameez Shalwar'}</span>
-            </div>
-            
-            <div className="flex items-start border-b border-gray-100 pb-3">
-              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Season</span>
-              <span className="text-gray-600 font-medium">{product.season || 'All Seasons'}</span>
-            </div>
-            
-            <div className="flex items-start">
-              <span className="font-medium text-gray-700 w-40 flex-shrink-0">Disclaimer</span>
-              <span className="text-gray-500 text-sm italic">
-                {product.disclaimer || 'Due to photographic lighting & screen differences, colors may vary slightly'}
-              </span>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-</div>
           </motion.div>
         </div>
       </motion.main>

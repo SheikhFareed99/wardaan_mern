@@ -22,7 +22,7 @@ function Term() {
         },
         {
           title: "Returns & Exchanges",
-          content: "We accept returns and refunds for standard (non-customized) products. To be eligible, the issue must be reported within 48 hours of receiving the order. The item must be unused, unwashed, and in its original packaging. Return shipping costs will be the customer’s responsibility unless the mistake is from our side. 🔸 No returns or refunds are accepted for: Customized orders (tailored sizing, design changes, or special requests). Items damaged due to mishandling after delivery."
+          content: "We accept returns and refunds for standard (non-customized) products. To be eligible, the issue must be reported within 48 hours of receiving the order. The item must be unused, unwashed, and in its original packaging. 2-shipping costs(return and shipping) will be the customer’s responsibility unless the mistake is from our side. 🔸 No returns or refunds are accepted for: Customized orders (tailored sizing, design changes, or special requests). Items damaged due to mishandling after delivery.If their is no valid reason of returning the product their will be no return unless you satisfy our team about the reason you are returning.Refund will be issue after the returning product is received and checked "
         },
         {
           title: "Sizing & Customization",

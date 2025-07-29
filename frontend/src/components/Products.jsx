@@ -63,7 +63,7 @@ function Products() {
   const handleProductClick = (product) => {
     if (product.stock > 0) {
       localStorage.setItem("category",category)
-      navigate(`/ProductDescrition/${product._id}`);
+      navigate(`/ProductDescription/${product._id}`);
     }
   };
 
@@ -206,7 +206,7 @@ function Products() {
 
   {/* Discount badge */}
   {product.discountPercentage && (
-    <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md transform rotate-12">
+    <div className="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md transform rotate-12">
       {product.discountPercentage}% OFF
     </div>
   )}
