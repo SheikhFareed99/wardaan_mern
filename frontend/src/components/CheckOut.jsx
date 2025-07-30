@@ -11,7 +11,7 @@ function CheckOut() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (typeof fbq !== "undefined") {
-      fbq('track', 'InitiateCheckout', {
+      fbq('track', 'InitiateCheckout', {  
         value: subtotal.toFixed(0),
         currency: 'PKR'
       });
