@@ -87,7 +87,7 @@ function Home() {
   const handleProductClick = (product) => {
     if (product.stock > 0) {
       localStorage.setItem("category", "");
-      navigate(`/ProductDescription/${product._id}`, { state: { product } });
+      navigate(`/ProductDescrition/${product._id}`, { state: { product } });
     }
   };
 

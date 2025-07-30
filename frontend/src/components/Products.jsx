@@ -63,7 +63,7 @@ function Products() {
   const handleProductClick = (product) => {
     if (product.stock > 0) {
       localStorage.setItem("category",category)
-      navigate(`/ProductDescription/${product._id}`);
+      navigate(`/ProductDescrition/${product._id}`);
     }
   };
 
