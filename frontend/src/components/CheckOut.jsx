@@ -64,6 +64,15 @@ function CheckOut() {
     const { firstName, lastName, address, city, phone } = formData;
     return firstName && lastName && address && city && phone;
   };
+  
+  const insertWidth = (url, width) => {
+    const uploadIndex = url.indexOf("/upload/");
+    if (uploadIndex === -1) return url;
+    const prefix = url.slice(0, uploadIndex + 8); // includes '/upload/'
+    const suffix = url.slice(uploadIndex + 8);
+
+    return `${prefix}w_${width},f_auto,q_auto/${suffix}`;
+  };
 
   const getDeliveryDate = () => {
     const delivery = new Date();
@@ -202,10 +211,17 @@ function CheckOut() {
         <div className="w-full lg:w-1/2 bg-white py-10 px-4">
           <div className="bg-white p-6 rounded-xl shadow space-y-6 max-w-xl mx-auto">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-
+          
             {bagArr.map((item) => (
               <div key={item.id} className="flex items-start gap-4 border-b pb-4">
-                <img src={item.image} alt={item.name} className="w-18 h-27 object-cover rounded" />
+                <img src={insertWidth(item.image, 500)}
+                      srcSet={`
+                        ${insertWidth(  item.image, 500)} 500w,
+                        ${insertWidth(  item.image, 1000)} 500w,
+                        ${insertWidth(  item.image, 1600)} 500w
+                      `}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      alt={item.name} className="w-18 h-27 object-cover rounded" />
                 <div className="flex-1">
                   <h3 className="font-medium text-base">{item.name}</h3>
                   <p className="text-sm text-gray-500">
@@ -320,16 +336,16 @@ function CheckOut() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
               </svg>
-              <span className="text-sm">Easy Returns & Refunds within 3 Days</span>
+              <span className="text-sm text-black">Easy Returns & Refunds within 3 Days</span>
             </div>
 
             <button
               onClick={handleSubmit}
               disabled={!isFormValid() || bagArr.length === 0 || loading}
-              className={`w-full py-3 rounded-lg text-sm font-semibold transition ${
+              className={`w-full h-15 py-3 rounded-lg text-sm font-semibold transition ${
                 isFormValid() && bagArr.length > 0 && !loading
                   ? 'bg-red-500 text-white hover:bg-red-800'
-                  : 'bg-black text-white hover:bg-gray-800 cursor-not-allowed'
+                  : 'bg-green-500 text-white hover:bg-gray-800 cursor-not-allowed'
               }`}
             >
               {loading ? 'Placing Order...' : 'Complete Order'}

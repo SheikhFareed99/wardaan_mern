@@ -241,6 +241,19 @@ function ProductDescription() {
             <div className="mb-6">
               <span className="text-sm font-medium text-amber-600">{product.brand}</span>
               <h1 className="text-3xl font-bold text-gray-900 mt-1 mb-3">{product.name}</h1>
+              {/* Category Label */}
+    <div className="mb-4">
+      <span className="text-2xl font-bold text-gray-700">
+        {product.category === "chappal" 
+          ? "Chappal" 
+          : product.category === "kameez shalwar" && category === "Vardaans-Unstitched" 
+            ? "Unstitched" 
+            : product.category === "kameez shalwar" && (category === "shalwar kameez" || category === "") 
+              ? "Stitched" 
+              : ""}
+      </span>
+    </div>
+
               {(product.category === "kameez shalwar" && category !== "Vardaans-Unstitched") || (product.category === "chappal") ? (
                 <div className="flex items-baseline gap-3 mb-6">
                   <span className="text-3xl font-extrabold text-gray-900">
