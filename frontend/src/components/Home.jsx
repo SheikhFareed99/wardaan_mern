@@ -370,9 +370,11 @@ function Home() {
                     )}
                   </div>
                   {product.discountPercentage && (
-                    <div className="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md transform rotate-12">
-                      {product.discountPercentage}% OFF
-                    </div>
+                    <div className="absolute top-1 right-1 bg-red-500 text-white text-[9px] font-semibold px-1 py-0.5 rounded shadow transform rotate-12">
+  {product.discountPercentage}% OFF
+</div>
+
+
                   )}
                   {product.stock > 0 && (
                     <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center py-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
