@@ -19,6 +19,8 @@ function ProductDescription() {
   useEffect(() => {
     console.log(id);
     window.scrollTo(0, 0);
+
+    
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/selectedproduct/${id}`);
@@ -29,7 +31,14 @@ function ProductDescription() {
         setLoading(false);
       }
     };
-    
+
+        if (typeof fbq !== "undefined") {
+          fbq('track', 'ViewContent', {
+            content_ids: [id], 
+            content_type: 'product',
+          });
+        }
+        
     fetchProduct();
   }, [id]);
 
@@ -61,7 +70,7 @@ function ProductDescription() {
       name: product.name,
       brand: product.brand,
       price: isUnstitchedKameezShalwar 
-        ? product.price - 1215
+        ? product.price - 1404
         : product.price,
       discount: product.discountPercentage,
       image: product.imageUrl[0],
@@ -80,6 +89,13 @@ function ProductDescription() {
   };
 
   const handleAddToCart = () => {
+    
+    if (typeof fbq !== "undefined") {
+      fbq('track', 'AddToCart', {
+        content_ids: [id], 
+        content_type: 'product',
+      });
+    }
     const selectedProduct = getSelectedProduct();
     dispatch(bagActions.addItemToBag(selectedProduct));
     setAddedToCart(true);
@@ -268,11 +284,11 @@ function ProductDescription() {
               ) : (
                 <div className="flex items-baseline gap-3 mb-6">
                   <span className="text-3xl font-extrabold text-gray-900">
-                    Rs.{Math.round((product.price - 1215) * (1 - product.discountPercentage / 100)).toLocaleString()}
+                    Rs.{Math.round((product.price - 1404) * (1 - product.discountPercentage / 100)).toLocaleString()}
                   </span>
                   {product.discountPercentage > 0 && (
                     <span className="text-lg text-gray-500 line-through">
-                      Rs.{(Math.round(product.price - 1215)).toLocaleString()}
+                      Rs.{(Math.round(product.price - 1404)).toLocaleString()}
                     </span>
                   )}
                 </div>
