@@ -94,11 +94,17 @@ export default function Header() {
       </aside>
 
       {/* Announcement Bar */}
-      <div className="w-full bg-gradient-to-r from-purple-800 to-indigo-800 text-white py-2 overflow-hidden whitespace-nowrap z-50">
-        <div className="animate-marquee inline-block px-10 text-sm font-medium tracking-wide">
-          🎉  Unwrap Elegance – 50% OFF on all products &nbsp; • &nbsp; Vardaan's Azadi Sale is Live! &nbsp; • &nbsp; New in: Vardaan Rivayat Collection!
-        </div>
-      </div>
+      <div className="w-full bg-gradient-to-r from-green-800 to-green-600 text-white py-2 overflow-hidden whitespace-nowrap z-50">
+  <div className="animate-marquee inline-flex items-center gap-2 text-xs sm:text-sm font-medium tracking-wide px-4">
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/24px-Flag_of_Pakistan.svg.png" 
+      alt="Pakistan Flag" 
+      className="w-5 h-auto inline-block"
+    />
+    Unwrap Elegance – 50% OFF on all products • Vardaan's Azadi Sale is Live! • New in: Vardaan Rivayat Collection!
+    
+  </div>
+</div>
 
       <style>
         {`
