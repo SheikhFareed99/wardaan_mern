@@ -34,13 +34,13 @@ function Home() {
 
     const fetchData = async () => {
       try {
-        // Fetch products
-        const productResponse = await axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`);
+        // Fetch products and feedbacks in parallel
+        const [productResponse, feedbackResponse] = await Promise.all([
+          axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`),
+          axios.get(`https://wardaan-mern.onrender.com/api/products/feedbacks`)
+        ]);
         setProducts(productResponse.data);
-
-        // Fetch approved feedbacks
-        const feedbackResponse = await axios.get(`https://wardaan-mern.onrender.com/api/products/feedbacks`);
-        console.log('Feedback response:', feedbackResponse.data);
+        
         const approvedFeedbacks = Array.isArray(feedbackResponse.data)
           ? feedbackResponse.data.filter(fb => fb.status === true)
           : [];
@@ -72,7 +72,7 @@ function Home() {
       }
     };
 
-    document.addEventListener('click', handleAnchorClick);
+    document.addEventListener('click', handleAnchorClick, { passive: true });
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
@@ -81,7 +81,7 @@ function Home() {
     if (uploadIndex === -1) return url;
     const prefix = url.slice(0, uploadIndex + 8);
     const suffix = url.slice(uploadIndex + 8);
-    return `${prefix}w_${width},f_auto,q_auto/${suffix}`;
+    return `${prefix}w_${width},f_webp,q_auto/${suffix}`;
   };
 
   const handleProductClick = (product) => {
@@ -113,7 +113,7 @@ function Home() {
 
   const scrollFeedbacks = (direction) => {
     if (feedbackContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300; // Adjust based on card width
+      const scrollAmount = direction === 'left' ? -300 : 300;
       feedbackContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
@@ -149,12 +149,21 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
+      {/* Add preconnect hints in index.html */}
+      {/* Example: 
+      <link rel="preconnect" href="https://res.cloudinary.com">
+      <link rel="preconnect" href="https://wardaan-mern.onrender.com">
+      */}
+
       <div className="w-full relative">
         {/* Desktop Image */}
         <div className="hidden md:block relative">
           <img
-            src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg"
-            className="w-full h-auto object-cover"
+            src={insertWidth("https://res.cloudinary.com/dxqz169dw/image/upload/v1753552936/home_pic_okqgxk_c_crop_ar_1_1_phc8j6.jpg", 2400)}
+            width="1200"
+            height="1200"
+            fetchpriority="high"
+            className="w-full h-auto object-cover aspect-square"
             alt="Traditional clothing"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-100">
@@ -176,8 +185,11 @@ function Home() {
         {/* Mobile Image */}
         <div className="block md:hidden relative">
           <img
-            src="https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753550460/home_pic_okqgxk.jpg"
-            className="w-full h-auto object-cover"
+            src={insertWidth("https://res.cloudinary.com/dxqz169dw/image/upload/v1753550460/home_pic_okqgxk.jpg", 2400)}
+            width="412"
+            height="618"
+            fetchpriority="high"
+            className="w-full h-auto object-cover aspect-[2/3]"
             alt="Traditional clothing"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-60">
@@ -201,36 +213,53 @@ function Home() {
       <div ref={categoryRef} className="w-full">
         {[
           {
-            desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435544/IMG_8101_nxywzv.jpg",
-            mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752441769/IMG_8101_1_oej5lg.png",
+            desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435544/IMG_8101_nxywzv.jpg",
+            mobileImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752441769/IMG_8101_1_oej5lg.png",
             title: "kameez-shalwar",
-            description: "Explore our exquisite Rivayat collection of traditional kameez shalwar sets"
+            description: "Explore our exquisite Rivayat collection of traditional kameez shalwar sets",
+            desktopWidth: 1200,
+            desktopHeight: 900,
+            mobileWidth: 532,
+            mobileHeight: 946
           },
           {
-            desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/w_2400,f_auto,q_auto/v1752435545/IMG_8223_eezrpv.png",
-            mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556992/IMG_8113_fmkfip.jpg",
+            desktopImage: "https://res.cloudinary.com/dswff96z5/image/upload/v1752435545/IMG_8223_eezrpv.png",
+            mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/v1753556992/IMG_8113_fmkfip.jpg",
             title: "chappal",
-            description: "Handcrafted footwear that combines comfort and tradition"
+            description: "Handcrafted footwear that combines comfort and tradition",
+            desktopWidth: 1200,
+            desktopHeight: 900,
+            mobileWidth: 710,
+            mobileHeight: 946
           },
           {
-            desktopImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556680/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug_c_crop_ar_4_3_tfrbfa.webp",
-            mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/w_2400,f_auto,q_auto/v1753556626/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug.webp",
+            desktopImage: "https://res.cloudinary.com/dxqz169dw/image/upload/v1753556680/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug_c_crop_ar_4_3_tfrbfa.webp",
+            mobileImage: "https://res.cloudinary.com/dxqz169dw/image/upload/v1753556626/assets_task_01k1410ahpewztcx0f0pm9bxw5_1753555894_img_1_o0tyug.webp",
             title: "Vardaans-Unstitched",
-            description: "Create your own style with our premium unstitched fabrics"
+            description: "Create your own style with our premium unstitched fabrics",
+            desktopWidth: 1200,
+            desktopHeight: 900,
+            mobileWidth: 631,
+            mobileHeight: 946
           }
-        ].map(({ desktopImage, mobileImage, title, description }, idx) => (
+        ].map(({ desktopImage, mobileImage, title, description, desktopWidth, desktopHeight, mobileWidth, mobileHeight }, idx) => (
           <div
             key={idx}
             className="relative w-full min-h-[115vh] flex items-end justify-center overflow-hidden"
+            style={{ aspectRatio: '4/3' }}
           >
             <img
-              src={mobileImage}
+              src={insertWidth(mobileImage, 2400)}
+              width={mobileWidth}
+              height={mobileHeight}
               alt={`${title} mobile`}
               className="block md:hidden absolute inset-0 w-full h-full object-cover object-center brightness-90"
               loading="lazy"
             />
             <img
-              src={desktopImage}
+              src={insertWidth(desktopImage, 2400)}
+              width={desktopWidth}
+              height={desktopHeight}
               alt={`${title} desktop`}
               className="hidden md:block absolute inset-0 w-full h-full object-cover object-center brightness-90"
               loading="lazy"
@@ -337,32 +366,37 @@ function Home() {
               >
                 <div
                   className="relative pb-[145%] bg-gray-50 overflow-hidden cursor-pointer"
+                  style={{ aspectRatio: '2/3' }}
                   onClick={() => {
                     if (product.stock > 0) handleProductClick(product);
                   }}
                 >
                   <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
                     <img
-                      src={insertWidth(product.imageUrl[0], 1000)}
+                      src={insertWidth(product.imageUrl[0], 500)}
                       srcSet={`
-                        ${insertWidth(product.imageUrl[0], 500)} 1000w,
-                        ${insertWidth(product.imageUrl[0], 1000)} 1000w,
-                        ${insertWidth(product.imageUrl[0], 1600)} 1000w
+                        ${insertWidth(product.imageUrl[0], 300)} 300w,
+                        ${insertWidth(product.imageUrl[0], 500)} 500w,
+                        ${insertWidth(product.imageUrl[0], 800)} 800w
                       `}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      width="174"
+                      height="261"
                       alt={`${product.name} default`}
                       className="absolute w-full h-full object-cover transition-transform duration-500"
                       loading="lazy"
                     />
                     {product.imageUrl[1] && (
                       <img
-                        src={insertWidth(product.imageUrl[1], 1000)}
+                        src={insertWidth(product.imageUrl[1], 500)}
                         srcSet={`
-                          ${insertWidth(product.imageUrl[1], 500)} 1000w,
-                          ${insertWidth(product.imageUrl[1], 1000)} 1000w,
-                          ${insertWidth(product.imageUrl[1], 1600)} 1000w
+                          ${insertWidth(product.imageUrl[1], 300)} 300w,
+                          ${insertWidth(product.imageUrl[1], 500)} 500w,
+                          ${insertWidth(product.imageUrl[1], 800)} 800w
                         `}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        width="174"
+                        height="261"
                         alt={`${product.name} hover`}
                         className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}
                         loading="lazy"
@@ -371,10 +405,8 @@ function Home() {
                   </div>
                   {product.discountPercentage && (
                     <div className="absolute top-1 right-1 bg-red-500 text-white text-[9px] font-semibold px-1 py-0.5 rounded shadow transform rotate-12">
-  {product.discountPercentage}% OFF
-</div>
-
-
+                      {product.discountPercentage}% OFF
+                    </div>
                   )}
                   {product.stock > 0 && (
                     <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center py-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
@@ -429,7 +461,6 @@ function Home() {
 
       {/* Feedback Section */}
       <div id="feedback" className="container mx-auto px-4 py-12">
-        {/* Customer Reviews Heading */}
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -441,7 +472,6 @@ function Home() {
           <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
         </motion.h2>
 
-        {/* Feedback Cards */}
         {feedbacks.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -474,7 +504,6 @@ function Home() {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">{feedback.name}</p>
-                   
                     </div>
                   </div>
                   <div className="flex mb-3">
@@ -492,7 +521,6 @@ function Home() {
                 </motion.div>
               ))}
             </motion.div>
-            {/* Navigation Arrows */}
             {feedbacks.length > 4 && (
               <>
                 <button
@@ -516,7 +544,6 @@ function Home() {
           </div>
         )}
 
-        {/* Feedback Form Heading */}
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -528,7 +555,6 @@ function Home() {
           <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
         </motion.h1>
 
-        {/* Feedback Form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
