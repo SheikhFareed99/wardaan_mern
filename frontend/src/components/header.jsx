@@ -92,45 +92,30 @@ export default function Header() {
        
         </nav>
       </aside>
-
-{/* Announcement Bar */}
-<div className="w-full bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 text-white py-2 overflow-hidden whitespace-nowrap z-50 shadow-md">
-  <div className="animate-marquee inline-flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wide px-4 text-white drop-shadow-md">
-     Unwrap Elegance – Upto 50% OFF on all products •  Vardaan's Summer Sale Live! •  New in: Vardaan Rivayat Collection!
-  </div>
-</div>
-
-<style>
-  {`
-    .animate-marquee {
-      display: inline-block;
-      white-space: nowrap;
-      animation: marquee 12s linear infinite;
-    }
-
-    @keyframes marquee {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-  `}
-</style>
-
+      <div className="w-full bg-gradient-to-r from-amber-700 via-amber-600 to-burgundy-800 text-white py-2 overflow-hidden whitespace-nowrap z-50 shadow-md">
+        <div className="animate-marquee inline-flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wide px-4 text-white drop-shadow-md">
+          Unwrap Elegance – Upto 50% OFF on all products • Vardaan's Summer Sale Live! • New in: Vardaan Rivayat Collection!
+        </div>
+      </div>
 
       <style>
         {`
           .animate-marquee {
             display: inline-block;
             white-space: nowrap;
-            animation: marquee 10s linear infinite;
+            animation: marquee 12s linear infinite;
           }
 
           @keyframes marquee {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
           }
+          
+          .bg-burgundy-800 {
+            background-color: #722F37;
+          }
         `}
       </style>
-
       {/* Header */}
       <header className="bg-black shadow-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
