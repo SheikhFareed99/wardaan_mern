@@ -1,7 +1,7 @@
 const Order = require('../models/orderModel');
 const Invoice = require('../models/invoiceModel');
 const Product = require('../models/product');
-const Discount=require('../models/DiscountCode')
+const Discount = require('../models/DiscountCode')
 const nodemailer = require("nodemailer");
 
 // reusable transporter
@@ -75,8 +75,8 @@ exports.updateOrder = async (req, res) => {
   }
 };
 
-exports.GetselectedOrders=async (req, res) => {
-    const s = req.query.status;
+exports.GetselectedOrders = async (req, res) => {
+  const s = req.query.status;
   try {
 
     const orders = await Order.find({ status: s }).sort({ orderDate: -1 });
@@ -88,30 +88,29 @@ exports.GetselectedOrders=async (req, res) => {
 };
 
 
-exports.GetselectedOrders=async (req, res) => {
-    const s = req.query.status;
-    if(s=='all'){
- try {
-                  
-    const orders = await Order.find().sort({ orderDate: -1 });
-    res.json(orders);
-  } catch (err) {
-    console.error("Failed to fetch orders:", err);
-    res.status(500).json({ message: "Server error while fetching orders" });
-  }
+exports.GetselectedOrders = async (req, res) => {
+  const s = req.query.status;
+  if (s == 'all') {
+    try {
+
+      const orders = await Order.find().sort({ orderDate: -1 });
+      res.json(orders);
+    } catch (err) {
+      console.error("Failed to fetch orders:", err);
+      res.status(500).json({ message: "Server error while fetching orders" });
     }
-    else
-    {
- try {
-                  
-    const orders = await Order.find({ status: s }).sort({ orderDate: -1 });
-    res.json(orders);
-  } catch (err) {
-    console.error("Failed to fetch orders:", err);
-    res.status(500).json({ message: "Server error while fetching orders" });
   }
+  else {
+    try {
+
+      const orders = await Order.find({ status: s }).sort({ orderDate: -1 });
+      res.json(orders);
+    } catch (err) {
+      console.error("Failed to fetch orders:", err);
+      res.status(500).json({ message: "Server error while fetching orders" });
     }
- 
+  }
+
 };
 
 exports.placeOrder = async (req, res) => {
@@ -195,14 +194,16 @@ exports.placeOrder = async (req, res) => {
 
     await invoice.save();
 
-if (address.email) {
-  await sendConfirmationEmail(address.email, address.firstName, savedOrder._id);
-}
+    if (address.email) {
+      sendConfirmationEmail(address.email, address.firstName, savedOrder._id).catch(err =>
+        console.error('Background email sending failed:', err)
+      );
+    }
 
-res.status(201).json({
-  message: 'Order placed and invoice generated',
-  orderId: savedOrder._id,
-});
+    res.status(201).json({
+      message: 'Order placed and invoice generated',
+      orderId: savedOrder._id,
+    });
 
   } catch (error) {
     console.error('Order Placement Error:', error);
@@ -210,7 +211,7 @@ res.status(201).json({
   }
 
 
-  
+
 };
 
 
@@ -244,7 +245,7 @@ exports.DiscountCode = async (req, res) => {
     if (!result) {
       return res.status(404).json({ message: "Discount code not found" });
     }
-    return res.status(200).json({ amount: result.Limit ,code:result.code});
+    return res.status(200).json({ amount: result.Limit, code: result.code });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -255,7 +256,7 @@ exports.InsertCode = async (req, res) => {
   const { DisCode, amount } = req.body;
 
   try {
-    const resp = await Discount.create({ code: DisCode, Limit: amount }); 
+    const resp = await Discount.create({ code: DisCode, Limit: amount });
     res.status(200).json({ message: "Code is inserted" });
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -274,7 +275,7 @@ exports.getDiscountedCodes = async (req, res) => {
 
 // 4. Delete discount code
 exports.DeleteCode = async (req, res) => {
-  const { DisCode } = req.body; 
+  const { DisCode } = req.body;
 
   try {
     const resp = await Discount.deleteOne({ code: DisCode });
