@@ -10,7 +10,7 @@ const generateToken = (id) => {
 exports.adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log("Admin login attempt:", req.body);
+  console.log("Admin login attempt for:", email);
 
   try {
     const admin = await Admin.findOne({ email });
@@ -33,6 +33,6 @@ exports.adminLogin = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: "Server error", error });
+    res.status(500).json({ message: "Server error" });
   }
 };
