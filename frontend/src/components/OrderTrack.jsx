@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Header from './header.jsx';
 import Footer from './footer.jsx'
+import API_BASE_URL from '../config.js';
 
 function OrderTrack() {
     const [orderid, setorderid] = useState("");
@@ -10,7 +11,7 @@ function OrderTrack() {
 
     const fetchStatus = async () => {
         try {
-            const response = await axios.get(`https://wardaan-mern.onrender.com/api/orders/orderid/${orderid}`);
+            const response = await axios.get(`${API_BASE_URL}/api/orders/orderid/${orderid}`);
             setstatus(response.data.status);
             settrackingid(response.data.trackingNumber);
         } catch (err) {

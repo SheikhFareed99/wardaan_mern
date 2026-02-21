@@ -5,6 +5,7 @@ import Header from './header.jsx';
 import Footer from './footer.jsx';
 import { useNavigate } from 'react-router-dom';
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import API_BASE_URL from '../config.js';
 
 function CheckOut() {
   const navigate = useNavigate();
@@ -91,7 +92,7 @@ function CheckOut() {
     }
 
     try {
-      const response = await fetch(`https://wardaan-mern.onrender.com/api/orders/DiscountCode/${formData.discountCode}`);
+      const response = await fetch(`${API_BASE_URL}/api/orders/DiscountCode/${formData.discountCode}`);
       if (!response.ok) {
         throw new Error('Invalid discount code');
       }
@@ -118,7 +119,7 @@ function CheckOut() {
 
     setLoading(true);
     try {
-      const response = await fetch('https://wardaan-mern.onrender.com/api/orders', {
+      const response = await fetch(`${API_BASE_URL}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

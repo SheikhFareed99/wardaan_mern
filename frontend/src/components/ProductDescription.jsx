@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import DraggableWhatsApp from "./DraggableWhatsApp";
 import axios from 'axios';
+import API_BASE_URL from '../config.js';
 
 function ProductDescription() {
   const { id } = useParams();
@@ -23,7 +24,7 @@ function ProductDescription() {
     
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/selectedproduct/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/products/selectedproduct/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (err) {

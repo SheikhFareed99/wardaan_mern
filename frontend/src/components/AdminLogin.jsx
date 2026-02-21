@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from '../config.js';
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ function AdminLogin() {
     setError("");
 
     try {
-      const response = await axios.post("https://wardaan-mern.onrender.com/api/admin/login", {
+      const response = await axios.post(`${API_BASE_URL}/api/admin/login`, {
         email,
         password,
       });

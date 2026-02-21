@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from "framer-motion";
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import API_BASE_URL from '../config.js';
 
 function Products() {
   useEffect(() => {
@@ -37,7 +38,7 @@ function Products() {
           apiCategory = "unstitched";
         }
   
-        const endpoint = `https://wardaan-mern.onrender.com/api/products/${apiCategory}`;
+        const endpoint = `${API_BASE_URL}/api/products/${apiCategory}`;
         const res = await axios.get(endpoint);
         setProducts(res.data);
       } catch (err) {

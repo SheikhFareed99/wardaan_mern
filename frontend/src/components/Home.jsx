@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DraggableWhatsApp from "./DraggableWhatsApp";
 import axios from 'axios';
 import { motion } from "framer-motion";
+import API_BASE_URL from '../config.js';
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -36,8 +37,8 @@ function Home() {
       try {
         // Fetch products and feedbacks in parallel
         const [productResponse, feedbackResponse] = await Promise.all([
-          axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`),
-          axios.get(`https://wardaan-mern.onrender.com/api/products/feedbacks`)
+          axios.get(`${API_BASE_URL}/api/products/allproducts`),
+          axios.get(`${API_BASE_URL}/api/products/feedbacks`)
         ]);
         setProducts(productResponse.data);
         
@@ -97,7 +98,7 @@ function Home() {
     setSubmitMessage('');
 
     try {
-      const response = await axios.post('https://wardaan-mern.onrender.com/api/products/feedbacks', feedbackForm);
+      const response = await axios.post(`${API_BASE_URL}/api/products/feedbacks`, feedbackForm);
       setSubmitMessage('Feedback submitted successfully! Awaiting approval.');
       setFeedbackForm({ name: '', review: '', star: 0 });
     } catch (err) {
@@ -152,7 +153,7 @@ function Home() {
       {/* Add preconnect hints in index.html */}
       {/* Example: 
       <link rel="preconnect" href="https://res.cloudinary.com">
-      <link rel="preconnect" href="https://wardaan-mern.onrender.com">
+      <link rel="preconnect" href={API_BASE_URL}>
       */}
 
       <div className="w-full relative">

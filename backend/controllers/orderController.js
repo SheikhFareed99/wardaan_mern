@@ -6,16 +6,16 @@ const nodemailer = require("nodemailer");
 
 // reusable transporter
 const transporter = nodemailer.createTransport({
-  service: 'Gmail', // or use 'hotmail', 'yahoo', or a custom SMTP
+  service: 'Gmail',
   auth: {
-    user: 'thevardaansofficial@gmail.com',        // replace with your email
-    pass: 'agfdpfeqepiehctn',        // use Gmail App Password (not regular password)
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
   },
 });
 
 async function sendConfirmationEmail(toEmail, firstName, orderId) {
   const mailOptions = {
-    from: '"Vardaan Wear" <thevardaansofficial@gmail.com>',
+    from: `"Vardaan Wear" <${process.env.GMAIL_USER}>`,
     to: toEmail,
     subject: `Vardaan Order Confirmation - Order #${orderId}`,
     html: `
