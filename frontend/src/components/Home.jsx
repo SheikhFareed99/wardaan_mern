@@ -153,7 +153,7 @@ function Home() {
       {/* Add preconnect hints in index.html */}
       {/* Example: 
       <link rel="preconnect" href="https://res.cloudinary.com">
-      <link rel="preconnect" href={API_BASE_URL}>
+      <link rel="preconnect" href="https://your-backend-url.onrender.com">
       */}
 
       <div className="w-full relative">
