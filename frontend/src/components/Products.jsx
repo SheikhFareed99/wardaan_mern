@@ -21,7 +21,7 @@ function Products() {
     const fetchData = async () => {
       try {
         let apiCategory = category;
-  
+
         if (category === "kameez-shalwar") {
           apiCategory = "kameez shalwar";
         } else if (category === "Vardaan-Special") {
@@ -29,15 +29,14 @@ function Products() {
         } else if (category === "Discount") {
           apiCategory = "discounted";
         }
-        else if (category === "chappal")
-        {
+        else if (category === "chappal") {
           apiCategory = "chappal";
         }
-        else{
+        else {
           apiCategory = "unstitched";
         }
-  
-        const endpoint = `https://wardaan-mern.onrender.com/api/products/${apiCategory}`;
+
+        const endpoint = `${import.meta.env.VITE_API_URL}/api/products/${apiCategory}`;
         const res = await axios.get(endpoint);
         setProducts(res.data);
       } catch (err) {
@@ -46,10 +45,10 @@ function Products() {
         setIsLoading(false);
       }
     };
-  
+
     fetchData();
   }, [category]);
-  
+
   const insertWidth = (url, width) => {
     const uploadIndex = url.indexOf("/upload/");
     if (uploadIndex === -1) return url;
@@ -62,7 +61,7 @@ function Products() {
 
   const handleProductClick = (product) => {
     if (product.stock > 0) {
-      localStorage.setItem("category",category)
+      localStorage.setItem("category", category)
       navigate(`/ProductDescription/${product._id}`);
     }
   };
@@ -85,23 +84,23 @@ function Products() {
 
   const shimmerItem = {
     hidden: { opacity: 0.5 },
-    show: { 
+    show: {
       opacity: 1,
-      transition: { 
-        repeat: Infinity, 
-        repeatType: "reverse", 
-        duration: 1.5 
-      } 
+      transition: {
+        repeat: Infinity,
+        repeatType: "reverse",
+        duration: 1.5
+      }
     }
   };
 
   return (
-    <>  
+    <>
       <Header />
       <DraggableWhatsApp />
       <div className="container mx-auto px-1 py-8 min-h-screen">
         {category && (
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -111,9 +110,9 @@ function Products() {
             <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
           </motion.h1>
         )}
-        
+
         {isLoading ? (
-          <motion.div 
+          <motion.div
             variants={container}
             initial="hidden"
             animate="show"
@@ -136,7 +135,7 @@ function Products() {
             ))}
           </motion.div>
         ) : products.length === 0 ? (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -144,7 +143,7 @@ function Products() {
           >
             <div className="text-6xl mb-4">😕</div>
             <p className="text-xl text-gray-600">No products found in this category.</p>
-            <button 
+            <button
               onClick={() => navigate('/')}
               className="mt-6 px-6 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600 transition-colors duration-300"
             >
@@ -152,7 +151,7 @@ function Products() {
             </button>
           </motion.div>
         ) : (
-          <motion.div 
+          <motion.div
             variants={container}
             initial="hidden"
             animate="show"
@@ -166,15 +165,15 @@ function Products() {
                 className={`bg-white rounded-xl shadow-lg overflow-hidden relative group transition-all duration-300 ${product.stock > 0 ? 'hover:shadow-xl' : ''}`}
               >
                 {/* Image container */}
-                <div 
-  className="relative pb-[145%] bg-gray-50 overflow-hidden cursor-pointer"
-  onClick={() => {
-    if (product.stock > 0) handleProductClick(product);
-  }}
->
-  <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-    {/* Base image */}
-    <img
+                <div
+                  className="relative pb-[145%] bg-gray-50 overflow-hidden cursor-pointer"
+                  onClick={() => {
+                    if (product.stock > 0) handleProductClick(product);
+                  }}
+                >
+                  <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+                    {/* Base image */}
+                    <img
                       src={insertWidth(product.imageUrl[0], 1000)}
                       srcSet={`
                         ${insertWidth(product.imageUrl[0], 500)} 1000w,
@@ -182,15 +181,15 @@ function Products() {
                         ${insertWidth(product.imageUrl[0], 1600)} 1000w
                       `}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-      alt={`${product.name} default`}
-      className="absolute w-full h-full object-cover transition-transform duration-500"
-      loading="lazy"
-    />
+                      alt={`${product.name} default`}
+                      className="absolute w-full h-full object-cover transition-transform duration-500"
+                      loading="lazy"
+                    />
 
-    {/* Hover image */}
-    {product.imageUrl[1] && (
-      <img
-      loading="lazy"
+                    {/* Hover image */}
+                    {product.imageUrl[1] && (
+                      <img
+                        loading="lazy"
                         src={insertWidth(product.imageUrl[1], 1000)}
                         srcSet={`
                           ${insertWidth(product.imageUrl[1], 500)} 1000w,
@@ -198,50 +197,50 @@ function Products() {
                           ${insertWidth(product.imageUrl[1], 1600)} 1000w
                         `}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-        alt={`${product.name} hover`}
-        className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}
-      />
-    )}
-  </div>
+                        alt={`${product.name} hover`}
+                        className={`absolute w-full h-full object-cover translate-x-full ${product.stock > 0 ? 'group-hover:translate-x-0' : ''} transition-transform duration-500`}
+                      />
+                    )}
+                  </div>
 
-  {/* Discount badge */}
-  {product.discountPercentage && (
-    <div className="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md transform rotate-12">
-      {product.discountPercentage}% OFF
-    </div>
-  )}
+                  {/* Discount badge */}
+                  {product.discountPercentage && (
+                    <div className="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md transform rotate-12">
+                      {product.discountPercentage}% OFF
+                    </div>
+                  )}
 
-  {/* Quick view only if in stock */}
-  {product.stock > 0 && (
-    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center py-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-      <span className="text-sm">QUICK VIEW</span>
-    </div>
-  )}
-</div>
+                  {/* Quick view only if in stock */}
+                  {product.stock > 0 && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center py-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <span className="text-sm">QUICK VIEW</span>
+                    </div>
+                  )}
+                </div>
 
                 {/* Product info */}
                 <div className="p-4">
-                  <h3 
+                  <h3
                     className={`text-sm font-semibold mb-2 line-clamp-2 ${product.stock > 0 ? 'hover:text-amber-600 cursor-pointer' : 'cursor-default'}`}
                     onClick={() => handleProductClick(product)}
                   >
                     {product.name}
                   </h3>
-                  
+
                   {/* unstitched */}
-                  {category==="Vardaans-Unstitched"? <div className="flex items-center gap-2 mb-3">
+                  {category === "Vardaans-Unstitched" ? <div className="flex items-center gap-2 mb-3">
                     {product.discountPercentage ? (
                       <>
-                        <span className="text-xs text-gray-400 line-through">Rs.{(Math.round(product.price-1750)).toLocaleString()}</span>
+                        <span className="text-xs text-gray-400 line-through">Rs.{(Math.round(product.price - 1750)).toLocaleString()}</span>
                         <span className="text-sm font-bold text-red-600">
-                          Rs.{Math.round((product.price-1750) * (1 - product.discountPercentage / 100)).toLocaleString()}
+                          Rs.{Math.round((product.price - 1750) * (1 - product.discountPercentage / 100)).toLocaleString()}
                         </span>
                       </>
                     ) : (
-                      <span className="text-sm font-bold text-gray-800">Rs.{Math.round(product.price-1750).toLocaleString()}</span>
+                      <span className="text-sm font-bold text-gray-800">Rs.{Math.round(product.price - 1750).toLocaleString()}</span>
                     )}
-                     {/* stitched */}
-                  </div>: <div className="flex items-center gap-2 mb-3">
+                    {/* stitched */}
+                  </div> : <div className="flex items-center gap-2 mb-3">
                     {product.discountPercentage ? (
                       <>
                         <span className="text-xs text-gray-400 line-through">Rs.{(Math.round(product.price)).toLocaleString()}</span>
@@ -252,19 +251,18 @@ function Products() {
                     ) : (
                       <span className="text-sm font-bold text-gray-800">Rs.{Math.round(product.price.toLocaleString())}</span>
                     )}
-                  </div> }
-                 
+                  </div>}
 
 
-                 
-                  
-                  <motion.button 
+
+
+
+                  <motion.button
                     whileTap={{ scale: product.stock > 0 ? 0.95 : 1 }}
-                    className={`w-full py-2 rounded-md text-sm font-medium ${
-                      product.stock > 0
-                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md cursor-pointer' 
+                    className={`w-full py-2 rounded-md text-sm font-medium ${product.stock > 0
+                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md cursor-pointer'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    } transition-all duration-300`}
+                      } transition-all duration-300`}
                     disabled={product.stock <= 0}
                     onClick={() => handleProductClick(product)}
                   >
@@ -283,7 +281,7 @@ function Products() {
           </motion.div>
         )}
       </div>
-      
+
       <Footer />
     </>
   );

@@ -36,11 +36,11 @@ function Home() {
       try {
         // Fetch products and feedbacks in parallel
         const [productResponse, feedbackResponse] = await Promise.all([
-          axios.get(`https://wardaan-mern.onrender.com/api/products/allproducts`),
-          axios.get(`https://wardaan-mern.onrender.com/api/products/feedbacks`)
+          axios.get(`${import.meta.env.VITE_API_URL}/api/products/allproducts`),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/products/feedbacks`)
         ]);
         setProducts(productResponse.data);
-        
+
         const approvedFeedbacks = Array.isArray(feedbackResponse.data)
           ? feedbackResponse.data.filter(fb => fb.status === true)
           : [];
@@ -97,7 +97,7 @@ function Home() {
     setSubmitMessage('');
 
     try {
-      const response = await axios.post('https://wardaan-mern.onrender.com/api/products/feedbacks', feedbackForm);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/products/feedbacks`, feedbackForm);
       setSubmitMessage('Feedback submitted successfully! Awaiting approval.');
       setFeedbackForm({ name: '', review: '', star: 0 });
     } catch (err) {
@@ -149,11 +149,7 @@ function Home() {
       <meta name="google-site-verification" content="gqP-Pu_jI8l3-mNtKz-kb2wFwpMBdnGaPUNF5Eztin8" />
       <DraggableWhatsApp />
 
-      {/* Add preconnect hints in index.html */}
-      {/* Example: 
-      <link rel="preconnect" href="https://res.cloudinary.com">
-      <link rel="preconnect" href="https://wardaan-mern.onrender.com">
-      */}
+      {/* Add preconnect hints in index.html for performance */}
 
       <div className="w-full relative">
         {/* Desktop Image */}
@@ -435,11 +431,10 @@ function Home() {
                   </div>
                   <motion.button
                     whileTap={{ scale: product.stock > 0 ? 0.95 : 1 }}
-                    className={`w-full py-2 rounded-md text-sm font-medium ${
-                      product.stock > 0
+                    className={`w-full py-2 rounded-md text-sm font-medium ${product.stock > 0
                         ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md cursor-pointer'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    } transition-all duration-300`}
+                      } transition-all duration-300`}
                     disabled={product.stock <= 0}
                     onClick={() => handleProductClick(product)}
                   >
@@ -610,11 +605,10 @@ function Home() {
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-2 px-4 rounded-md text-white font-medium ${
-                isSubmitting
+              className={`w-full py-2 px-4 rounded-md text-white font-medium ${isSubmitting
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700'
-              } transition-all duration-300`}
+                } transition-all duration-300`}
             >
               {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
             </motion.button>

@@ -18,7 +18,7 @@ useEffect(() => {
     }
 const statusValue = "active";
     try {
-      const { data } = await axios.get(`https://wardaan-mern.onrender.com/api/orders?status=${statusValue}`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders?status=${statusValue}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("Fetched orders:", data);
@@ -47,7 +47,7 @@ const statusValue = "active";
       const token = localStorage.getItem("adminToken");
 
       await axios.patch(
-        `https://wardaan-mern.onrender.com/api/orders/${orderId}`,
+        `${import.meta.env.VITE_API_URL}/api/orders/${orderId}`,
         updatedFields,
         {
           headers: {

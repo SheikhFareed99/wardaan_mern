@@ -13,7 +13,7 @@ function AdminLogin() {
     setError("");
 
     try {
-      const response = await axios.post("https://wardaan-mern.onrender.com/api/admin/login", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/login`, {
         email,
         password,
       });

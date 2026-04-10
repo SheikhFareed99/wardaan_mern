@@ -23,7 +23,7 @@ function ProductDescription() {
     
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`https://wardaan-mern.onrender.com/api/products/selectedproduct/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/selectedproduct/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (err) {

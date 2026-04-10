@@ -10,7 +10,7 @@ function OrderTrack() {
 
     const fetchStatus = async () => {
         try {
-            const response = await axios.get(`https://wardaan-mern.onrender.com/api/orders/orderid/${orderid}`);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders/orderid/${orderid}`);
             setstatus(response.data.status);
             settrackingid(response.data.trackingNumber);
         } catch (err) {

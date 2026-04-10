@@ -25,7 +25,7 @@ function OrdersManagement() {
       }
 
       try {
-        const response = await axios.get(`https://wardaan-mern.onrender.com/api/orders?status=${filter}`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders?status=${filter}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -41,7 +41,7 @@ function OrdersManagement() {
     const fetchFeedbacks = async () => {
       try {
         const token = localStorage.getItem("adminToken");
-        const response = await axios.get('https://wardaan-mern.onrender.com/api/products/feedbacks', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/feedbacks`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -60,7 +60,7 @@ function OrdersManagement() {
   const fetchDiscountCodes = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get('https://wardaan-mern.onrender.com/api/orders/AllDiscountedCodes', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders/AllDiscountedCodes`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,7 +85,7 @@ function OrdersManagement() {
       const token = localStorage.getItem("adminToken");
 
       await axios.patch(
-        `https://wardaan-mern.onrender.com/api/orders/${orderId}`,
+        `${import.meta.env.VITE_API_URL}/api/orders/${orderId}`,
         updatedFields,
         {
           headers: {
@@ -108,7 +108,7 @@ function OrdersManagement() {
   const handleAddDiscountCode = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      await axios.post('https://wardaan-mern.onrender.com/api/orders/DiscountCode', 
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/orders/DiscountCode`, 
         { DisCode: newCode, amount: newAmount },
         {
           headers: {
@@ -129,7 +129,7 @@ function OrdersManagement() {
   const handleDeleteDiscountCode = async (code) => {
     try {
       const token = localStorage.getItem("adminToken");
-      await axios.delete("https://wardaan-mern.onrender.com/api/orders/DiscountCode", {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/orders/DiscountCode`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -145,7 +145,7 @@ function OrdersManagement() {
   const handleFeedbackStatusUpdate = async (feedbackId, newStatus) => {
     try {
 
-      const response =await axios.patch(`https://wardaan-mern.onrender.com/api/products/feedbacks/${feedbackId}/status`, { status: newStatus });
+      const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/products/feedbacks/${feedbackId}/status`, { status: newStatus });
 
       setFeedbacks((prevFeedbacks) =>
         prevFeedbacks.map((feedback) =>
