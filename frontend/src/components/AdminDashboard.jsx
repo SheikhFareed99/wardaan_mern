@@ -95,6 +95,26 @@ const statusValue = "active";
             <p className="mt-2 text-sm text-gray-600">
               View and manage all active customer orders
             </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                onClick={() => navigate("/AdminReports")}
+                className="px-4 py-2 rounded-md bg-black text-white text-sm hover:bg-gray-800 transition"
+              >
+                Admin Reports
+              </button>
+              <button
+                onClick={() => navigate("/FinanceSummary")}
+                className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
+              >
+                Finance Summary
+              </button>
+              <button
+                onClick={() => navigate("/OrdersOverview")}
+                className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
+              >
+                Orders Overview
+              </button>
+            </div>
           </div>
 
           <div className="bg-white shadow rounded-lg overflow-hidden">
