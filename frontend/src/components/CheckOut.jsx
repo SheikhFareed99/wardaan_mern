@@ -5,6 +5,7 @@ import Header from './header.jsx';
 import Footer from './footer.jsx';
 import { useNavigate } from 'react-router-dom';
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import { AnimatePresence, motion } from 'framer-motion';
 
 function CheckOut() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function CheckOut() {
   const [discount, setDiscount] = useState(0);
   const [discountcode, setDiscountcode] = useState('');
   const [discountApplied, setDiscountApplied] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -59,6 +61,11 @@ function CheckOut() {
 
   const discountAmount = discount > 0 ? (subtotal * discount / 100) : 0;
   const total = (subtotal - discountAmount) + formData.shipping;
+  const quantityAnimationVariants = {
+    initial: { opacity: 0, y: -8, scale: 0.96 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: 8, scale: 0.96 },
+  };
 
   const isFormValid = () => {
     const { firstName, lastName, address, city, phone } = formData;
@@ -166,6 +173,16 @@ function CheckOut() {
     }
   };
 
+  const openReviewModal = () => {
+    if (!isFormValid() || bagArr.length === 0 || loading) return;
+    setShowReviewModal(true);
+  };
+
+  const confirmPlaceOrder = async () => {
+    setShowReviewModal(false);
+    await handleSubmit();
+  };
+
   return (
     <>
       <Header />
@@ -229,7 +246,22 @@ function CheckOut() {
                     Size: {item.selectedSize}
                   </p>
                   <p className="text-xs text-gray-400">Arrives by: {getDeliveryDate()}</p>
-                  <p className="text-sm font-medium mt-1">Qty: {item.quantity}</p>
+                  <div className="mt-1 flex items-center gap-2 text-sm font-medium">
+                    <span className="text-gray-600">Qty:</span>
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={item.quantity}
+                        variants={quantityAnimationVariants}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                        transition={{ duration: 0.18, ease: 'easeOut' }}
+                        className="inline-flex min-w-8 items-center justify-center rounded-full bg-gray-900 px-2.5 py-0.5 text-white shadow-sm"
+                      >
+                        {item.quantity}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
 
                   <div className="mt-2 space-y-1 text-sm">
                     {item.discount > 0 ? (
@@ -305,7 +337,14 @@ function CheckOut() {
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>Rs {subtotal.toFixed(0)}</span>
+                <motion.span
+                  key={subtotal.toFixed(0)}
+                  initial={{ opacity: 0.6, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Rs {subtotal.toFixed(0)}
+                </motion.span>
               </div>
               {discount > 0 && (
                 <div className="flex justify-between text-green-600">
@@ -319,7 +358,14 @@ function CheckOut() {
               </div>
               <div className="flex justify-between font-bold text-base border-t pt-2">
                 <span>Total</span>
-                <span>Rs {total.toFixed(0)}</span>
+                <motion.span
+                  key={total.toFixed(0)}
+                  initial={{ opacity: 0.6, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Rs {total.toFixed(0)}
+                </motion.span>
               </div>
             </div>
 
@@ -340,7 +386,7 @@ function CheckOut() {
             </div>
 
             <button
-              onClick={handleSubmit}
+              onClick={openReviewModal}
               disabled={!isFormValid() || bagArr.length === 0 || loading}
               className={`w-full h-15 py-3 rounded-lg text-sm font-semibold transition ${
                 isFormValid() && bagArr.length > 0 && !loading
@@ -348,7 +394,7 @@ function CheckOut() {
                   : 'bg-green-500 text-white hover:bg-gray-800 cursor-not-allowed'
               }`}
             >
-              {loading ? 'Placing Order...' : 'Complete Order'}
+              {loading ? 'Preparing...' : 'Review Order'}
             </button>
 
             {successMsg && (
@@ -361,6 +407,122 @@ function CheckOut() {
           </div>
         </div>
       </main>
+
+      <AnimatePresence>
+        {showReviewModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 py-6 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="w-full max-w-3xl overflow-hidden rounded-3xl bg-white shadow-2xl"
+              initial={{ scale: 0.96, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.96, y: 20 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="flex items-center justify-between border-b px-6 py-4 sm:px-8">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Review Your Order</h2>
+                  <p className="text-sm text-gray-500">Check everything once before placing the order.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowReviewModal(false)}
+                  className="rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                  aria-label="Close order review"
+                >
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="max-h-[70vh] overflow-y-auto px-6 py-5 sm:px-8">
+                <div className="grid gap-5 lg:grid-cols-[1.4fr_0.9fr]">
+                  <div className="space-y-4">
+                    {bagArr.map((item) => (
+                      <div key={item.id} className="flex items-start gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-4">
+                        <img
+                          src={insertWidth(item.image, 400)}
+                          alt={item.name}
+                          className="h-24 w-16 rounded-lg object-cover"
+                        />
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900">{item.name}</h3>
+                          <p className="text-sm text-gray-500">
+                            {item.category !== 'chappal' ? item.style + ' / ' : ''}
+                            Size: {item.selectedSize}
+                          </p>
+                          <div className="mt-2 flex items-center gap-2 text-sm">
+                            <span className="text-gray-500">Qty</span>
+                            <span className="rounded-full bg-gray-900 px-2.5 py-0.5 text-xs font-semibold text-white">{item.quantity}</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm text-gray-500">Line total</p>
+                          <p className="font-semibold text-gray-900">
+                            Rs {Math.round(item.price * (1 - item.discount / 100) * item.quantity).toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900">Summary</h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-500">Subtotal</span>
+                        <span className="font-medium text-gray-900">Rs {subtotal.toFixed(0)}</span>
+                      </div>
+                      {discount > 0 && (
+                        <div className="flex items-center justify-between text-green-600">
+                          <span>Discount ({discount}%)</span>
+                          <span>- Rs {discountAmount.toFixed(0)}</span>
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-500">Shipping</span>
+                        <span className="font-medium text-gray-900">Rs {formData.shipping.toFixed(0)}</span>
+                      </div>
+                      <div className="flex items-center justify-between border-t pt-3 text-base font-bold text-gray-900">
+                        <span>Total</span>
+                        <span>Rs {total.toFixed(0)}</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 rounded-2xl bg-amber-50 p-4 text-sm text-amber-900">
+                      Payment method: Cash on Delivery
+                    </div>
+
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                      <button
+                        type="button"
+                        onClick={() => setShowReviewModal(false)}
+                        className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="button"
+                        onClick={confirmPlaceOrder}
+                        disabled={loading}
+                        className="w-full rounded-lg bg-red-500 px-4 py-3 text-sm font-semibold text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:bg-gray-400"
+                      >
+                        {loading ? 'Placing Order...' : 'Place Order'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Footer />
     </>
   );
