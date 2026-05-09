@@ -45,6 +45,12 @@ export default function AdminHeader() {
           >
             Finance
           </button>
+          <button
+            onClick={() => navigate("/AdminReports")}
+            className="hover:text-amber-500 transition"
+          >
+            Reports
+          </button>
         </nav>
 
         {/* Right: Sign Out (Desktop) */}
@@ -96,6 +102,15 @@ export default function AdminHeader() {
             className="block w-full text-left hover:text-amber-500"
           >
             Finance
+          </button>
+          <button
+            onClick={() => {
+              navigate("/AdminReports");
+              setMenuOpen(false);
+            }}
+            className="block w-full text-left hover:text-amber-500"
+          >
+            Reports
           </button>
           <button
             onClick={() => {

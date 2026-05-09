@@ -10,6 +10,9 @@ import AdminLogin from './components/AdminLogin.jsx';
 import OrdersManagment from './components/OrdersManagment.jsx';
 import ProductManagment from './components/ProductManagment.jsx';
 import FinanceManagment from './components/FinanceManagment.jsx';
+import AdminReports from './components/AdminReports.jsx';
+import FinanceSummaryView from './components/FinanceSummaryView.jsx';
+import OrdersOverview from './components/OrdersOverview.jsx';
 import OrderTrack from './components/OrderTrack.jsx'
 import OrderConfirmation from './components/OrderConfirmation.jsx';
 import Delete from './components/delete.jsx';
@@ -55,6 +58,18 @@ const router = createBrowserRouter([
     path: "/OrdersManagment",
     element: <OrdersManagment />
   },
+      {
+        path: "/AdminReports",
+        element: <AdminReports />
+      },
+      {
+        path: "/FinanceSummary",
+        element: <FinanceSummaryView />
+      },
+      {
+        path: "/OrdersOverview",
+        element: <OrdersOverview />
+      },
       {
     path: "/AdminLogin",
     element: <AdminLogin />
