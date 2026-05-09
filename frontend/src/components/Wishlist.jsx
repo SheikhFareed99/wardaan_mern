@@ -1,15 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { wishlistActions } from '../store/wishlistSlice';
+import { bagActions } from '../store/bagslice';
 import Header from './header.jsx';
 import Footer from './footer.jsx';
 import DraggableWhatsApp from './DraggableWhatsApp';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 function Wishlist() {
   const wishlistItems = useSelector((state) => state.wishlist.items);
+  const bagItems = useSelector((state) => state.bag.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [addedToBag, setAddedToBag] = useState(null);
 
   const insertWidth = (url, width) => {
     if (!url) return '';
@@ -29,6 +33,17 @@ function Wishlist() {
 
   const handleRemoveFromWishlist = (productId) => {
     dispatch(wishlistActions.removeFromWishlist({ _id: productId }));
+  };
+
+  const handleMoveToBag = (product) => {
+    const productWithBagId = {
+      ...product,
+      bagid: bagItems.length,
+      quantity: 1,
+    };
+    dispatch(bagActions.addItemToBag(productWithBagId));
+    setAddedToBag(product._id);
+    setTimeout(() => setAddedToBag(null), 2000);
   };
 
   const container = {
@@ -163,15 +178,29 @@ function Wishlist() {
                       <div className="flex gap-2">
                         <motion.button
                           whileTap={{ scale: product.stock > 0 ? 0.95 : 1 }}
-                          onClick={() => handleProductClick(product)}
-                          className={`flex-1 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                            product.stock > 0
+                          onClick={() => handleMoveToBag(product)}
+                          disabled={product.stock <= 0}
+                          className={`flex-1 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all duration-300 ${
+                            addedToBag === product._id
+                              ? 'bg-green-500 text-white'
+                              : product.stock > 0
                               ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700'
                               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                           }`}
-                          disabled={product.stock <= 0}
                         >
-                          {product.stock > 0 ? 'View' : 'Out of Stock'}
+                          {addedToBag === product._id ? '✓ Added' : 'Move to Bag'}
+                        </motion.button>
+                        <motion.button
+                          whileTap={{ scale: product.stock > 0 ? 0.95 : 1 }}
+                          onClick={() => handleProductClick(product)}
+                          disabled={product.stock <= 0}
+                          className={`flex-1 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all duration-300 ${
+                            product.stock > 0
+                              ? 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                          }`}
+                        >
+                          View
                         </motion.button>
                       </div>
                     </div>
