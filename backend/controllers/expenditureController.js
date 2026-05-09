@@ -27,6 +27,7 @@ exports.getAllExpenditures = async (req, res) => {
     const expenditures = await Expenditure.find(query).sort({ date: -1 });
     res.json(expenditures);
   } catch (err) {
+    console.error("Error fetching expenditures:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -45,6 +46,7 @@ exports.getTotalExpenditure = async (req, res) => {
     const total = expenditures.reduce((sum, exp) => sum + exp.amount, 0);
     res.json({ total });
   } catch (err) {
+    console.error("Error calculating total expenditure:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };

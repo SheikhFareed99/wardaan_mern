@@ -48,14 +48,14 @@ const getAllProducts = async (req, res) => {
   if (!products.length) {
     return res.status(404).json({ message: "No products found" });
   }
-  res.json(products);
+  res.status(200).json(products);
 };
 
 
 
 const getproducts = async (req, res) => {
   const products = await Product.find({});
-  res.json(products);
+  res.status(200).json(products);
 };
 
 const getselectedproduct = async (req, res) => {
@@ -64,7 +64,7 @@ const getselectedproduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
-    res.json(product);
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -150,7 +150,7 @@ const getall=async (req,res)=>
   if (!products.length) {
     return res.status(404).json({ message: "No products found" });
   }
-  res.json(products);
+  res.status(200).json(products);
 }
 module.exports = {
   getAllProducts,

@@ -6,7 +6,6 @@ const cors = require("cors");
 const orderRoutes = require('./routes/orderRoutes');
 const financeRoute = require('./routes/financeRoute');
 const expenditureRoutes = require('./routes/expenditureRoutes');
-const router = express.Router();
 const Product = require('./models/product');
 
 
