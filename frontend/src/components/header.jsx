@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 export default function Header() {
   const bagItems = useSelector((state) => state.bag.items);
+  const wishlistItems = useSelector((state) => state.wishlist.items);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 

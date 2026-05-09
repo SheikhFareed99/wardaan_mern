@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import Footer from "./footer";
 import Header from "./header";
 import { useDispatch, useSelector } from 'react-redux';
-import { bagActions } from '../store/bagslice'; 
+import { bagActions } from '../store/bagslice';
+import { wishlistActions } from '../store/wishlistSlice';
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import DraggableWhatsApp from "./DraggableWhatsApp";
@@ -45,6 +46,7 @@ function ProductDescription() {
   }, [id]);
 
   const bagItems = useSelector((state) => state.bag.items);
+  const wishlistItems = useSelector((state) => state.wishlist.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -108,6 +110,17 @@ function ProductDescription() {
     const selectedProduct = getSelectedProduct();
     dispatch(bagActions.addItemToBag(selectedProduct));
     navigate("/CheckOut");
+  };
+
+  const handleToggleWishlist = () => {
+    if (product) {
+      dispatch(wishlistActions.toggleWishlist(product));
+    }
+  };
+
+  const isInWishlist = () => {
+    if (!product) return false;
+    return wishlistItems.some(item => item._id === product._id);
   };
 
   // Delivery date calculation
@@ -406,28 +419,50 @@ function ProductDescription() {
             
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 mb-8">
-              <motion.button 
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${
-                  addedToCart
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-900 text-white hover:bg-gray-800"
-                }`}
-                onClick={handleAddToCart}
-                disabled={addedToCart}
-              >
-                {addedToCart ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    ADDED TO BAG
-                  </span>
-                ) : (
-                  <span>ADD TO BAG</span>
-                )}
-              </motion.button>
+              <div className="flex gap-3">
+                <motion.button 
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`flex-1 py-4 rounded-xl font-bold text-lg transition-all ${
+                    addedToCart
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-900 text-white hover:bg-gray-800"
+                  }`}
+                  onClick={handleAddToCart}
+                  disabled={addedToCart}
+                >
+                  {addedToCart ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      ADDED TO BAG
+                    </span>
+                  ) : (
+                    <span>ADD TO BAG</span>
+                  )}
+                </motion.button>
+
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleToggleWishlist}
+                  className={`py-4 px-4 rounded-xl font-bold text-lg transition-all ${
+                    isInWishlist()
+                      ? "bg-red-100 text-red-600 hover:bg-red-200"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                  title={isInWishlist() ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                </motion.button>
+              </div>
 
               <motion.button 
                 whileHover={{ y: -2 }}

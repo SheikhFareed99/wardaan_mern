@@ -2,6 +2,8 @@ import Header from './header.jsx';
 import Footer from './footer.jsx';
 import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { wishlistActions } from '../store/wishlistSlice';
 import DraggableWhatsApp from "./DraggableWhatsApp";
 import RecentlyViewedProducts from "./RecentlyViewedProducts";
 import axios from 'axios';
@@ -21,6 +23,8 @@ function Home() {
   const categoryRef = useRef(null);
   const feedbackContainerRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlist.items);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -110,6 +114,14 @@ function Home() {
 
   const handleStarClick = (starValue) => {
     setFeedbackForm({ ...feedbackForm, star: starValue });
+  };
+
+  const handleToggleWishlist = (product) => {
+    dispatch(wishlistActions.toggleWishlist(product));
+  };
+
+  const isInWishlist = (productId) => {
+    return wishlistItems.some(item => item._id === productId);
   };
 
   const scrollFeedbacks = (direction) => {
@@ -400,8 +412,24 @@ function Home() {
                       />
                     )}
                   </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleWishlist(product);
+                    }}
+                    className="absolute top-1 right-1 z-10 bg-white rounded-full p-2 shadow-md hover:bg-red-100 transition-colors"
+                    title={isInWishlist(product._id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                  >
+                    <svg
+                      className={`w-5 h-5 transition-colors ${isInWishlist(product._id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`}
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                  </button>
                   {product.discountPercentage && (
-                    <div className="absolute top-1 right-1 bg-red-500 text-white text-[9px] font-semibold px-1 py-0.5 rounded shadow transform rotate-12">
+                    <div className="absolute top-1 left-1 bg-red-500 text-white text-[9px] font-semibold px-1 py-0.5 rounded shadow transform">
                       {product.discountPercentage}% OFF
                     </div>
                   )}
