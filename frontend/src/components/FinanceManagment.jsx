@@ -12,6 +12,7 @@ function FinanceManagement() {
   const [topProducts, setTopProducts] = useState([]);
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
 
   // Expenditure States
   const [expenditures, setExpenditures] = useState([]);
@@ -87,7 +88,6 @@ function FinanceManagement() {
       console.error("Error fetching expenditures:", err);
     }
   };
-  
 
   // Filter Expenditures
   const handleFetchExpenditures = () => {
@@ -128,8 +128,31 @@ function FinanceManagement() {
 
   // Initial Load
   useEffect(() => {
-    fetchExpenditures();
+    const bootstrapAnalytics = async () => {
+      setAnalyticsLoading(true);
+      await Promise.all([
+        fetchMonthlySales(),
+        fetchExpectedSales(),
+        fetchTopProducts(),
+        fetchExpenditures(),
+      ]);
+      setAnalyticsLoading(false);
+    };
+
+    bootstrapAnalytics();
   }, []);
+
+  const totalRevenue = typeof sales === 'number' ? sales : 0;
+  const projectedRevenue = typeof expectedSales === 'number' ? expectedSales : 0;
+  const netProfit = totalRevenue - totalExpenditure;
+  const profitMargin = totalRevenue > 0 ? Math.max(0, Math.round((netProfit / totalRevenue) * 100)) : 0;
+  const topProduct = topProducts[0] || null;
+  const totalTopProductSales = Array.isArray(topProducts)
+    ? topProducts.reduce((sum, product) => sum + product.totalSold, 0)
+    : 0;
+  const topProductShare = topProduct && totalTopProductSales > 0
+    ? Math.round((topProduct.totalSold / totalTopProductSales) * 100)
+    : 0;
 
   return (
     <>
@@ -137,12 +160,12 @@ function FinanceManagement() {
       <div className="min-h-screen bg-gray-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-8">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Finance Dashboard</h1>
               <p className="text-gray-500">Track and manage your financial performance</p>
             </div>
-            <div className="flex gap-4 mt-4 md:mt-0">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">From</label>
                 <input 
@@ -160,6 +183,107 @@ function FinanceManagement() {
                   onChange={(e) => setToDate(e.target.value)} 
                   className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
                 />
+              </div>
+              <div className="flex items-end">
+                <button
+                  onClick={loadAnalytics}
+                  disabled={analyticsLoading}
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium bg-black text-white hover:bg-gray-800 transition-colors disabled:opacity-60"
+                >
+                  {analyticsLoading ? 'Loading...' : 'Load Analytics'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Advanced Analytics */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+            <div className="px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <div>
+                <h2 className="font-semibold text-gray-800">Advanced Analytics</h2>
+                <p className="text-sm text-gray-500">Revenue, profit, and product insights at a glance</p>
+              </div>
+              <div className="text-sm text-gray-500">Updated from live finance endpoints</div>
+            </div>
+
+            <div className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+                <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Revenue</p>
+                  <p className="mt-2 text-2xl font-bold text-gray-900">Rs. {totalRevenue.toLocaleString()}</p>
+                  <p className="text-xs text-gray-500 mt-1">Current selected period</p>
+                </div>
+                <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Expenditure</p>
+                  <p className="mt-2 text-2xl font-bold text-red-600">Rs. {totalExpenditure.toLocaleString()}</p>
+                  <p className="text-xs text-gray-500 mt-1">Operational spend</p>
+                </div>
+                <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Net Profit</p>
+                  <p className={`mt-2 text-2xl font-bold ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    Rs. {netProfit.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">Margin {profitMargin}%</p>
+                </div>
+                <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Projected Revenue</p>
+                  <p className="mt-2 text-2xl font-bold text-purple-600">Rs. {projectedRevenue.toLocaleString()}</p>
+                  <p className="text-xs text-gray-500 mt-1">Expected future sales</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="lg:col-span-2 rounded-xl border border-gray-100 p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Top Product Performance</h3>
+                    <button onClick={fetchTopProducts} className="text-sm text-blue-600 hover:text-blue-800">Refresh</button>
+                  </div>
+                  {Array.isArray(topProducts) && topProducts.length > 0 ? (
+                    <div className="space-y-4">
+                      {topProducts.slice(0, 5).map((product, index) => {
+                        const maxSold = topProducts[0]?.totalSold || 1;
+                        const width = Math.max(8, Math.round((product.totalSold / maxSold) * 100));
+                        return (
+                          <div key={`${product.name}-${index}`}>
+                            <div className="flex items-center justify-between text-sm mb-1 gap-3">
+                              <span className="font-medium text-gray-800 truncate">{product.name}</span>
+                              <span className="text-gray-500 whitespace-nowrap">{product.totalSold} sold</span>
+                            </div>
+                            <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
+                              <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-600" style={{ width: `${width}%` }} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No product analytics available yet.</p>
+                  )}
+                </div>
+
+                <div className="rounded-xl border border-gray-100 p-4">
+                  <h3 className="font-semibold text-gray-800 mb-4">Quick Insights</h3>
+                  <div className="space-y-4 text-sm">
+                    <div>
+                      <p className="text-gray-500">Top product</p>
+                      <p className="font-medium text-gray-900">{topProduct?.name || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Share of top-product sales</p>
+                      <p className="font-medium text-gray-900">{topProductShare}%</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Expense pressure</p>
+                      <p className="font-medium text-gray-900">{totalRevenue > 0 ? Math.round((totalExpenditure / totalRevenue) * 100) : 0}% of revenue</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Status</p>
+                      <p className={`font-medium ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {netProfit >= 0 ? 'Healthy margin' : 'Revenue below spend'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
