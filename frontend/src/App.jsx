@@ -14,6 +14,8 @@ import OrderTrack from './components/OrderTrack.jsx'
 import OrderConfirmation from './components/OrderConfirmation.jsx';
 import Delete from './components/delete.jsx';
 import Term from './components/term.jsx'
+import Reviews from './components/Reviews.jsx';
+import Wishlist from './components/Wishlist.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,7 +68,15 @@ const router = createBrowserRouter([
   {
     path:'/CheckOut',
     element:<CheckOut/>
-   }
+   },
+  {
+    path: '/reviews',
+    element: <Reviews />
+  },
+  {
+    path: '/wishlist',
+    element: <Wishlist />
+  }
 ]);
 
 function App() {

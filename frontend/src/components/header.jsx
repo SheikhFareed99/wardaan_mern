@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 export default function Header() {
   const bagItems = useSelector((state) => state.bag.items);
+  const wishlistItems = useSelector((state) => state.wishlist.items);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -146,6 +147,22 @@ export default function Header() {
               {bagItems.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
                   {bagItems.length}
+                </span>
+              )}
+            </button>
+
+            <button
+              aria-label="Wishlist"
+              className="relative p-2 rounded-md hover:bg-gray-800"
+              onClick={() => navigate("/wishlist")}
+              title="View Wishlist"
+            >
+              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+              {wishlistItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                  {wishlistItems.length}
                 </span>
               )}
             </button>
