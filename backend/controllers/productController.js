@@ -110,7 +110,7 @@ const discountedProducts = async (req, res) => {
     if (!products.length) {
       return res.status(404).json({ message: "No discounted products found" });
     }
-    res.json(products);
+    res.status(200).json(products);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -124,7 +124,7 @@ const SpecialProducts=async (req,res)=>
     if (!product.length) {
       return res.status(404).json({ message: "No special products found" });
     }
-    res.json(product);
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -138,7 +138,7 @@ const unstitchedProducts=async (req,res)=>
   if (!product.length) {
     return res.status(404).json({ message: "No unstitched products found" });
   }
-  res.json(product);
+  res.status(200).json(product);
   } catch (error) {
     res.status(500).send(error);
   }
