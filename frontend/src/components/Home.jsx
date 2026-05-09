@@ -483,6 +483,7 @@ function Home() {
         )}
       </div>
 
+      {/* Recently Viewed Products Section */}
       <RecentlyViewedProducts />
 
       {/* Feedback Section */}
