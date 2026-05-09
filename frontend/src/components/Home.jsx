@@ -3,6 +3,7 @@ import Footer from './footer.jsx';
 import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import RecentlyViewedProducts from "./RecentlyViewedProducts";
 import axios from 'axios';
 import { motion } from "framer-motion";
 
@@ -454,18 +455,28 @@ function Home() {
         )}
       </div>
 
+      <RecentlyViewedProducts />
+
       {/* Feedback Section */}
       <div id="feedback" className="container mx-auto px-4 py-12">
-        <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold mb-12 text-center font-serif text-gray-800"
-        >
-          Customer Reviews
-          <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
-        </motion.h2>
+        <div className="flex flex-col items-center gap-4 mb-12">
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold text-center font-serif text-gray-800"
+          >
+            Customer Reviews
+            <div className="w-20 h-1 bg-amber-500 mx-auto mt-2"></div>
+          </motion.h2>
+          <button
+            onClick={() => navigate('/reviews')}
+            className="px-5 py-2 rounded-full border border-amber-500 text-amber-600 hover:bg-amber-50 transition-colors text-sm"
+          >
+            View Reviews
+          </button>
+        </div>
 
         {feedbacks.length === 0 ? (
           <motion.div

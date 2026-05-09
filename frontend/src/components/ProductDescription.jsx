@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import DraggableWhatsApp from "./DraggableWhatsApp";
 import axios from 'axios';
+import { addToRecentlyViewed } from '../utils/recentlyViewedUtils';
 
 function ProductDescription() {
   const { id } = useParams();
@@ -25,6 +26,7 @@ function ProductDescription() {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/selectedproduct/${id}`);
         setProduct(response.data);
+        addToRecentlyViewed(response.data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
