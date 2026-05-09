@@ -3,6 +3,7 @@ import Footer from './footer.jsx';
 import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import RecentlyViewedProducts from "./RecentlyViewedProducts";
 import axios from 'axios';
 import { motion } from "framer-motion";
 
@@ -453,6 +454,9 @@ function Home() {
           </motion.div>
         )}
       </div>
+
+      {/* Recently Viewed Products Section */}
+      <RecentlyViewedProducts />
 
       {/* Feedback Section */}
       <div id="feedback" className="container mx-auto px-4 py-12">
