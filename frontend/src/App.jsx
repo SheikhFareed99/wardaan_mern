@@ -16,6 +16,7 @@ import Delete from './components/delete.jsx';
 import Term from './components/term.jsx'
 import Reviews from './components/Reviews.jsx';
 import Wishlist from './components/Wishlist.jsx';
+import BackToTopButton from './components/BackToTopButton.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -80,7 +81,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <BackToTopButton />
+    </>
+  );
 }
 
 export default App;

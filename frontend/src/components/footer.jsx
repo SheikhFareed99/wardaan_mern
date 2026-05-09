@@ -86,6 +86,9 @@ const Footer = () => {
         <p className="text-sm">
           © 2025, <a href="/" className="hover:underline">Vardaan Clothing</a> – Powered by Sheikh Fareed
         </p>
+        <p className="text-xs text-gray-400 mt-1">
+          Co-powered by Ahmed Salman
+        </p>
       </div>
     </footer>
   );
