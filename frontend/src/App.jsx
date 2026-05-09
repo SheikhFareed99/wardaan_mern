@@ -17,6 +17,7 @@ import Term from './components/term.jsx'
 import Reviews from './components/Reviews.jsx';
 import Wishlist from './components/Wishlist.jsx';
 import BackToTopButton from './components/BackToTopButton.jsx';
+import FAQ from './components/FAQ.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
   {
     path: '/wishlist',
     element: <Wishlist />
+  },
+  {
+    path: '/faq',
+    element: <FAQ />
   }
 ]);
 
