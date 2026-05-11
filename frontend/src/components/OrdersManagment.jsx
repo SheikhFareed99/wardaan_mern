@@ -204,26 +204,26 @@ function OrdersManagement() {
           </div>
 
           {showDiscountSection && (
-            <div className="bg-white shadow rounded-lg overflow-hidden mb-6">
+            <div className="admin-card rounded-3xl overflow-hidden mb-6">
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Discount Codes Management</h2>
+                <h2 className="text-xl font-semibold text-slate-900 mb-4">Discount Codes Management</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">New Code</label>
+                    <label className="block text-sm font-medium text-slate-600 mb-1">New Code</label>
                     <input
                       type="text"
-                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                      className="block w-full rounded-xl border border-slate-200 bg-white/70 p-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                       value={newCode}
                       onChange={(e) => setNewCode(e.target.value)}
                       placeholder="Enter discount code"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Discount Amount</label>
+                    <label className="block text-sm font-medium text-slate-600 mb-1">Discount Amount</label>
                     <input
                       type="number"
-                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                      className="block w-full rounded-xl border border-slate-200 bg-white/70 p-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                       value={newAmount}
                       onChange={(e) => setNewAmount(e.target.value)}
                       placeholder="Enter discount amount"
@@ -232,7 +232,7 @@ function OrdersManagement() {
                   <div className="flex items-end">
                     <button
                       onClick={handleAddDiscountCode}
-                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                      className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5"
                       disabled={!newCode || !newAmount}
                     >
                       Add Discount Code
@@ -241,40 +241,40 @@ function OrdersManagement() {
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                  <table className="min-w-full divide-y divide-slate-200">
+                    <thead className="bg-slate-50/80">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Discount Code
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Amount
                         </th>
-                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-slate-200">
                       {discountCodes.length === 0 ? (
                         <tr>
-                          <td colSpan="3" className="px-6 py-4 text-center text-sm text-gray-500">
+                          <td colSpan="3" className="px-6 py-4 text-center text-sm text-slate-500">
                             No discount codes found
                           </td>
                         </tr>
                       ) : (
                         discountCodes.map((code) => (
                           <tr key={code._id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                               {code.code}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                               Rs {code.Limit}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <button
                                 onClick={() => handleDeleteDiscountCode(code.code)}
-                                className="text-red-600 hover:text-red-900"
+                                className="text-rose-600 hover:text-rose-800"
                               >
                                 Delete
                               </button>
@@ -290,65 +290,65 @@ function OrdersManagement() {
           )}
 
           {showFeedbackSection && (
-            <div className="bg-white shadow rounded-lg overflow-hidden mb-6">
+            <div className="admin-card rounded-3xl overflow-hidden mb-6">
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Feedback Management</h2>
+                <h2 className="text-xl font-semibold text-slate-900 mb-4">Feedback Management</h2>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                  <table className="min-w-full divide-y divide-slate-200">
+                    <thead className="bg-slate-50/80">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Name
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Review
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Rating
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Date
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-slate-200">
                       {feedbacks.length === 0 ? (
                         <tr>
-                          <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">
+                          <td colSpan="6" className="px-6 py-4 text-center text-sm text-slate-500">
                             No feedbacks found
                           </td>
                         </tr>
                       ) : (
                         feedbacks.map((feedback) => (
-                          <tr key={feedback._id} className="hover:bg-gray-50 transition-colors duration-150">
+                          <tr key={feedback._id} className="hover:bg-slate-50/80 transition-colors duration-150">
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {feedback.name}
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                            <td className="px-6 py-4 text-sm text-slate-500 max-w-xs truncate">
                               {feedback.review || 'No review provided'}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                               <div className="flex">
                                 {[...Array(5)].map((_, i) => (
                                   <span
                                     key={i}
-                                    className={`text-lg ${i < feedback.star ? 'text-amber-500' : 'text-gray-300'}`}
+                                    className={`text-lg ${i < feedback.star ? 'text-amber-500' : 'text-slate-300'}`}
                                   >
                                     ★
                                   </span>
                                 ))}
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                               {formatDate(feedback.createdAt)}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                               <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                 feedback.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                               }`}>
@@ -377,38 +377,38 @@ function OrdersManagement() {
           )}
 
           {/* Filter Buttons */}
-          <div className="flex gap-4 mb-6">
+          <div className="flex flex-wrap gap-3 mb-6">
             <button 
-              className={`px-4 py-2 rounded ${filter === "all" ? "bg-black text-white" : "bg-gray-200"}`} 
+              className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === "all" ? "bg-slate-900 text-white" : "bg-white/70 text-slate-700 border border-slate-200"}`} 
               onClick={() => setFilter("all")}
             >
               All Orders
             </button>
             <button 
-              className={`px-4 py-2 rounded ${filter === "active" ? "bg-black text-white" : "bg-gray-200"}`} 
+              className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === "active" ? "bg-slate-900 text-white" : "bg-white/70 text-slate-700 border border-slate-200"}`} 
               onClick={() => setFilter("active")}
             >
               Active
             </button>
             <button 
-              className={`px-4 py-2 rounded ${filter === "cancelled" ? "bg-black text-white" : "bg-gray-200"}`} 
+              className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === "cancelled" ? "bg-slate-900 text-white" : "bg-white/70 text-slate-700 border border-slate-200"}`} 
               onClick={() => setFilter("cancelled")}
             >
               Cancelled
             </button>
             <button 
-              className={`px-4 py-2 rounded ${filter === "completed" ? "bg-black text-white" : "bg-gray-200"}`} 
+              className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === "completed" ? "bg-slate-900 text-white" : "bg-white/70 text-slate-700 border border-slate-200"}`} 
               onClick={() => setFilter("completed")}
             >
               Completed
             </button>
           </div>
 
-          <div className="bg-white shadow rounded-lg overflow-hidden">
+          <div className="admin-card rounded-3xl overflow-hidden">
             {orders.length === 0 ? (
               <div className="p-8 text-center">
                 <svg
-                  className="mx-auto h-12 w-12 text-gray-400"
+                  className="mx-auto h-12 w-12 text-slate-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -420,85 +420,85 @@ function OrdersManagement() {
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                   />
                 </svg>
-                <h3 className="mt-2 text-lg font-medium text-gray-900">No orders found</h3>
-                <p className="mt-1 text-sm text-gray-500">
+                <h3 className="mt-2 text-lg font-medium text-slate-900">No orders found</h3>
+                <p className="mt-1 text-sm text-slate-500">
                   There are no orders matching the selected filter.
                 </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-slate-200">
+                  <thead className="bg-slate-50/80">
                     <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         Order #
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         Customer
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         Date
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         Items
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         Total
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         Status
                       </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th scope="col" className="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-slate-200">
                     {orders.map((order) => (
                       <>
-                        <tr key={order._id} className="hover:bg-gray-50 transition-colors duration-150">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <tr key={order._id} className="hover:bg-slate-50/80 transition-colors duration-150">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                             #{order._id.slice(-6).toUpperCase()}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                             <div className="flex items-center">
-                              <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <span className="text-blue-600 font-medium">
+                              <div className="flex-shrink-0 h-10 w-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                                <span className="text-emerald-700 font-medium">
                                   {order.address?.firstName?.charAt(0)}{order.address?.lastName?.charAt(0)}
                                 </span>
                               </div>
                               <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">
+                                <div className="text-sm font-medium text-slate-900">
                                   {order.address?.firstName} {order.address?.lastName}
                                 </div>
-                                <div className="text-sm text-gray-500">
+                                <div className="text-sm text-slate-500">
                                   {order.address?.email}
                                 </div>
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                             {formatDate(order.orderDate)}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                             <div className="flex -space-x-1">
                               {order.products.slice(0, 3).map((product, idx) => (
                                 <div 
                                   key={idx}
-                                  className="h-6 w-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs"
+                                  className="h-6 w-6 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-xs"
                                   title={product.name}
                                 >
                                   {product.name.charAt(0)}
                                 </div>
                               ))}
                               {order.products.length > 3 && (
-                                <div className="h-6 w-6 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center text-xs">
+                                <div className="h-6 w-6 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-xs">
                                   +{order.products.length - 3}
                                 </div>
                               )}
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                             Rs {order.totalAmount.toFixed(2)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -513,7 +513,7 @@ function OrdersManagement() {
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <button
                               onClick={() => toggleOrderDetails(order._id)}
-                              className={`mr-3 ${expandedOrder === order._id ? 'text-blue-600' : 'text-gray-600'} hover:text-blue-900`}
+                              className={`mr-3 ${expandedOrder === order._id ? 'text-emerald-600' : 'text-slate-600'} hover:text-emerald-700`}
                             >
                               {expandedOrder === order._id ? (
                                 <>
