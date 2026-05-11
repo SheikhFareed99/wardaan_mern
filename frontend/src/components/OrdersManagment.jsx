@@ -161,42 +161,42 @@ function OrdersManagement() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="p-8 bg-white rounded-xl shadow-sm w-full max-w-4xl">
+      <div className="admin-shell admin-bg flex min-h-screen items-center justify-center px-4">
+        <div className="admin-card w-full max-w-4xl rounded-3xl p-8 text-center">
           <div className="flex justify-center">
             <div className="animate-pulse flex space-x-4">
-              <div className="h-8 w-8 bg-blue-400 rounded-full"></div>
+              <div className="h-8 w-8 rounded-full bg-emerald-400"></div>
             </div>
           </div>
-          <h1 className="text-center text-xl text-gray-600 mt-4">Loading Orders...</h1>
+          <h1 className="admin-title mt-4 text-xl text-slate-600">Loading Orders...</h1>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="admin-shell admin-bg min-h-screen">
       <AdminHeader />
       
-      <main className="px-4 py-6 sm:px-6 lg:px-8">
+      <main className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8 flex justify-between items-center">
+          <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between admin-animate">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Orders Management</h1>
-              <p className="mt-2 text-sm text-gray-600">
+              <h1 className="admin-title text-3xl font-bold text-slate-900">Orders Management</h1>
+              <p className="mt-2 text-sm text-slate-600">
                 View and manage all customer orders and feedbacks
               </p>
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => setShowDiscountSection(!showDiscountSection)}
-                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
+                className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5"
               >
                 {showDiscountSection ? 'Hide Discount Codes' : 'Manage Discount Codes'}
               </button>
               <button
                 onClick={() => setShowFeedbackSection(!showFeedbackSection)}
-                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
+                className="rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400"
               >
                 {showFeedbackSection ? 'Hide Feedbacks' : 'Manage Feedbacks'}
               </button>
