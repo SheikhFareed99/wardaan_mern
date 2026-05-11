@@ -227,18 +227,18 @@ function ProductManagement() {
           </div>
 
           {/* Search and Filter Bar */}
-          <div className="mb-6 bg-white p-4 rounded-lg shadow-sm">
+          <div className="mb-6 admin-card rounded-2xl p-4">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="relative flex-grow">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <input
                   type="text"
                   placeholder="Search products..."
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="block w-full rounded-xl border border-slate-200 bg-white/70 py-2 pl-10 pr-3 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -248,7 +248,7 @@ function ProductManagement() {
                   <input
                     type="number"
                     placeholder="Discount %"
-                    className="block w-20 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="block w-20 rounded-xl border border-slate-200 bg-white/70 px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                     value={discountAllPercentage}
                     onChange={(e) => setDiscountAllPercentage(Number(e.target.value))}
                     min="0"
@@ -256,12 +256,12 @@ function ProductManagement() {
                   />
                   <button
                     onClick={handleApplyDiscountToAll}
-                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                    className="inline-flex items-center rounded-full bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5"
                   >
                     Apply to All
                   </button>
                 </div>
-                <span className="text-sm text-gray-500">{filteredProducts.length} products</span>
+                <span className="text-sm text-slate-500">{filteredProducts.length} products</span>
               </div>
             </div>
           </div>
