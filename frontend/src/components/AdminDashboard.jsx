@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminHeader from "./AdminHeader";
 import axios from "axios";
@@ -7,36 +7,40 @@ function AdminDashboard() {
   const [orders, setOrders] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const token = localStorage.getItem("adminToken");
-      if (!token) {
-        navigate("/adminLogin");
-        return;
-      }
+  const fetchOrders = useCallback(async () => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      navigate("/adminLogin");
+      return;
+    }
 
-      const statusValue = "active";
+    const statusValue = "active";
 
-      try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/orders?status=${statusValue}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log("Fetched orders:", data);
-        setOrders(data);
-      } catch (error) {
-        console.error("Failed to fetch orders:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/orders?status=${statusValue}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log("Fetched orders:", data);
+      setOrders(data);
+      setLastUpdated(new Date());
+    } catch (error) {
+      console.error("Failed to fetch orders:", error);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
   }, [navigate]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
   const orderCount = orders.length;
   const pendingShipmentCount = orders.filter(
@@ -46,6 +50,10 @@ function AdminDashboard() {
     (sum, order) => sum + Number(order.totalAmount || 0),
     0
   );
+
+  const lastUpdatedLabel = lastUpdated
+    ? lastUpdated.toLocaleString()
+    : "Not updated yet";
 
   const toggleOrderDetails = (orderId) => {
     setExpandedOrder((prev) => (prev === orderId ? null : orderId));
@@ -120,6 +128,16 @@ function AdminDashboard() {
                   Orders Overview
                 </button>
                 <button
+                  onClick={() => {
+                    setIsRefreshing(true);
+                    fetchOrders();
+                  }}
+                  className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
+                  disabled={isRefreshing}
+                >
+                  {isRefreshing ? "Refreshing..." : "Refresh"}
+                </button>
+                <button
                   onClick={() => navigate("/FinanceSummary")}
                   className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
                 >
@@ -133,6 +151,9 @@ function AdminDashboard() {
                 </button>
               </div>
             </div>
+            <p className="mt-2 text-xs text-gray-500">
+              Last updated: {lastUpdatedLabel}
+            </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
