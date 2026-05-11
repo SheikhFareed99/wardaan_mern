@@ -28,13 +28,19 @@ export default function AdminHeader() {
         {/* Center: Desktop Nav */}
         <nav className="hidden md:flex space-x-6 font-medium">
           <button
+            onClick={() => navigate("/AdminDashboard")}
+            className="hover:text-amber-500 transition"
+          >
+            Dashboard
+          </button>
+          <button
             onClick={() => navigate("/OrdersManagment")}
             className="hover:text-amber-500 transition"
           >
-            Order 
+            Orders
           </button>
           <button
-            onClick={() => navigate("/productManagment")}
+            onClick={() => navigate("/ProductManagment")}
             className="hover:text-amber-500 transition"
           >
             Products
@@ -78,16 +84,25 @@ export default function AdminHeader() {
         <div className="md:hidden px-4 pb-4 space-y-3 bg-black">
           <button
             onClick={() => {
+              navigate("/AdminDashboard");
+              setMenuOpen(false);
+            }}
+            className="block w-full text-left hover:text-amber-500"
+          >
+            Dashboard
+          </button>
+          <button
+            onClick={() => {
               navigate("/OrdersManagment");
               setMenuOpen(false);
             }}
             className="block w-full text-left hover:text-amber-500"
           >
-            Order 
+            Orders
           </button>
           <button
             onClick={() => {
-              navigate("/productManagment");
+              navigate("/ProductManagment");
               setMenuOpen(false);
             }}
             className="block w-full text-left hover:text-amber-500"

@@ -4,34 +4,48 @@ import AdminHeader from "./AdminHeader";
 import axios from "axios";
 
 function AdminDashboard() {
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-useEffect(() => {
-  const fetchOrders = async () => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      navigate("/adminLogin");
-      return;
-    }
-const statusValue = "active";
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders?status=${statusValue}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log("Fetched orders:", data);
-      setOrders(data); 
-    } catch (error) {
-      console.error("Failed to fetch orders:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        navigate("/adminLogin");
+        return;
+      }
 
-  fetchOrders();
-}, [navigate]);
+      const statusValue = "active";
+
+      try {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/orders?status=${statusValue}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("Fetched orders:", data);
+        setOrders(data);
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [navigate]);
+
+  const orderCount = orders.length;
+  const pendingShipmentCount = orders.filter(
+    (order) => order.shippingStatus === "pending"
+  ).length;
+  const totalRevenue = orders.reduce(
+    (sum, order) => sum + Number(order.totalAmount || 0),
+    0
+  );
 
   const toggleOrderDetails = (orderId) => {
     setExpandedOrder((prev) => (prev === orderId ? null : orderId));
@@ -91,29 +105,55 @@ const statusValue = "active";
       <main className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Order Management</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              View and manage all active customer orders
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <button
-                onClick={() => navigate("/AdminReports")}
-                className="px-4 py-2 rounded-md bg-black text-white text-sm hover:bg-gray-800 transition"
-              >
-                Admin Reports
-              </button>
-              <button
-                onClick={() => navigate("/FinanceSummary")}
-                className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
-              >
-                Finance Summary
-              </button>
-              <button
-                onClick={() => navigate("/OrdersOverview")}
-                className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
-              >
-                Orders Overview
-              </button>
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                <p className="mt-2 text-sm text-gray-600">
+                  Track active orders and shipping status at a glance.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => navigate("/OrdersOverview")}
+                  className="px-4 py-2 rounded-md bg-black text-white text-sm hover:bg-gray-800 transition"
+                >
+                  Orders Overview
+                </button>
+                <button
+                  onClick={() => navigate("/FinanceSummary")}
+                  className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
+                >
+                  Finance Summary
+                </button>
+                <button
+                  onClick={() => navigate("/AdminReports")}
+                  className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:border-gray-500 transition"
+                >
+                  Reports
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                <p className="text-xs uppercase tracking-wide text-gray-500">Active orders</p>
+                <p className="mt-2 text-2xl font-semibold text-gray-900">{orderCount}</p>
+                <p className="mt-1 text-sm text-gray-500">Currently in progress</p>
+              </div>
+              <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                <p className="text-xs uppercase tracking-wide text-gray-500">Pending shipments</p>
+                <p className="mt-2 text-2xl font-semibold text-gray-900">
+                  {pendingShipmentCount}
+                </p>
+                <p className="mt-1 text-sm text-gray-500">Awaiting fulfillment</p>
+              </div>
+              <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                <p className="text-xs uppercase tracking-wide text-gray-500">Active revenue</p>
+                <p className="mt-2 text-2xl font-semibold text-gray-900">
+                  PKR {totalRevenue.toFixed(2)}
+                </p>
+                <p className="mt-1 text-sm text-gray-500">Based on active orders</p>
+              </div>
             </div>
           </div>
 
