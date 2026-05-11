@@ -192,34 +192,34 @@ function ProductManagement() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="p-8 bg-white rounded-xl shadow-sm w-full max-w-4xl">
+      <div className="admin-shell admin-bg flex min-h-screen items-center justify-center px-4">
+        <div className="admin-card w-full max-w-4xl rounded-3xl p-8 text-center">
           <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
           </div>
-          <h1 className="text-center text-xl text-gray-600 mt-4">Loading Products...</h1>
+          <h1 className="admin-title mt-4 text-xl text-slate-600">Loading Products...</h1>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="admin-shell admin-bg min-h-screen">
       <AdminHeader />
       
-      <main className="px-4 py-6 sm:px-6 lg:px-8">
+      <main className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <div className="flex justify-between items-center">
+          <div className="mb-8 admin-animate">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
-                <p className="mt-2 text-sm text-gray-600">
+                <h1 className="admin-title text-3xl font-bold text-slate-900">Product Management</h1>
+                <p className="mt-2 text-sm text-slate-600">
                   Manage your product inventory and details
                 </p>
               </div>
               <button
                 onClick={() => setShowAddProduct(true)}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                className="inline-flex items-center rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5"
               >
                 Add New Product
               </button>

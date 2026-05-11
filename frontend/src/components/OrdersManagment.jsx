@@ -535,38 +535,38 @@ function OrdersManagement() {
                         </tr>
                         {expandedOrder === order._id && (
                           <tr>
-                            <td colSpan="7" className="px-6 py-4 bg-gray-50">
+                            <td colSpan="7" className="px-6 py-4 bg-slate-50/70">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                  <h3 className="text-lg font-medium text-gray-900 mb-3 pb-2 border-b">Customer Information</h3>
+                                  <h3 className="text-lg font-medium text-slate-900 mb-3 pb-2 border-b border-slate-200">Customer Information</h3>
                                   <div className="space-y-2">
                                     <div className="flex">
-                                      <span className="text-sm font-medium text-gray-500 w-24">Name:</span>
-                                      <span className="text-sm text-gray-900">{order.address?.firstName} {order.address?.lastName}</span>
+                                      <span className="text-sm font-medium text-slate-500 w-24">Name:</span>
+                                      <span className="text-sm text-slate-900">{order.address?.firstName} {order.address?.lastName}</span>
                                     </div>
                                     <div className="flex">
-                                      <span className="text-sm font-medium text-gray-500 w-24">Email:</span>
-                                      <span className="text-sm text-gray-900">{order.address?.email}</span>
+                                      <span className="text-sm font-medium text-slate-500 w-24">Email:</span>
+                                      <span className="text-sm text-slate-900">{order.address?.email}</span>
                                     </div>
                                     <div className="flex">
-                                      <span className="text-sm font-medium text-gray-500 w-24">Phone:</span>
-                                      <span className="text-sm text-gray-900">{order.address?.phone}</span>
+                                      <span className="text-sm font-medium text-slate-500 w-24">Phone:</span>
+                                      <span className="text-sm text-slate-900">{order.address?.phone}</span>
                                     </div>
                                     <div className="flex">
-                                      <span className="text-sm font-medium text-gray-500 w-24">Address:</span>
-                                      <span className="text-sm text-gray-900">
+                                      <span className="text-sm font-medium text-slate-500 w-24">Address:</span>
+                                      <span className="text-sm text-slate-900">
                                         {order.address?.address}, {order.address?.city}, {order.address?.country} - {order.address?.postalCode}
                                       </span>
                                     </div>
                                   </div>
                                 </div>
                                 <div>
-                                  <h3 className="text-lg font-medium text-gray-900 mb-3 pb-2 border-b">Order Settings</h3>
+                                  <h3 className="text-lg font-medium text-slate-900 mb-3 pb-2 border-b border-slate-200">Order Settings</h3>
                                   <div className="space-y-4">
                                     <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                      <label className="block text-sm font-medium text-slate-600 mb-1">Status</label>
                                       <select
-                                        className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                                        className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                         value={order.status}
                                         onChange={(e) => handleOrderUpdate(order._id, { status: e.target.value })}
                                       >
@@ -576,9 +576,9 @@ function OrdersManagement() {
                                       </select>
                                     </div>
                                     <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Shipping Status</label>
+                                      <label className="block text-sm font-medium text-slate-600 mb-1">Shipping Status</label>
                                       <select
-                                        className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                                        className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                         value={order.shippingStatus || "pending"}
                                         onChange={(e) => handleOrderUpdate(order._id, { shippingStatus: e.target.value })}
                                       >
@@ -589,10 +589,10 @@ function OrdersManagement() {
                                       </select>
                                     </div>
                                     <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Number</label>
+                                      <label className="block text-sm font-medium text-slate-600 mb-1">Tracking Number</label>
                                       <input
                                         type="text"
-                                        className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                        className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
                                         value={order.trackingNumber || ""}
                                         onChange={(e) => handleOrderUpdate(order._id, { trackingNumber: e.target.value })}
                                         placeholder="Enter tracking number"
@@ -602,18 +602,18 @@ function OrdersManagement() {
                                 </div>
                               </div>
                               
-                              <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3 pb-2 border-b">Products</h3>
+                              <h3 className="text-lg font-medium text-slate-900 mt-6 mb-3 pb-2 border-b border-slate-200">Products</h3>
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {order.products.map((product, index) => (
-                                  <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                  <div key={index} className="border border-slate-200 rounded-2xl p-4 hover:shadow-md transition-shadow bg-white">
                                     <div className="flex items-start">
-                                      <div className="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md flex items-center justify-center text-gray-500">
+                                      <div className="flex-shrink-0 h-16 w-16 bg-slate-100 rounded-xl flex items-center justify-center text-slate-500">
                                         {product.category === 'kameez shalwar' ? '👗' : 
                                          product.category === 'kurta' ? '👔' : '👕'}
                                       </div>
                                       <div className="ml-4">
-                                        <h4 className="text-sm font-medium text-gray-900">{product.name}</h4>
-                                        <div className="mt-1 text-xs text-gray-500 space-y-1">
+                                        <h4 className="text-sm font-medium text-slate-900">{product.name}</h4>
+                                        <div className="mt-1 text-xs text-slate-500 space-y-1">
                                           <p>Size: {product.selectedSize}</p>
                                           <p>Qty: {product.quantity}</p>
                                           <p>Style: {product.style}</p>
