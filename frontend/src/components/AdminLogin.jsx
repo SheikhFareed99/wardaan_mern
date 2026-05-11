@@ -28,15 +28,21 @@ function AdminLogin() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
-      <div className="bg-white/30 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-md border border-gray-200 animate-fade-in">
-        <h1 className="text-4xl font-semibold text-center text-gray-800 mb-8 tracking-tight">
-          Wardaan Admin
-        </h1>
+    <div className="admin-shell admin-bg flex min-h-screen items-center justify-center px-4 py-12">
+      <div className="admin-card admin-animate w-full max-w-md rounded-3xl p-10">
+        <div className="mb-8 text-center">
+          <p className="admin-chip mx-auto w-fit text-emerald-700">Secure Portal</p>
+          <h1 className="admin-title mt-4 text-4xl font-semibold text-slate-900">
+            Wardaan Admin
+          </h1>
+          <p className="mt-2 text-sm text-slate-500">
+            Sign in to manage orders, inventory, and finance.
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-5">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-slate-600 mb-2">
               Email
             </label>
             <input
@@ -44,13 +50,13 @@ function AdminLogin() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black transition-all"
-              placeholder=""
+              className="w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
+              placeholder="admin@wardaan.pk"
             />
           </div>
 
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-slate-600 mb-2">
               Password
             </label>
             <input
@@ -58,7 +64,7 @@ function AdminLogin() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black transition-all"
+              className="w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               placeholder="••••••••"
             />
           </div>
@@ -69,7 +75,7 @@ function AdminLogin() {
 
           <button
             type="submit"
-            className="w-full py-2 bg-black text-white rounded-lg hover:bg-gray-900 transition duration-200"
+            className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5 hover:shadow-emerald-300"
           >
             Sign in
           </button>
