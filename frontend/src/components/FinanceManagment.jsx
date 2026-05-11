@@ -126,20 +126,20 @@ function FinanceManagement() {
     }
   };
 
+  const loadAnalytics = async () => {
+    setAnalyticsLoading(true);
+    await Promise.all([
+      fetchMonthlySales(),
+      fetchExpectedSales(),
+      fetchTopProducts(),
+      fetchExpenditures(),
+    ]);
+    setAnalyticsLoading(false);
+  };
+
   // Initial Load
   useEffect(() => {
-    const bootstrapAnalytics = async () => {
-      setAnalyticsLoading(true);
-      await Promise.all([
-        fetchMonthlySales(),
-        fetchExpectedSales(),
-        fetchTopProducts(),
-        fetchExpenditures(),
-      ]);
-      setAnalyticsLoading(false);
-    };
-
-    bootstrapAnalytics();
+    loadAnalytics();
   }, []);
 
   const totalRevenue = typeof sales === 'number' ? sales : 0;
