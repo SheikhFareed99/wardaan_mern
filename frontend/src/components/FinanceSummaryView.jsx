@@ -56,75 +56,75 @@ function FinanceSummaryView() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="admin-shell admin-bg min-h-screen">
         <AdminHeader />
-        <div className="flex items-center justify-center py-20 text-gray-600">Loading finance summary...</div>
+        <div className="flex items-center justify-center py-20 text-slate-600">Loading finance summary...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="admin-shell admin-bg min-h-screen">
       <AdminHeader />
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Finance Summary</h1>
-          <p className="text-sm text-gray-600">Snapshot of revenue, costs, and top performers.</p>
+        <div className="mb-6 admin-animate">
+          <h1 className="admin-title text-3xl font-bold text-slate-900">Finance Summary</h1>
+          <p className="text-sm text-slate-600">Snapshot of revenue, costs, and top performers.</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-rose-700">
             {error}
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
-            <p className="text-xs uppercase text-gray-500">Revenue</p>
-            <p className="mt-2 text-2xl font-semibold text-gray-900">Rs. {sales.toLocaleString()}</p>
+        <div className="admin-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="admin-card rounded-2xl p-4">
+            <p className="text-xs uppercase text-slate-500">Revenue</p>
+            <p className="mt-2 text-2xl font-semibold text-slate-900">Rs. {sales.toLocaleString()}</p>
           </div>
-          <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
-            <p className="text-xs uppercase text-gray-500">Expenditure</p>
-            <p className="mt-2 text-2xl font-semibold text-red-600">Rs. {totalExpenditure.toLocaleString()}</p>
+          <div className="admin-card rounded-2xl p-4">
+            <p className="text-xs uppercase text-slate-500">Expenditure</p>
+            <p className="mt-2 text-2xl font-semibold text-rose-600">Rs. {totalExpenditure.toLocaleString()}</p>
           </div>
-          <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
-            <p className="text-xs uppercase text-gray-500">Net Profit</p>
-            <p className={`mt-2 text-2xl font-semibold ${netProfit >= 0 ? "text-green-600" : "text-red-600"}`}>
+          <div className="admin-card rounded-2xl p-4">
+            <p className="text-xs uppercase text-slate-500">Net Profit</p>
+            <p className={`mt-2 text-2xl font-semibold ${netProfit >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
               Rs. {netProfit.toLocaleString()}
             </p>
           </div>
-          <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
-            <p className="text-xs uppercase text-gray-500">Projected Sales</p>
-            <p className="mt-2 text-2xl font-semibold text-purple-600">Rs. {expectedSales.toLocaleString()}</p>
+          <div className="admin-card rounded-2xl p-4">
+            <p className="text-xs uppercase text-slate-500">Projected Sales</p>
+            <p className="mt-2 text-2xl font-semibold text-amber-600">Rs. {expectedSales.toLocaleString()}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900 mb-3">Top Products</h2>
+          <div className="admin-card rounded-2xl p-4">
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">Top Products</h2>
             {topProducts.length === 0 ? (
-              <p className="text-sm text-gray-600">No top products data available.</p>
+              <p className="text-sm text-slate-600">No top products data available.</p>
             ) : (
               <div className="space-y-3 text-sm">
                 {topProducts.slice(0, 5).map((product) => (
                   <div key={product._id} className="flex justify-between">
-                    <span className="text-gray-800">{product.name}</span>
-                    <span className="text-gray-500">{product.totalSold} sold</span>
+                    <span className="text-slate-800">{product.name}</span>
+                    <span className="text-slate-500">{product.totalSold} sold</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900 mb-3">Highlight</h2>
+          <div className="admin-card rounded-2xl p-4">
+            <h2 className="text-lg font-semibold text-slate-900 mb-3">Highlight</h2>
             {topProduct ? (
-              <div className="text-sm text-gray-700 space-y-2">
+              <div className="text-sm text-slate-700 space-y-2">
                 <p><span className="font-medium">Top Product:</span> {topProduct.name}</p>
                 <p><span className="font-medium">Units Sold:</span> {topProduct.totalSold}</p>
                 <p><span className="font-medium">Contribution:</span> {topProduct.totalSold} units in top list</p>
               </div>
             ) : (
-              <p className="text-sm text-gray-600">No highlight available.</p>
+              <p className="text-sm text-slate-600">No highlight available.</p>
             )}
           </div>
         </div>
