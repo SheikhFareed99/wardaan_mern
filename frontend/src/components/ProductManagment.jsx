@@ -226,12 +226,12 @@ function ProductManagement() {
 
       {/* Notification Toast */}
       {notification && (
-        <div className={`fixed top-4 right-4 px-6 py-3 rounded-full shadow-lg font-medium text-sm z-50 animate-fade-in ${
+        <div className={`fixed top-4 right-4 px-6 py-3 rounded-full shadow-lg font-medium text-sm z-50 animate-slide-in-right transition-all duration-500 ${
           notification.type === "success" 
-            ? "bg-green-500 text-white" 
-            : "bg-red-500 text-white"
+            ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-emerald-200" 
+            : "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-red-200"
         }`}>
-          {notification.message}
+          {notification.type === "success" ? "✓ " : "✕ "}{notification.message}
         </div>
       )}
       
@@ -239,7 +239,7 @@ function ProductManagement() {
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
           <div className="mb-8 admin-animate">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6 animate-slide-in-left">
               <div>
                 <h1 className="admin-title text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
                   📦 Inventory Management
@@ -251,13 +251,13 @@ function ProductManagement() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:shadow-md"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:shadow-md hover:scale-105 animate-bounce-btn"
                 >
                   {viewMode === "grid" ? "📋" : "🔲"} {viewMode === "grid" ? "List" : "Grid"}
                 </button>
                 <button
                   onClick={() => setShowAddProduct(true)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5 hover:shadow-xl animate-bounce-btn hover:scale-105"
                 >
                   ➕ Add Product
                 </button>
@@ -265,7 +265,7 @@ function ProductManagement() {
             </div>
 
             {/* Search & Filters Bar */}
-            <div className="admin-card rounded-2xl p-5 shadow-sm">
+            <div className="admin-card rounded-2xl p-5 shadow-sm animate-slide-in-up">
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                 <div className="relative flex-grow">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -274,7 +274,7 @@ function ProductManagement() {
                   <input
                     type="text"
                     placeholder="Search by name, brand, or category..."
-                    className="block w-full rounded-xl border border-slate-200 bg-white/70 py-2.5 pl-10 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:bg-white transition"
+                    className="block w-full rounded-xl border border-slate-200 bg-white/70 py-2.5 pl-10 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:bg-white transition hover:border-slate-300"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -294,7 +294,7 @@ function ProductManagement() {
                     <span className="text-slate-500">%</span>
                     <button
                       onClick={handleApplyDiscountToAll}
-                      className="inline-flex items-center rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 hover:-translate-y-0.5"
+                      className="inline-flex items-center rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 hover:-translate-y-0.5 hover:scale-105 animate-bounce-btn"
                     >
                       💰 Apply
                     </button>
@@ -320,14 +320,15 @@ function ProductManagement() {
 
                 {/* Tab Navigation */}
                 <div className="flex gap-1 px-6 pt-4 border-b border-slate-100">
-                  {["basic", "details", "images"].map(tab => (
+                  {["basic", "details", "images"].map((tab, idx) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`px-4 py-2 font-medium text-sm rounded-t-lg transition ${
+                      style={{ animationDelay: `${idx * 0.1}s` }}
+                      className={`px-4 py-2 font-medium text-sm rounded-t-lg transition-all duration-300 animate-slide-in-up ${
                         activeTab === tab
-                          ? "bg-emerald-50 text-emerald-600 border-b-2 border-emerald-500"
-                          : "text-slate-600 hover:text-slate-900"
+                          ? "bg-emerald-50 text-emerald-600 border-b-2 border-emerald-500 scale-105"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                       }`}
                     >
                       {tab === "basic" && "📝 Basic"} 
@@ -561,16 +562,16 @@ function ProductManagement() {
                 </div>
 
                 {/* Modal Footer */}
-                <div className="sticky bottom-0 bg-white/95 backdrop-blur px-6 py-4 border-t border-slate-100 flex justify-end gap-3">
+                <div className="sticky bottom-0 bg-white/95 backdrop-blur px-6 py-4 border-t border-slate-100 flex justify-end gap-3 animate-slide-in-up">
                   <button
                     onClick={() => { setShowAddProduct(false); setActiveTab("basic"); }}
-                    className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:shadow-md"
+                    className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-all duration-300 hover:border-slate-400 hover:shadow-md hover:scale-105 active:scale-95"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleAddProduct}
-                    className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:scale-105 active:scale-95"
                   >
                     ✓ Add Product
                   </button>
@@ -581,22 +582,22 @@ function ProductManagement() {
 
           {/* Products Grid/List View */}
           {filteredProducts.length === 0 ? (
-            <div className="admin-card rounded-2xl p-12 text-center">
-              <div className="text-5xl mb-4">📭</div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">No products found</h3>
-              <p className="text-slate-500">
+            <div className="admin-card rounded-2xl p-12 text-center animate-fade-in">
+              <div className="text-5xl mb-4 inline-block animate-bounce">📭</div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2 animate-slide-in-up">No products found</h3>
+              <p className="text-slate-500 animate-slide-in-up" style={{ animationDelay: '0.1s' }}>
                 {searchTerm ? "Try a different search term" : "Start by adding your first product!"}
               </p>
             </div>
           ) : viewMode === "grid" ? (
             // Grid View
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 stagger-container">
               {filteredProducts.map((product) => {
                 const stockStatus = getStockStatus(product.stock);
                 return (
                   <div
                     key={product._id}
-                    className="admin-card rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 group"
+                    className="admin-card rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group hover-scale-card"
                   >
                     {/* Product Image */}
                     <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-50 overflow-hidden">
@@ -612,14 +613,14 @@ function ProductManagement() {
                       
                       {/* Discount Badge */}
                       {product.discountPercentage > 0 && (
-                        <div className="absolute top-3 right-3 bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold shadow-lg">
+                        <div className="absolute top-3 right-3 bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold shadow-lg animate-pulse-badge">
                           {product.discountPercentage}%
                         </div>
                       )}
 
                       {/* Stock Status Badge */}
-                      <div className={`absolute top-3 left-3 ${stockStatus.color} rounded-full px-3 py-1 text-xs font-semibold flex items-center gap-1`}>
-                        <span>{stockStatus.icon}</span> {stockStatus.text}
+                      <div className={`absolute top-3 left-3 ${stockStatus.color} rounded-full px-3 py-1 text-xs font-semibold flex items-center gap-1 transition-all duration-300`}>
+                        <span className="inline-block animate-bounce">{stockStatus.icon}</span> {stockStatus.text}
                       </div>
                     </div>
 
@@ -653,13 +654,13 @@ function ProductManagement() {
                       <div className="flex gap-2 pt-3 border-t border-slate-100">
                         <button
                           onClick={() => { setEditProductId(product._id); setEditedProduct({ ...product }); setShowEditModal(true); }}
-                          className="flex-1 px-3 py-2 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg hover:bg-emerald-100 transition"
+                          className="flex-1 px-3 py-2 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg hover:bg-emerald-100 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95"
                         >
                           ✏️ Edit
                         </button>
                         <button
                           onClick={() => handleDelete(product._id)}
-                          className="flex-1 px-3 py-2 bg-red-50 text-red-700 text-xs font-semibold rounded-lg hover:bg-red-100 transition"
+                          className="flex-1 px-3 py-2 bg-red-50 text-red-700 text-xs font-semibold rounded-lg hover:bg-red-100 transition-all duration-300 hover:scale-105 hover:shadow-md active:scale-95"
                         >
                           🗑️ Delete
                         </button>
@@ -671,13 +672,13 @@ function ProductManagement() {
             </div>
           ) : (
             // List View
-            <div className="space-y-3">
+            <div className="space-y-3 stagger-container">
               {filteredProducts.map((product) => {
                 const stockStatus = getStockStatus(product.stock);
                 return (
                   <div
                     key={product._id}
-                    className="admin-card rounded-lg p-4 hover:shadow-md transition-shadow flex items-center gap-4"
+                    className="admin-card rounded-lg p-4 hover:shadow-md transition-all duration-300 flex items-center gap-4 hover-scale-card group"
                   >
                     {/* Thumbnail */}
                     <div className="flex-shrink-0 h-16 w-16 rounded-lg bg-slate-100 overflow-hidden">
@@ -725,14 +726,14 @@ function ProductManagement() {
                     <div className="flex gap-2 flex-shrink-0">
                       <button
                         onClick={() => { setEditProductId(product._id); setEditedProduct({ ...product }); setShowEditModal(true); }}
-                        className="p-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition"
+                        className="p-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-all duration-300 hover:scale-110 hover:shadow-md active:scale-95"
                         title="Edit"
                       >
                         ✏️
                       </button>
                       <button
                         onClick={() => handleDelete(product._id)}
-                        className="p-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition"
+                        className="p-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-all duration-300 hover:scale-110 hover:shadow-md active:scale-95"
                         title="Delete"
                       >
                         🗑️
@@ -853,16 +854,16 @@ function ProductManagement() {
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-white/95 backdrop-blur px-6 py-4 border-t border-slate-100 flex justify-end gap-3">
+            <div className="sticky bottom-0 bg-white/95 backdrop-blur px-6 py-4 border-t border-slate-100 flex justify-end gap-3 animate-slide-in-up">
               <button
                 onClick={() => { setShowEditModal(false); setEditProductId(null); }}
-                className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:shadow-md"
+                className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-all duration-300 hover:border-slate-400 hover:shadow-md hover:scale-105 active:scale-95"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
-                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:scale-105 active:scale-95"
               >
                 ✓ Save Changes
               </button>
