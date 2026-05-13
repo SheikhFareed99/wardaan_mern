@@ -21,6 +21,13 @@ import Reviews from './components/Reviews.jsx';
 import Wishlist from './components/Wishlist.jsx';
 import BackToTopButton from './components/BackToTopButton.jsx';
 import FAQ from './components/FAQ.jsx';
+import SuperAdminLogin from './components/SuperAdminLogin.jsx';
+import SuperAdminDashboard from './components/SuperAdminDashboard.jsx';
+import SuperAdminAccounts from './components/SuperAdminAccounts.jsx';
+import SuperAdminTraffic from './components/SuperAdminTraffic.jsx';
+import SuperAdminOrders from './components/SuperAdminOrders.jsx';
+import SuperAdminInstructions from './components/SuperAdminInstructions.jsx';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -97,6 +104,30 @@ const router = createBrowserRouter([
   {
     path: '/faq',
     element: <FAQ />
+  },
+  {
+    path: "/superadmin",
+    element: <SuperAdminLogin />
+  },
+  {
+    path: "/SuperAdminDashboard",
+    element: <SuperAdminDashboard />
+  },
+  {
+    path: "/SuperAdminAccounts",
+    element: <SuperAdminAccounts />
+  },
+  {
+    path: "/SuperAdminTraffic",
+    element: <SuperAdminTraffic />
+  },
+  {
+    path: "/SuperAdminOrders",
+    element: <SuperAdminOrders />
+  },
+  {
+    path: "/SuperAdminInstructions",
+    element: <SuperAdminInstructions />
   }
 ]);
 

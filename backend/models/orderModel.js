@@ -46,6 +46,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'in transit', 'delivered'],
     default: 'pending'
+  },
+  priority: {
+    type: String,
+    enum: ['Normal', 'High', 'Urgent'],
+    default: 'Normal'
   }
 });
 

@@ -33,6 +33,26 @@ app.use("/api/finance", financeRoute);
 
 app.use('/api/expenditures', expenditureRoutes);
 
+// Traffic Logging Middleware
+const Traffic = require('./models/trafficModel');
+app.use(async (req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.includes('.')) {
+    try {
+      await Traffic.create({
+        path: req.path,
+        ip: req.ip,
+        userAgent: req.get('User-Agent')
+      });
+    } catch (err) {
+      console.error('Traffic log error:', err);
+    }
+  }
+  next();
+});
+
+app.use('/api/superadmin', require('./superadmin/superadminRoutes'));
+
+
 
 //  for insta catalog
 app.get('/feed/products.csv', async (req, res) => {
