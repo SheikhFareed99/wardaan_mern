@@ -381,9 +381,8 @@ function AdminDashboard() {
                                 {order.products.map((product, index) => (
                                   <div key={index} className="border border-slate-200 rounded-2xl p-4 hover:shadow-md transition-shadow bg-white">
                                     <div className="flex items-start">
-                                      <div className="flex-shrink-0 h-16 w-16 bg-slate-100 rounded-xl flex items-center justify-center text-slate-500">
-                                        {product.category === 'kameez shalwar' ? '👗' : 
-                                         product.category === 'kurta' ? '👔' : '👕'}
+                                      <div className="flex-shrink-0 h-16 w-16 bg-slate-100 rounded-xl flex items-center justify-center text-[10px] font-bold text-slate-400 uppercase text-center p-2">
+                                        {product.category}
                                       </div>
                                       <div className="ml-4">
                                         <h4 className="text-sm font-medium text-slate-900">{product.name}</h4>

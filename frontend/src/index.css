@@ -64,11 +64,21 @@ body {
 }
 
 .admin-card {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
   backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.pagination-btn {
+  @apply px-3 py-1 rounded-md border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-colors text-sm font-medium;
+}
+
+.pagination-btn.active {
+  @apply bg-emerald-600 text-white border-emerald-600;
+}
+
 
 .admin-soft {
   background: rgba(255, 255, 255, 0.7);
