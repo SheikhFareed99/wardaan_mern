@@ -55,6 +55,7 @@ function Wishlist() {
 
     const productWithBagId = {
       ...sizeModal,
+      id: sizeModal._id,          // backend uses p.id for Product.findById()
       bagid: bagItems.length,
       quantity: 1,
       image: sizeModal.imageUrl?.[0] || sizeModal.image || '',
