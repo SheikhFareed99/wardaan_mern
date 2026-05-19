@@ -40,6 +40,9 @@ function Wishlist() {
       ...product,
       bagid: bagItems.length,
       quantity: 1,
+      // Bag/Checkout expects `image` (string), wishlist stores `imageUrl` (array)
+      image: product.imageUrl?.[0] || product.image || '',
+      discount: product.discountPercentage || product.discount || 0,
     };
     dispatch(bagActions.addItemToBag(productWithBagId));
     setAddedToBag(product._id);

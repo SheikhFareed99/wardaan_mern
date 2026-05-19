@@ -73,6 +73,7 @@ function CheckOut() {
   };
   
   const insertWidth = (url, width) => {
+    if (!url) return '';
     const uploadIndex = url.indexOf("/upload/");
     if (uploadIndex === -1) return url;
     const prefix = url.slice(0, uploadIndex + 8); // includes '/upload/'
