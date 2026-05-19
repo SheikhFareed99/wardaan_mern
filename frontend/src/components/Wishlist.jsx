@@ -5,7 +5,7 @@ import { bagActions } from '../store/bagslice';
 import Header from './header.jsx';
 import Footer from './footer.jsx';
 import DraggableWhatsApp from './DraggableWhatsApp';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
 function Wishlist() {
@@ -14,6 +14,11 @@ function Wishlist() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [addedToBag, setAddedToBag] = useState(null);
+
+  // Size-selection modal state
+  const [sizeModal, setSizeModal] = useState(null); // holds the product being moved
+  const [modalSize, setModalSize] = useState(null);
+  const [modalStyle, setModalStyle] = useState(0);
 
   const insertWidth = (url, width) => {
     if (!url) return '';
@@ -35,17 +40,31 @@ function Wishlist() {
     dispatch(wishlistActions.removeFromWishlist({ _id: productId }));
   };
 
-  const handleMoveToBag = (product) => {
+  // Opens the size-picker modal instead of adding directly
+  const handleMoveToBagClick = (product) => {
+    setModalSize(null);
+    setModalStyle(0);
+    setSizeModal(product);
+  };
+
+  // Called when user confirms a size inside the modal
+  const handleConfirmMoveToBag = () => {
+    if (!sizeModal) return;
+    const needsSize = sizeModal.category !== 'unstitched';
+    if (needsSize && modalSize === null) return;
+
     const productWithBagId = {
-      ...product,
+      ...sizeModal,
       bagid: bagItems.length,
       quantity: 1,
-      // Bag/Checkout expects `image` (string), wishlist stores `imageUrl` (array)
-      image: product.imageUrl?.[0] || product.image || '',
-      discount: product.discountPercentage || product.discount || 0,
+      image: sizeModal.imageUrl?.[0] || sizeModal.image || '',
+      discount: sizeModal.discountPercentage || sizeModal.discount || 0,
+      selectedSize: needsSize ? (sizeModal.sizes?.[modalSize] ?? modalSize) : 'nill',
+      style: sizeModal.styleOptions?.[modalStyle] ?? 'nill',
     };
     dispatch(bagActions.addItemToBag(productWithBagId));
-    setAddedToBag(product._id);
+    setSizeModal(null);
+    setAddedToBag(sizeModal._id);
     setTimeout(() => setAddedToBag(null), 2000);
   };
 
@@ -181,7 +200,7 @@ function Wishlist() {
                       <div className="flex gap-2">
                         <motion.button
                           whileTap={{ scale: product.stock > 0 ? 0.95 : 1 }}
-                          onClick={() => handleMoveToBag(product)}
+                          onClick={() => handleMoveToBagClick(product)}
                           disabled={product.stock <= 0}
                           className={`flex-1 py-2 rounded-md text-xs sm:text-sm font-semibold transition-all duration-300 ${
                             addedToBag === product._id
@@ -214,6 +233,116 @@ function Wishlist() {
           )}
         </div>
       </div>
+
+      {/* ── Size selection modal ── */}
+      <AnimatePresence>
+        {sizeModal && (
+          <motion.div
+            key="size-modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm px-4 py-6"
+            onClick={() => setSizeModal(null)}
+          >
+            <motion.div
+              key="size-modal-panel"
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 60 }}
+              transition={{ type: 'spring', damping: 26, stiffness: 280 }}
+              className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-gray-100">
+                <div>
+                  <h2 className="font-bold text-gray-900 text-base leading-tight">{sizeModal.name}</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Select size to move to bag</p>
+                </div>
+                <button
+                  onClick={() => setSizeModal(null)}
+                  className="rounded-full p-1.5 hover:bg-gray-100 transition-colors"
+                >
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="px-5 py-4 space-y-5">
+                {/* Style options (kameez shalwar only) */}
+                {sizeModal.category === 'kameez shalwar' && sizeModal.styleOptions?.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Style</p>
+                    <div className="flex flex-wrap gap-2">
+                      {sizeModal.styleOptions.map((style, idx) => (
+                        <button
+                          key={style}
+                          onClick={() => setModalStyle(idx)}
+                          className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                            modalStyle === idx
+                              ? 'bg-amber-500 border-amber-500 text-white shadow-sm'
+                              : 'border-gray-200 text-gray-700 hover:border-amber-300'
+                          }`}
+                        >
+                          {style}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Size grid */}
+                {sizeModal.sizes?.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Size</p>
+                    <div className="grid grid-cols-5 gap-2">
+                      {sizeModal.sizes.map((size, idx) => (
+                        <button
+                          key={size}
+                          onClick={() => setModalSize(idx)}
+                          className={`aspect-square flex items-center justify-center rounded-xl text-sm font-semibold border transition-all ${
+                            modalSize === idx
+                              ? 'bg-amber-500 border-amber-500 text-white shadow-md scale-105'
+                              : 'border-gray-200 text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
+                    {modalSize === null && (
+                      <p className="text-xs text-red-500 mt-2">Please select a size to continue</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="px-5 pb-5 flex gap-3">
+                <button
+                  onClick={() => setSizeModal(null)}
+                  className="flex-1 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirmMoveToBag}
+                  disabled={sizeModal.sizes?.length > 0 && modalSize === null}
+                  className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all ${
+                    sizeModal.sizes?.length > 0 && modalSize === null
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md'
+                  }`}
+                >
+                  Move to Bag
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </>
