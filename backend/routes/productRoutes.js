@@ -15,6 +15,8 @@ const {
   addFeedback,
   getAllFeedbacks,
   updateFeedbackStatus,
+  addPolicySubmission,
+  getPolicySubmissions,
   getselectedproduct
 } = require("../controllers/productController");
 
@@ -25,6 +27,8 @@ router.get("/admin",protectAdmin, getproducts);
 router.post("/feedbacks", addFeedback); 
 router.get("/feedbacks", getAllFeedbacks); 
 router.patch("/feedbacks/:id/status",updateFeedbackStatus); 
+router.post("/policies-c", addPolicySubmission);
+router.get("/policies-c", protectAdmin, getPolicySubmissions);
 
 router.get("/selectedproduct/:id", getselectedproduct);    
 

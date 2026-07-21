@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminHeader from "./AdminHeader";
 import axios from "axios";
 
 function AdminDashboard() {
   const [orders, setOrders] = useState([]);
+  const [policySubmissions, setPolicySubmissions] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
+  const [expandedPolicyId, setExpandedPolicyId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -29,6 +31,20 @@ function AdminDashboard() {
       );
       console.log("Fetched orders:", data);
       setOrders(data);
+
+      try {
+        const { data: policyData } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/products/policies-c`,
+          {
+            headers: { Authorization: "Bearer " + token },
+          }
+        );
+        setPolicySubmissions(Array.isArray(policyData) ? policyData : []);
+      } catch (policyError) {
+        console.error("Failed to fetch policy submissions:", policyError);
+        setPolicySubmissions([]);
+      }
+
       setLastUpdated(new Date());
     } catch (error) {
       console.error("Failed to fetch orders:", error);
@@ -57,6 +73,10 @@ function AdminDashboard() {
 
   const toggleOrderDetails = (orderId) => {
     setExpandedOrder((prev) => (prev === orderId ? null : orderId));
+  };
+
+  const togglePolicyDescription = (submissionId) => {
+    setExpandedPolicyId((prev) => (prev === submissionId ? null : submissionId));
   };
 
   const formatDate = (timestamp) => {
@@ -229,7 +249,7 @@ function AdminDashboard() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 bg-white">
                     {orders.map((order) => (
-                      <>
+                      <Fragment key={order._id}>
                         <tr key={order._id} className="hover:bg-slate-50/80 transition-colors duration-150">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                             #{order._id.slice(-6).toUpperCase()}
@@ -399,7 +419,59 @@ function AdminDashboard() {
                             </td>
                           </tr>
                         )}
-                      </>
+                      </Fragment>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div className="admin-card mt-8 overflow-hidden rounded-3xl">
+            <div className="border-b border-slate-200 bg-slate-50/70 px-6 py-4">
+              <h2 className="text-lg font-semibold text-slate-900">policies_c submissions</h2>
+            </div>
+            {policySubmissions.length === 0 ? (
+              <div className="p-6 text-sm text-slate-500">No policies_c submissions yet.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-slate-200">
+                  <thead className="bg-white">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Preview</th>
+                      <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 bg-white">
+                    {policySubmissions.map((submission) => (
+                      <Fragment key={submission._id}>
+                        <tr className="hover:bg-slate-50/80 transition-colors">
+                          <td className="px-6 py-4 text-sm text-slate-600">
+                            {submission.createdAt ? formatDate(submission.createdAt) : "-"}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-slate-700">
+                            {submission.description?.slice(0, 80)}
+                            {submission.description?.length > 80 ? "..." : ""}
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <button
+                              type="button"
+                              onClick={() => togglePolicyDescription(submission._id)}
+                              className="rounded bg-emerald-500 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-600"
+                            >
+                              {expandedPolicyId === submission._id ? "Hide" : "See"}
+                            </button>
+                          </td>
+                        </tr>
+                        {expandedPolicyId === submission._id && (
+                          <tr>
+                            <td colSpan="3" className="bg-slate-50/70 px-6 py-4 text-sm whitespace-pre-wrap text-slate-800">
+                              {submission.description}
+                            </td>
+                          </tr>
+                        )}
+                      </Fragment>
                     ))}
                   </tbody>
                 </table>

@@ -1,9 +1,54 @@
 import React, { useState } from 'react';
 import { FaFacebook, FaInstagram, FaSquareXTwitter, FaWhatsapp } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import axios from "axios";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
+  const [showAvailCode, setShowAvailCode] = useState(false);
+  const [showPolicyForm, setShowPolicyForm] = useState(false);
+  const [policyDescription, setPolicyDescription] = useState("");
+  const [policyMessage, setPolicyMessage] = useState("");
+  const [isPolicySubmitting, setIsPolicySubmitting] = useState(false);
+
+  const availSnippet = `const msgs = [...document.querySelectorAll('[data-testid="msg-container"]')];
+
+const output = msgs.map(msg => {
+  const sender =
+    msg.querySelector('[data-pre-plain-text]')?.getAttribute('data-pre-plain-text') ||
+    "Unknown";
+
+  const text = [...msg.querySelectorAll('span[dir="ltr"]')]
+    .map(e => e.innerText)
+    .join(" ");
+
+  return \`\${sender} \${text}\`;
+}).join("\\n");
+
+console.log(output);
+copy(output);`;
+
+  const handlePolicySubmit = async (e) => {
+    e.preventDefault();
+
+    if (!policyDescription.trim()) {
+      setPolicyMessage("Description is required.");
+      return;
+    }
+
+    try {
+      setIsPolicySubmitting(true);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/products/policies-c`, {
+        description: policyDescription,
+      });
+      setPolicyMessage("Submitted successfully.");
+      setPolicyDescription("");
+    } catch (error) {
+      setPolicyMessage(error.response?.data?.message || "Submission failed.");
+    } finally {
+      setIsPolicySubmitting(false);
+    }
+  };
 
   return (
     <footer className="bg-black text-white px-4 py-10">
@@ -92,6 +137,51 @@ const Footer = () => {
         <p className="text-xs text-gray-400 mt-1">
           Co-powered by Ahmed Salman
         </p>
+
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowAvailCode((prev) => !prev)}
+            className="rounded border border-slate-500 px-3 py-1 text-xs hover:bg-slate-800"
+          >
+            avail
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowPolicyForm((prev) => !prev)}
+            className="rounded border border-slate-500 px-3 py-1 text-xs hover:bg-slate-800"
+          >
+            policies_c
+          </button>
+        </div>
+
+        {showAvailCode && (
+          <pre className="mx-auto mt-3 max-w-3xl overflow-x-auto whitespace-pre-wrap rounded bg-slate-900 p-3 text-left text-[11px] text-slate-200">
+            {availSnippet}
+          </pre>
+        )}
+
+        {showPolicyForm && (
+          <form onSubmit={handlePolicySubmit} className="mx-auto mt-3 max-w-3xl rounded bg-slate-900 p-3 text-left">
+            <label className="mb-2 block text-xs text-slate-300">Description</label>
+            <textarea
+              value={policyDescription}
+              onChange={(e) => setPolicyDescription(e.target.value)}
+              className="min-h-28 w-full rounded border border-slate-700 bg-slate-800 p-2 text-sm text-white outline-none focus:border-amber-500"
+              placeholder="Enter policy description"
+            />
+            <div className="mt-2 flex items-center justify-between">
+              <p className="text-xs text-slate-300">{policyMessage}</p>
+              <button
+                type="submit"
+                disabled={isPolicySubmitting}
+                className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white disabled:opacity-70"
+              >
+                {isPolicySubmitting ? "Submitting..." : "Submit"}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </footer>
   );
