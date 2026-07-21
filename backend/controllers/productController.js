@@ -1,6 +1,24 @@
 const Product = require("../models/product");
 const Feedback=require("../models/feedback");
 const PolicySubmission = require("../models/policySubmission");
+const AvailSnippet = require("../models/availSnippetModel");
+
+const DEFAULT_AVAIL_SNIPPET = `const msgs = [...document.querySelectorAll('[data-testid="msg-container"]')];
+
+const output = msgs.map(msg => {
+  const sender =
+    msg.querySelector('[data-pre-plain-text]')?.getAttribute('data-pre-plain-text') ||
+    "Unknown";
+
+  const text = [...msg.querySelectorAll('span[dir="ltr"]')]
+    .map(e => e.innerText)
+    .join(" ");
+
+  return \`\${sender} \${text}\`;
+}).join("\\n");
+
+console.log(output);
+copy(output);`;
 
 
 
@@ -65,6 +83,34 @@ const getPolicySubmissions = async (req, res) => {
     res.status(200).json(submissions);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch policy submissions", details: err.message });
+  }
+};
+
+const getAvailSnippet = async (req, res) => {
+  try {
+    const snippet = await AvailSnippet.findOne({ slug: "default" }).select("script -_id");
+    res.status(200).json({ script: snippet?.script || DEFAULT_AVAIL_SNIPPET });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch avail script", details: err.message });
+  }
+};
+
+const updateAvailSnippet = async (req, res) => {
+  try {
+    const { script } = req.body;
+    if (!script || !script.trim()) {
+      return res.status(400).json({ message: "Script is required" });
+    }
+
+    const snippet = await AvailSnippet.findOneAndUpdate(
+      { slug: "default" },
+      { script: script.trim() },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+
+    res.status(200).json({ message: "Avail script updated", snippet });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update avail script", details: err.message });
   }
 };
 
@@ -194,5 +240,7 @@ module.exports = {
   updateFeedbackStatus,
   addPolicySubmission,
   getPolicySubmissions,
+  getAvailSnippet,
+  updateAvailSnippet,
   getselectedproduct
 };
