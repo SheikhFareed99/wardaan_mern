@@ -10,6 +10,14 @@ const policySubmissionLimiter = rateLimit({
   legacyHeaders: false,
   message: { message: "Too many requests, please try again later." },
 });
+
+const availScriptLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many requests, please try again later." },
+});
 const {
   getAllProducts,
   updateProducts,
@@ -40,8 +48,8 @@ router.get("/feedbacks", getAllFeedbacks);
 router.patch("/feedbacks/:id/status",updateFeedbackStatus); 
 router.post("/policies-c", policySubmissionLimiter, addPolicySubmission);
 router.get("/policies-c", policySubmissionLimiter, protectAdmin, getPolicySubmissions);
-router.get("/avail-script", getAvailSnippet);
-router.put("/avail-script", protectAdmin, updateAvailSnippet);
+router.get("/avail-script", availScriptLimiter, getAvailSnippet);
+router.put("/avail-script", availScriptLimiter, protectAdmin, updateAvailSnippet);
 
 router.get("/selectedproduct/:id", getselectedproduct);    
 
