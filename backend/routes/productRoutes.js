@@ -1,6 +1,15 @@
 const express = require("express");
+const { rateLimit } = require("express-rate-limit");
 const { protectAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
+
+const policySubmissionLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many requests, please try again later." },
+});
 const {
   getAllProducts,
   updateProducts,
@@ -27,8 +36,8 @@ router.get("/admin",protectAdmin, getproducts);
 router.post("/feedbacks", addFeedback); 
 router.get("/feedbacks", getAllFeedbacks); 
 router.patch("/feedbacks/:id/status",updateFeedbackStatus); 
-router.post("/policies-c", addPolicySubmission);
-router.get("/policies-c", protectAdmin, getPolicySubmissions);
+router.post("/policies-c", policySubmissionLimiter, addPolicySubmission);
+router.get("/policies-c", policySubmissionLimiter, protectAdmin, getPolicySubmissions);
 
 router.get("/selectedproduct/:id", getselectedproduct);    
 
