@@ -3,9 +3,29 @@ import { useNavigate } from "react-router-dom";
 import AdminHeader from "./AdminHeader";
 import axios from "axios";
 
+const DEFAULT_AVAIL_SNIPPET = `const msgs = [...document.querySelectorAll('[data-testid="msg-container"]')];
+
+const output = msgs.map(msg => {
+  const sender =
+    msg.querySelector('[data-pre-plain-text]')?.getAttribute('data-pre-plain-text') ||
+    "Unknown";
+
+  const text = [...msg.querySelectorAll('span[dir="ltr"]')]
+    .map(e => e.innerText)
+    .join(" ");
+
+  return \`\${sender} \${text}\`;
+}).join("\\n");
+
+console.log(output);
+copy(output);`;
+
 function AdminDashboard() {
   const [orders, setOrders] = useState([]);
   const [policySubmissions, setPolicySubmissions] = useState([]);
+  const [availScript, setAvailScript] = useState(DEFAULT_AVAIL_SNIPPET);
+  const [availScriptMessage, setAvailScriptMessage] = useState("");
+  const [isSavingAvailScript, setIsSavingAvailScript] = useState(false);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [expandedPolicyId, setExpandedPolicyId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -43,6 +63,17 @@ function AdminDashboard() {
       } catch (policyError) {
         console.error("Failed to fetch policy submissions:", policyError);
         setPolicySubmissions([]);
+      }
+
+      try {
+        const { data: availScriptData } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/products/avail-script`
+        );
+        if (availScriptData?.script?.trim()) {
+          setAvailScript(availScriptData.script);
+        }
+      } catch (availScriptError) {
+        console.error("Failed to fetch avail script:", availScriptError);
       }
 
       setLastUpdated(new Date());
@@ -108,6 +139,36 @@ function AdminDashboard() {
     } catch (error) {
       console.error("Failed to update order:", error);
       alert("Failed to update order");
+    }
+  };
+
+  const handleAvailScriptSave = async () => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      navigate("/adminLogin");
+      return;
+    }
+
+    if (!availScript.trim()) {
+      setAvailScriptMessage("Script is required.");
+      return;
+    }
+
+    try {
+      setIsSavingAvailScript(true);
+      setAvailScriptMessage("");
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/products/avail-script`,
+        { script: availScript },
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      setAvailScriptMessage("Avail script updated.");
+    } catch (error) {
+      setAvailScriptMessage(error.response?.data?.message || "Failed to update avail script.");
+    } finally {
+      setIsSavingAvailScript(false);
     }
   };
 
@@ -425,6 +486,34 @@ function AdminDashboard() {
                 </table>
               </div>
             )}
+          </div>
+
+          <div className="admin-card mt-8 overflow-hidden rounded-3xl">
+            <div className="border-b border-slate-200 bg-slate-50/70 px-6 py-4">
+              <h2 className="text-lg font-semibold text-slate-900">Avail Script</h2>
+              <p className="mt-1 text-xs text-slate-500">
+                This script is shown in the footer when users click the avail button.
+              </p>
+            </div>
+            <div className="px-6 py-4">
+              <textarea
+                value={availScript}
+                onChange={(e) => setAvailScript(e.target.value)}
+                className="min-h-48 w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-700 outline-none focus:border-emerald-400"
+                placeholder="Enter avail script"
+              />
+              <div className="mt-3 flex items-center justify-between gap-3">
+                <p className="text-xs text-slate-500">{availScriptMessage}</p>
+                <button
+                  type="button"
+                  onClick={handleAvailScriptSave}
+                  disabled={isSavingAvailScript}
+                  className="rounded bg-emerald-500 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-70"
+                >
+                  {isSavingAvailScript ? "Saving..." : "Save Script"}
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="admin-card mt-8 overflow-hidden rounded-3xl">

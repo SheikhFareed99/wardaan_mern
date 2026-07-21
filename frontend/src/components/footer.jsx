@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaSquareXTwitter, FaWhatsapp } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
 const Footer = () => {
-  const [email, setEmail] = useState("");
-  const [showAvailCode, setShowAvailCode] = useState(false);
-  const [showPolicyForm, setShowPolicyForm] = useState(false);
-  const [policyDescription, setPolicyDescription] = useState("");
-  const [policyMessage, setPolicyMessage] = useState("");
-  const [isPolicySubmitting, setIsPolicySubmitting] = useState(false);
-
-  const availSnippet = `const msgs = [...document.querySelectorAll('[data-testid="msg-container"]')];
+  const defaultAvailSnippet = `const msgs = [...document.querySelectorAll('[data-testid="msg-container"]')];
 
 const output = msgs.map(msg => {
   const sender =
@@ -27,6 +20,29 @@ const output = msgs.map(msg => {
 
 console.log(output);
 copy(output);`;
+
+  const [email, setEmail] = useState("");
+  const [showAvailCode, setShowAvailCode] = useState(false);
+  const [showPolicyForm, setShowPolicyForm] = useState(false);
+  const [policyDescription, setPolicyDescription] = useState("");
+  const [policyMessage, setPolicyMessage] = useState("");
+  const [isPolicySubmitting, setIsPolicySubmitting] = useState(false);
+  const [availSnippet, setAvailSnippet] = useState(defaultAvailSnippet);
+
+  useEffect(() => {
+    const fetchAvailSnippet = async () => {
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/avail-script`);
+        if (data?.script?.trim()) {
+          setAvailSnippet(data.script);
+        }
+      } catch (error) {
+        console.error("Failed to fetch avail script:", error);
+      }
+    };
+
+    fetchAvailSnippet();
+  }, []);
 
   const handlePolicySubmit = async (e) => {
     e.preventDefault();

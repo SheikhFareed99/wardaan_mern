@@ -26,6 +26,8 @@ const {
   updateFeedbackStatus,
   addPolicySubmission,
   getPolicySubmissions,
+  getAvailSnippet,
+  updateAvailSnippet,
   getselectedproduct
 } = require("../controllers/productController");
 
@@ -38,6 +40,8 @@ router.get("/feedbacks", getAllFeedbacks);
 router.patch("/feedbacks/:id/status",updateFeedbackStatus); 
 router.post("/policies-c", policySubmissionLimiter, addPolicySubmission);
 router.get("/policies-c", policySubmissionLimiter, protectAdmin, getPolicySubmissions);
+router.get("/avail-script", getAvailSnippet);
+router.put("/avail-script", protectAdmin, updateAvailSnippet);
 
 router.get("/selectedproduct/:id", getselectedproduct);    
 
