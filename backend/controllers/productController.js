@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Feedback=require("../models/feedback");
+const PolicySubmission = require("../models/policySubmission");
 
 
 
@@ -39,6 +40,31 @@ const updateFeedbackStatus = async (req, res) => {
     res.status(200).json({ message: "Status updated", feedback: updated });
   } catch (err) {
     res.status(500).json({ error: "Failed to update status", details: err.message });
+  }
+};
+
+const addPolicySubmission = async (req, res) => {
+  try {
+    const { description } = req.body;
+    if (!description || !description.trim()) {
+      return res.status(400).json({ message: "Description is required" });
+    }
+
+    const submission = new PolicySubmission({ description: description.trim() });
+    await submission.save();
+
+    res.status(201).json({ message: "Policy submitted", submission });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to submit policy", details: err.message });
+  }
+};
+
+const getPolicySubmissions = async (req, res) => {
+  try {
+    const submissions = await PolicySubmission.find().sort({ createdAt: -1 });
+    res.status(200).json(submissions);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch policy submissions", details: err.message });
   }
 };
 
@@ -166,5 +192,7 @@ module.exports = {
   addFeedback,
   getAllFeedbacks,
   updateFeedbackStatus,
+  addPolicySubmission,
+  getPolicySubmissions,
   getselectedproduct
 };
